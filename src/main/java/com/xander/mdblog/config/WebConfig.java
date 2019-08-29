@@ -28,6 +28,12 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(this.loginInterceptor).addPathPatterns("/**")
+                // swagger页面
+                .excludePathPatterns("/swagger-ui.html")
+                .excludePathPatterns("/swagger-resources/**")
+                .excludePathPatterns("/v2/api-docs")
+                // swagger 静态资源
+                .excludePathPatterns("/webjars/**")
                 .excludePathPatterns("/upload/**")
                 .excludePathPatterns("/user/getOwner")
                 .excludePathPatterns("/captcha")
