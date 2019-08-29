@@ -1,0 +1,117 @@
+.calendar {
+    margin: 0 auto;
+    border: #e0e0e0 1px solid;
+    padding: 0 19px 16px 19px;
+}
+
+.c-title {
+    height: 40px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #757575;
+    display: flex;
+    align-items: center;
+}
+
+.c-month {
+    font-size: 12px;
+    font-weight: 400;
+    color: #757575;
+    flex-grow: 1;
+    padding-left: 5px;
+}
+
+.c-change {
+    font-size: 12px;
+}
+
+.grid {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    text-align: center;
+}
+
+.row {
+    display: table-row;
+    height: 28px;
+}
+
+.week {
+    margin: 0 auto;
+    display: table-cell;
+    font-size: 10px;
+    font-weight: 500;
+    vertical-align: middle;
+    color: #757575;
+    outline: none;
+    text-align: center;
+}
+
+.week span {
+    font-weight: bold;
+}
+
+.rowgroup {
+    display: table-row-group;
+    text-align: center;
+}
+
+.day {
+    display: table-cell;
+    font-size: 10px;
+    font-weight: 500;
+    vertical-align: middle;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+}
+
+.not-this-month {
+    color: #757575;
+}
+
+.button-active {
+    color: #e5e5e5;
+}
+
+@media screen and (min-width: 768px) {
+    .cal {
+        float: left;
+        width: 45%;
+    }
+    .schedule {
+        float: left;
+        width: 45%;
+        margin-left:30px;
+    }
+}
+@media screen and (max-width: 768px) {
+    .cal {
+        float: left;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .calendar{
+        width:255px;
+    }
+    .schedule {
+        float: left;
+        width: 100%;
+    }
+}
+
+.schedule-date {
+    font-size: 28px;
+    font-weight: bold;
+    float: left;
+}
+
+.schedule-week {
+    margin-left: 5px;
+    line-height: 43px;
+    font-size: 18px;
+    font-weight: bold;
+    top: -10px;
+    float: left;
+}

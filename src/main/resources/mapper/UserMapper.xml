@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xander.mdblog.mapper.UserMapper">
+    <resultMap id="BaseMap" type="com.xander.mdblog.entity.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="nickname" property="nickname"/>
+        <result column="email" property="email"/>
+        <result column="birthday" property="birthday"/>
+        <result column="avatar" property="avatar"/>
+        <result column="gender" property="gender"/>
+        <result column="phone" property="phone"/>
+        <result column="description" property="description"/>
+        <result column="github" property="github"/>
+        <result column="theme_primary" property="themePrimary"/>
+        <result column="theme_accent" property="themeAccent"/>
+        <result column="theme_layout" property="themeLayout"/>
+        <result column="status" property="status"/>
+        <result column="permission" property="permission"/>
+    </resultMap>
+    <sql id="BaseColumn">
+        id,username,password,nickname,email,birthday,avatar,gender,phone,description,github,theme_primary,theme_accent,theme_layout,status,permission
+    </sql>
+
+    <sql id="Where">
+        <if test="userId!=null and userId!=''">
+            and id=#{userId}
+        </if>
+        <if test="username!=null and username!=''">
+            and username=#{username}
+        </if>
+        <if test="permission!=null and permission!=''">
+            and permission=#{permission}
+        </if>
+    </sql>
+</mapper>
