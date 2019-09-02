@@ -22,16 +22,54 @@
   -webkit-font-smoothing: antialiased;
 }
 
+/*排版*/
+.mu-appbar-header {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  overflow: hidden;
+}
+
+.mu-appbar-header.is-open {
+  left: 256px;
+}
+
+.mu-container {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 64px;
+  height: 95%;
+  overflow: scroll;
+  padding: 5px 0;
+}
+
+.mu-container.is-open {
+  left: 256px;
+}
+
+/*换行*/
+p, span, code {
+  white-space: normal;
+  word-break: break-all;
+}
+
 /*列表打开关闭旋转180度*/
 .mu-item__open .toggle-icon {
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg);
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
 /*滚动条颜色*/
 ::-webkit-scrollbar-thumb {
   border-radius: 8px;
-  background: #757575;
+  background: #BDBDBD;
 }
 
 /*列表打开关闭动画效果*/

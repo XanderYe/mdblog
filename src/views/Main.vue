@@ -45,7 +45,7 @@
     </mu-drawer>
 
     <mu-appbar :class="['mu-appbar-header', isOpen]" color="primary">
-      <mu-button icon slot="left" @click="open = true" v-if="!desktop">
+      <mu-button icon slot="left" @click="toggleNav" v-if="!desktop">
         <mu-icon value="menu"></mu-icon>
       </mu-button>
       XanderYe的博客
@@ -66,7 +66,12 @@
       </mu-menu>
     </mu-appbar>
 
-    <router-view/>
+    <div :class="['mu-container', isOpen]">
+      <router-view/>
+    </div>
+
+
+
   </div>
 
 </template>
@@ -80,7 +85,7 @@
         open: desktop,
         docked: desktop,
         desktop: desktop,
-        isOpen: "is-open",
+        isOpen: desktop ? "is-open" : "",
         openItem: "",
         user: {
           nickname: "XanderYe",
@@ -132,22 +137,22 @@
       this.changeNav();
       this.handleResize = () => {
         this.changeNav();
-      }
+      };
       window.addEventListener('resize', this.handleResize)
     },
+    watch: {
+      '$route': function (to, from) {
+        // 移动端点击后自动关闭抽屉
+        if(!this.isDesktop()){
+          if(this.open){
+            this.open = false;
+          }
+        }
+      }
+    }
   }
 </script>
 
 <style lang="less" scoped>
-  .mu-appbar-header {
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    overflow: hidden;
-  }
 
-  .mu-appbar-header.is-open {
-    left: 256px;
-  }
 </style>

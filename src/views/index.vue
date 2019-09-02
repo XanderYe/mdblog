@@ -1,25 +1,14 @@
 <template>
-  <div>
-    <!--<md-content class="md-scrollbar">
-      <md-card md-with-hover md-theme="primary" v-for="article in articleList" :key="article.id">
-        <md-card-header>
-          <md-card-header-text>
-            <router-link :to="{path: 'article', query: {id: article.id}}">
-              <div class="md-title">{{article.title}}</div>
-            </router-link>
-            <div class="md-subhead">{{article.createTime}}</div>
-          </md-card-header-text>
-        </md-card-header>
-
-        <md-card-content v-html="article.content">
-        </md-card-content>
-
-        <md-card-actions md-alignment="left">
-          <md-button class="md-primary" :to="{path: 'article', query: {id: article.id}}">继续阅读</md-button>
-        </md-card-actions>
-      </md-card>
-    </md-content>-->
-  </div>
+  <mu-container>
+    <mu-card v-for="article in articleList" :key="article.id" style="margin: 10px 0">
+      <mu-card-title :title="article.title" :sub-title="article.createTime"></mu-card-title>
+      <mu-card-text v-html="article.content">
+      </mu-card-text>
+      <mu-card-actions>
+        <mu-button flat>继续阅读</mu-button>
+      </mu-card-actions>
+    </mu-card>
+  </mu-container>
 </template>
 
 <script>
@@ -32,14 +21,14 @@
     }),
     methods: {
       getArticleList() {
-        this.$requests.get("/article/getRecentArticles", {tid: this.topicId, page: this.page}).then((res) => {
+        this.$requests.get("/article/getRecentArticles", {topicId: this.topicId, page: this.page}).then((res) => {
           if (res.data.code == 0) {
             this.articleList = res.data.data.list;
           }
         })
       }
     },
-    created() {
+    mounted() {
       this.getArticleList();
     },
     watch: {
@@ -52,7 +41,7 @@
 </script>
 
 <style scoped>
-  .md-card{
+  .md-card {
     margin-bottom: 10px;
   }
 </style>
