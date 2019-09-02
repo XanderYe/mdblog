@@ -1,6 +1,6 @@
 <template>
   <div>
-    <md-content class="md-scrollbar">
+    <!--<md-content class="md-scrollbar">
       <md-card md-with-hover md-theme="primary" v-for="article in articleList" :key="article.id">
         <md-card-header>
           <md-card-header-text>
@@ -18,7 +18,7 @@
           <md-button class="md-primary" :to="{path: 'article', query: {id: article.id}}">继续阅读</md-button>
         </md-card-actions>
       </md-card>
-    </md-content>
+    </md-content>-->
   </div>
 </template>
 

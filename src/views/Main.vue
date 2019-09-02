@@ -1,83 +1,101 @@
 <template>
-  <div class="page-container">
-    <md-app md-mode="fixed">
-      <md-app-toolbar class="md-primary">
-        <md-button class="md-icon-button" @click="toggleMenu" v-if="!menuVisible">
-          <md-icon>menu</md-icon>
-        </md-button>
+  <div>
+    <mu-drawer :open.sync="open" :docked="docked" :z-depth="1">
 
-        <span class="md-title">XanderYe的博客</span>
-      </md-app-toolbar>
+      <mu-card style="width: 100%; max-width: 375px; margin: 0 auto">
+        <mu-card-header :title="user.nickname" :sub-title="user.occupation" style="padding: 9px;">
+          <mu-avatar slot="avatar">
+            <img :src="user.avatar">
+          </mu-avatar>
+        </mu-card-header>
+        <mu-card-media :sub-title="user.description">
+          <img src="/static/img/card.jpg">
+        </mu-card-media>
+        <mu-card-actions>
+          <mu-button flat style="width: 117px" :href="user.github">GITHUB</mu-button>
+          <mu-button flat style="width: 117px" :href="'mailto:' + user.email">邮件</mu-button>
+        </mu-card-actions>
+      </mu-card>
+      <mu-list>
+        <mu-list-item button>
+          <mu-list-item-title>Menu Item 1</mu-list-item-title>
+        </mu-list-item>
+        <mu-list-item button>
+          <mu-list-item-title>Menu Item 2</mu-list-item-title>
+        </mu-list-item>
+        <mu-list-item @click="open = false" button>
+          <mu-list-item-title>Close</mu-list-item-title>
+        </mu-list-item>
+      </mu-list>
+    </mu-drawer>
 
-      <md-app-drawer :md-active.sync="menuVisible" :md-persistent="persistent">
-        <md-toolbar class="md-transparent" md-elevation="0">
-          <span>Navigation</span>
-
-          <div class="md-toolbar-section-end">
-            <md-button class="md-icon-button md-dense" @click="toggleMenu">
-              <md-icon>keyboard_arrow_left</md-icon>
-            </md-button>
-          </div>
-        </md-toolbar>
-
-        <md-list :md-expand-single="true">
-
-          <md-list-item :to="{path: 'index'}">
-            <md-icon>home</md-icon>
-            <span class="md-list-item-text" router>首页</span>
-          </md-list-item>
-
-
-          <md-list-item md-expand>
-            <md-icon>list</md-icon>
-            <span class="md-list-item-text">主题</span>
-
-            <md-list slot="md-expand">
-              <md-list-item class="md-inset" v-for="(topic,index) in topicList" :key="topic.id"
-                            :to="{path: 'index',query: {id: topic.id}}">
-                {{topic.name}}
-              </md-list-item>
-            </md-list>
-          </md-list-item>
-
-          <md-list-item md-expand>
-            <md-icon>video_library</md-icon>
-            <span class="md-list-item-text">Video</span>
-
-            <md-list slot="md-expand">
-              <md-list-item class="md-inset">Humor</md-list-item>
-              <md-list-item class="md-inset">Music</md-list-item>
-              <md-list-item class="md-inset">Movies</md-list-item>
-              <md-list-item class="md-inset">TV Shows</md-list-item>
-            </md-list>
-          </md-list-item>
-
-          <md-list-item>
-            <md-icon>shopping_basket</md-icon>
-            <span class="md-list-item-text">Shop</span>
-          </md-list-item>
-        </md-list>
-      </md-app-drawer>
-
-      <md-app-content>
-        <router-view/>
-      </md-app-content>
-    </md-app>
+    <mu-appbar :class="['mu-appbar-header', isOpen]" color="primary">
+      <mu-button icon slot="left" @click="open = true" v-if="!desktop">
+        <mu-icon value="menu"></mu-icon>
+      </mu-button>
+      XanderYe的博客
+      <mu-menu slot="right">
+        <mu-button flat>MENU</mu-button>
+        <mu-list slot="content">
+          <mu-list-item button>
+            <mu-list-item-content>
+              <mu-list-item-title>Menu Item 1</mu-list-item-title>
+            </mu-list-item-content>
+          </mu-list-item>
+          <mu-list-item button>
+            <mu-list-item-content>
+              <mu-list-item-title>Menu Item 2</mu-list-item-title>
+            </mu-list-item-content>
+          </mu-list-item>
+        </mu-list>
+      </mu-menu>
+    </mu-appbar>
   </div>
 
 </template>
 
 <script>
   export default {
-    data: () => ({
-      topicList: [],
-      menuVisible: true,
-      persistent: "mini"
-    }),
+    data() {
+      const desktop = this.isDesktop();
+      return {
+        topicList: [],
+        open: desktop,
+        docked: desktop,
+        desktop: desktop,
+        isOpen: "is-open",
+        user:{
+          nickname: "XanderYe",
+          avatar: "/static/img/my.jpg",
+          email: "mailto:XanderYe@outlook.com",
+          github: "https://github.com/XanderYe",
+          description: "这里是一条咸鱼的博客",
+          occupation: "java开发工程师"
+        }
+      }
+    },
     methods: {
-      toggleMenu() {
-        this.menuVisible = !this.menuVisible
+
+      toggleNav () {
+        this.open = !this.open
       },
+      changeNav () {
+        const desktop = this.isDesktop();
+        this.docked = desktop;
+        if (desktop === this.desktop) {
+          return;
+        }
+        if (!desktop && this.desktop && this.open) {
+          this.open = false;
+          this.isOpen = "";
+        }
+        if (desktop && !this.desktop && !this.open) {
+          this.open = true;
+          this.isOpen = "is-open";
+        }
+        this.desktop = desktop
+      },
+
       getAllTopic() {
         this.$requests.get("/topic/getAll", null).then((res) => {
           if (res.data.code == 0) {
@@ -86,56 +104,41 @@
         })
       },
 
-      isMobile() {
-        return navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
+      isDesktop() {
+        return window.innerWidth > 993
       }
     },
-    created() {
+    mounted () {
       this.getAllTopic();
 
-      if (this.isMobile()) {
-        this.menuVisible = false;
-        this.persistent = "full";
+      this.changeNav();
+      this.handleResize = () => {
+        this.changeNav();
       }
+      window.addEventListener('resize', this.handleResize)
     },
   }
 </script>
 
-<!--组件scss-->
-<style lang="scss" scoped>
-
-  .md-drawer {
-    width: 230px;
-    max-width: calc(100vw - 125px);
+<style lang="less" scoped>
+  .mu-appbar-header {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    overflow: hidden;
   }
 
-  .md-app-content{
-    height:500px;
+  .mu-appbar-header.is-open {
+    left: 256px;
   }
-
-  @import "~vue-material/dist/theme/engine";
-
-  @include md-register-theme("default", (
-    primary: md-get-palette-color(blue, A200),
-    accent: md-get-palette-color(red, A200)
-  ));
-
-  @import "~vue-material/dist/theme/all";
 </style>
 
 <!--全局普通css-->
 <style>
   /*滚动条颜色*/
-  ::-webkit-scrollbar-thumb{
+  ::-webkit-scrollbar-thumb {
     border-radius: 8px;
     background: #757575;
-  }
-  /*换行*/
-  p, span, code{
-    white-space: normal;
-    word-break: break-all;
-  }
-  a:visited{
-
   }
 </style>
