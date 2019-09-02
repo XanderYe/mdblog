@@ -16,16 +16,31 @@
           <mu-button flat style="width: 117px" :href="'mailto:' + user.email">邮件</mu-button>
         </mu-card-actions>
       </mu-card>
-      <mu-list>
-        <mu-list-item button>
-          <mu-list-item-title>Menu Item 1</mu-list-item-title>
+      <mu-list toggle-nested>
+
+        <mu-list-item button :to="{name:'index'}">
+          <mu-list-item-action>
+            <mu-icon value="home"></mu-icon>
+          </mu-list-item-action>
+          <mu-list-item-title>首页</mu-list-item-title>
         </mu-list-item>
-        <mu-list-item button>
-          <mu-list-item-title>Menu Item 2</mu-list-item-title>
+
+        <mu-list-item button nested :open="openItem === '主题'" @toggle-nested="openItem = arguments[0] ? '主题' : ''">
+          <mu-list-item-action>
+            <mu-icon value="list"></mu-icon>
+          </mu-list-item-action>
+          <mu-list-item-title>主题</mu-list-item-title>
+          <mu-list-item-action>
+            <mu-icon class="toggle-icon" size="24" value="keyboard_arrow_down"></mu-icon>
+          </mu-list-item-action>
+
+          <mu-list-item button slot="nested" v-for="topic in topicList" :key="topic.id"
+                        :to="{name:'index', query:{id : topic.id}}">
+            <mu-list-item-title>{{topic.name}}</mu-list-item-title>
+          </mu-list-item>
+
         </mu-list-item>
-        <mu-list-item @click="open = false" button>
-          <mu-list-item-title>Close</mu-list-item-title>
-        </mu-list-item>
+
       </mu-list>
     </mu-drawer>
 
@@ -50,6 +65,8 @@
         </mu-list>
       </mu-menu>
     </mu-appbar>
+
+    <router-view/>
   </div>
 
 </template>
@@ -64,7 +81,8 @@
         docked: desktop,
         desktop: desktop,
         isOpen: "is-open",
-        user:{
+        openItem: "",
+        user: {
           nickname: "XanderYe",
           avatar: "/static/img/my.jpg",
           email: "mailto:XanderYe@outlook.com",
@@ -76,10 +94,10 @@
     },
     methods: {
 
-      toggleNav () {
+      toggleNav() {
         this.open = !this.open
       },
-      changeNav () {
+      changeNav() {
         const desktop = this.isDesktop();
         this.docked = desktop;
         if (desktop === this.desktop) {
@@ -108,7 +126,7 @@
         return window.innerWidth > 993
       }
     },
-    mounted () {
+    mounted() {
       this.getAllTopic();
 
       this.changeNav();
@@ -131,14 +149,5 @@
 
   .mu-appbar-header.is-open {
     left: 256px;
-  }
-</style>
-
-<!--全局普通css-->
-<style>
-  /*滚动条颜色*/
-  ::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    background: #757575;
   }
 </style>
