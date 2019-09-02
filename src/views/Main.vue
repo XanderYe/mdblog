@@ -3,17 +3,17 @@
     <mu-drawer :open.sync="open" :docked="docked" :z-depth="1">
 
       <mu-card style="width: 100%; max-width: 375px; margin: 0 auto">
-        <mu-card-header :title="user.nickname" :sub-title="user.occupation" style="padding: 9px;">
+        <mu-card-header :title="owner.owner" :sub-title="owner.occupation" style="padding: 9px;">
           <mu-avatar slot="avatar">
-            <img :src="user.avatar">
+            <img :src="owner.avatar">
           </mu-avatar>
         </mu-card-header>
-        <mu-card-media :sub-title="user.description">
+        <mu-card-media :sub-title="owner.description">
           <img src="/static/img/card.jpg">
         </mu-card-media>
         <mu-card-actions>
-          <mu-button flat style="width: 117px" :href="user.github">GITHUB</mu-button>
-          <mu-button flat style="width: 117px" :href="'mailto:' + user.email">邮件</mu-button>
+          <mu-button flat style="width: 117px" :href="owner.github">GITHUB</mu-button>
+          <mu-button flat style="width: 117px" :href="'mailto:' + owner.email">邮件</mu-button>
         </mu-card-actions>
       </mu-card>
       <mu-list toggle-nested>
@@ -87,8 +87,8 @@
         desktop: desktop,
         isOpen: desktop ? "is-open" : "",
         openItem: "",
-        user: {
-          nickname: "XanderYe",
+        owner: {
+          owner: "XanderYe",
           avatar: "/static/img/my.jpg",
           email: "mailto:XanderYe@outlook.com",
           github: "https://github.com/XanderYe",
@@ -118,6 +118,15 @@
         }
         this.desktop = desktop
       },
+      
+      getOwner(){
+        this.$requests.get("/user/getOwner", null).then(res => {
+          if (res.data.code == 0) {
+            this.owner = res.data.data;
+            this.owner.avatar = ajaxUrl + res.data.data.avatar;
+          }
+        })
+      },
 
       getAllTopic() {
         this.$requests.get("/topic/getAll", null).then((res) => {
@@ -132,6 +141,7 @@
       }
     },
     mounted() {
+      this.getOwner();
       this.getAllTopic();
 
       this.changeNav();
