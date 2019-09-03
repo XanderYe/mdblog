@@ -1,11 +1,11 @@
 <template>
-  <mu-container>
+  <mu-container class="mu-typo">
     <mu-card v-for="article in articleList" :key="article.id" style="margin: 10px 0">
       <mu-card-title :title="article.title" :sub-title="article.createTime"></mu-card-title>
       <mu-card-text v-html="article.content">
       </mu-card-text>
       <mu-card-actions>
-        <mu-button flat>继续阅读</mu-button>
+        <mu-button flat :to="{path: 'article', query: {id: article.id}}">继续阅读</mu-button>
       </mu-card-actions>
     </mu-card>
   </mu-container>

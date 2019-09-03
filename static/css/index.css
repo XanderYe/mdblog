@@ -6,6 +6,10 @@
   src: url(../fonts/materialicons.woff2) format('woff2');
 }
 
+body {
+  font-family: Roboto, Noto, Helvetica, Arial, sans-serif !important;
+}
+
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;
@@ -22,7 +26,7 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/*排版*/
+/*界面排版*/
 .mu-appbar-header {
   position: fixed;
   left: 0;
@@ -54,6 +58,24 @@ p, span, code {
   white-space: normal;
   word-break: break-all;
 }
+
+/*文章排版*/
+.mu-typo p, .mu-typo pre {
+  margin: 0 0 1.2em 0;
+}
+
+.mu-typo pre {
+  padding: 12px 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid rgba(0, 0, 0, .12);
+  border-radius: 2px;
+}
+
+.mu-typo code, kbd, pre, samp {
+  font-family: Consolas, Courier, 'Courier New', monospace !important;
+}
+
 
 /*列表打开关闭旋转180度*/
 .mu-item__open .toggle-icon {
