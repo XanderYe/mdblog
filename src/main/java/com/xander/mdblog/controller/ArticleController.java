@@ -85,7 +85,7 @@ public class ArticleController {
         if (id == null) {
             throw new BusinessException("id不能为空");
         }
-        Article article = articleService.queryById(id);
+        Article article = articleService.findArticleById(id);
         return new ResultBean<>(article);
     }
 

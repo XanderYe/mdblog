@@ -19,4 +19,8 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
     @Autowired
     private ArticleMapper articleMapper;
 
+    @Override
+    public Article findArticleById(Long id) {
+        return articleMapper.findArticleById(id);
+    }
 }

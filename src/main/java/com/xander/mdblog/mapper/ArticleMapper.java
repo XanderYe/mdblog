@@ -12,4 +12,12 @@ import java.util.List;
  */
 public interface ArticleMapper extends BaseMapper<Article> {
 
+    /**
+     * 获取文章
+     * @param id
+     * @return com.xander.mdblog.entity.Article
+     * @author yezhendong
+     * @date 2019/9/3
+     */
+    Article findArticleById(Long id);
 }

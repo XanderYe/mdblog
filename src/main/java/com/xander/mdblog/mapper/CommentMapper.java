@@ -11,4 +11,13 @@ import java.util.List;
  */
 public interface CommentMapper extends BaseMapper<Comment> {
 
+    /**
+     * 根据文章id获取评论
+     * @param articleId
+     * @return java.util.List<com.xander.mdblog.entity.Comment>
+     * @author yezhendong
+     * @date 2019/9/3
+     */
+    List<Comment> findCommentsByArticleId(Long articleId);
+
 }
