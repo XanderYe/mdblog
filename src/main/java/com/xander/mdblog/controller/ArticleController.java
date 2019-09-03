@@ -82,12 +82,10 @@ public class ArticleController {
      */
     @GetMapping("getById")
     public ResultBean getById(Long id) {
-        Article article;
         if (id == null) {
             throw new BusinessException("id不能为空");
-        } else {
-            article = articleService.queryById(id);
         }
+        Article article = articleService.queryById(id);
         return new ResultBean<>(article);
     }
 

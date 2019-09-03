@@ -10,9 +10,4 @@ import com.xander.mdblog.entity.Article;
  */
 public interface ArticleService extends BaseService<Article> {
 
-    /**
-     * 通过文章编号对文章进行逻辑删除
-     * @param article
-     */
-    void deleteArticleByAid(Article article);
 }

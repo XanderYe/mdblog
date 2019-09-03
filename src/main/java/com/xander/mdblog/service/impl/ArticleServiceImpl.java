@@ -19,10 +19,4 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
     @Autowired
     private ArticleMapper articleMapper;
 
-    @Override
-    public void deleteArticleByAid(Article article) {
-        article.setUpdateTime(new Date());
-        article.setDelFlag(Constants.IS_DELETED);
-        articleMapper.updateByPrimaryKeySelective(article);
-    }
 }
