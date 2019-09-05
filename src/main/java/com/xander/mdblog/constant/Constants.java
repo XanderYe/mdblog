@@ -12,6 +12,11 @@ public final class Constants {
     public static String SALT = "xander";
 
     /**
+     * 昵称长度
+     */
+    public static Integer MAX_LENGTH = 32;
+
+    /**
      * 未删除状态
      */
     public static final Integer IS_NOT_DELETED = 1;

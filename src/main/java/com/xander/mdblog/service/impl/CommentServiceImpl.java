@@ -26,8 +26,7 @@ public class CommentServiceImpl extends BaseServiceImpl<Comment> implements Comm
     @Override
     public void insertComment(Comment comment) {
         check(StringUtils.isNotEmpty(comment.getNickname()), ErrorCodeEnum.PARAMETER_EMPTY,"comment={}",comment);
-        int maxLength = 32;
-        check(comment.getNickname().length()< maxLength, ErrorCodeEnum.NICKNAME_TOOLONG,"comment={}",comment);
+        check(comment.getNickname().length() < Constants.MAX_LENGTH, ErrorCodeEnum.NICKNAME_TOOLONG,"comment={}",comment);
         check(comment.getEmail().matches("^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$"), ErrorCodeEnum.EMAIL_ERROR,"comment={}",comment);
         comment.setCreateTime(new Date());
         commentMapper.insert(comment);

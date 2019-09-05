@@ -24,6 +24,11 @@ public class BusinessException extends RuntimeException {
         this.snapshot = MessageFormatter.arrayFormat(snapshotFormat, argArray).getMessage();
     }
 
+    public BusinessException(ErrorCodeEnum errorCode) {
+        super(errorCode.getMessage());
+        this.code = errorCode.getCode();
+    }
+
     public BusinessException(String message) {
         super(message);
         this.code = 1;

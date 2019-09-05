@@ -6,6 +6,7 @@ import com.xander.mdblog.base.RequestContextHolder;
 import com.xander.mdblog.base.ResultBean;
 import com.xander.mdblog.entity.Article;
 import com.xander.mdblog.entity.User;
+import com.xander.mdblog.enums.ErrorCodeEnum;
 import com.xander.mdblog.exception.BusinessException;
 import com.xander.mdblog.service.ArticleService;
 import com.xander.mdblog.util.ArticleUtil;
@@ -53,7 +54,7 @@ public class ArticleController {
     @ApiOperation(value="添加文章",notes="需要登录")
     @PostMapping("add")
     public ResultBean addArticle(Article article) {
-        User user = (User) RequestContextHolder.get();
+        User user = RequestContextHolder.get();
         article.setAuthorId(user.getId());
         article.setCreator(user.getNickname());
         articleService.save(article);
@@ -88,8 +89,8 @@ public class ArticleController {
     @ApiOperation(value="根据id获取文章",notes="不需要登录，id必填")
     @GetMapping("getById")
     public ResultBean getById(Long id) {
-        if (id == null) {
-            throw new BusinessException("id不能为空");
+        if(id == null){
+            throw new BusinessException(ErrorCodeEnum.PARAMETER_EMPTY);
         }
         Article article = articleService.findArticleById(id);
         return new ResultBean<>(article);

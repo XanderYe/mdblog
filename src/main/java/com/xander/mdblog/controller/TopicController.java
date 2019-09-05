@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.xander.mdblog.base.ResultBean;
 import com.xander.mdblog.constant.Constants;
 import com.xander.mdblog.entity.Topic;
+import com.xander.mdblog.enums.ErrorCodeEnum;
 import com.xander.mdblog.exception.BusinessException;
 import com.xander.mdblog.service.TopicService;
 import io.swagger.annotations.Api;
@@ -38,6 +39,9 @@ public class TopicController {
     @ApiOperation(value="删除主题",notes="需要登录，必填id")
     @PostMapping("delete")
     public ResultBean delTopic(Long id) {
+        if(id == null){
+            throw new BusinessException(ErrorCodeEnum.PARAMETER_EMPTY);
+        }
         Topic topic = new Topic();
         topic.setId(id);
         topicService.deleteTopic(topic);
@@ -71,7 +75,7 @@ public class TopicController {
     @GetMapping("getById")
     public ResultBean getTopicById(Long id) {
         if(id == null){
-            throw new BusinessException("id不为空");
+            throw new BusinessException(ErrorCodeEnum.PARAMETER_EMPTY);
         }
         Topic topic = topicService.queryById(id);
         return new ResultBean<>(topic);

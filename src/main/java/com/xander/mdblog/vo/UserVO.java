@@ -1,4 +1,4 @@
-package com.xander.mdblog.VO;
+package com.xander.mdblog.vo;
 
 import lombok.Data;
 

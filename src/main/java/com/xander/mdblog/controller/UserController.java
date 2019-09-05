@@ -1,7 +1,7 @@
 package com.xander.mdblog.controller;
 
-import com.xander.mdblog.VO.OwnerVO;
-import com.xander.mdblog.VO.UserVO;
+import com.xander.mdblog.vo.OwnerVO;
+import com.xander.mdblog.vo.UserVO;
 import com.xander.mdblog.base.RequestContextHolder;
 import com.xander.mdblog.base.ResultBean;
 import com.xander.mdblog.constant.Constants;
@@ -10,6 +10,7 @@ import com.xander.mdblog.service.UserService;
 import com.xander.mdblog.util.ShortUUIDUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -65,14 +66,14 @@ public class UserController {
     @ApiOperation(value="设置主题",notes="")
     @PostMapping("theme")
     public ResultBean changeTheme(String primary, String accent, String layout) {
-        User user = (User) RequestContextHolder.get();
-        if (!("").equals(primary)) {
+        User user = RequestContextHolder.get();
+        if (StringUtils.isNotEmpty(primary)) {
             user.setThemePrimary(primary);
         }
-        if (!("").equals(accent)) {
+        if (StringUtils.isNotEmpty(accent)) {
             user.setThemeAccent(accent);
         }
-        if (!("").equals(layout)) {
+        if (StringUtils.isNotEmpty(layout)) {
             user.setThemeLayout(layout);
         }
         return new ResultBean();

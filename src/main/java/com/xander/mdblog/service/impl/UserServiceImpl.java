@@ -1,6 +1,6 @@
 package com.xander.mdblog.service.impl;
 
-import com.xander.mdblog.VO.UserVO;
+import com.xander.mdblog.vo.UserVO;
 import com.xander.mdblog.base.BaseServiceImpl;
 import com.xander.mdblog.constant.Constants;
 import com.xander.mdblog.entity.User;
