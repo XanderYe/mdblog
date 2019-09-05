@@ -33,6 +33,7 @@ public class Swagger2Config {
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
+                .globalOperationParameters(pars)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.xander.mdblog.controller"))
                 .paths(PathSelectors.any())

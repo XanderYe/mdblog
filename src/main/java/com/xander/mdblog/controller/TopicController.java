@@ -36,7 +36,7 @@ public class TopicController {
      * @date 2019-07-10
      */
     @ApiOperation(value="删除主题",notes="需要登录，必填id")
-    @PutMapping("delete")
+    @PostMapping("delete")
     public ResultBean delTopic(Long id) {
         Topic topic = new Topic();
         topic.setId(id);
