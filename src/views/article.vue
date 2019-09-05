@@ -1,7 +1,7 @@
 <template>
-  <mu-container class="mu-typo">
+  <mu-container>
     <mu-card style="margin: 10px 0">
-      <mu-card-title :title="article.title" :sub-title="article.createTime"></mu-card-title>
+      <mu-card-title class="mu-typo" :title="article.title" :sub-title="article.createTime"></mu-card-title>
       <mu-card-text v-html="article.content">
       </mu-card-text>
     </mu-card>

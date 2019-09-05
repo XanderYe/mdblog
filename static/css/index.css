@@ -48,7 +48,7 @@ body {
   overflow-y: scroll;
 }
 
-.mu-container a{
+.mu-typo a{
   position: relative;
   display: inline-block;
   overflow: hidden;
@@ -57,7 +57,7 @@ body {
   outline: 0;
 }
 
-.mu-container a:before {
+.mu-typo a:before {
   position: absolute;
   top: auto;
   bottom: 1px;
@@ -65,6 +65,7 @@ body {
   width: 100%;
   height: 1px;
   content: ' ';
+  background-color: #ff4081;
   -webkit-transition: all .2s;
   transition: all .2s;
   -webkit-transform: scaleX(0);
@@ -73,7 +74,7 @@ body {
   backface-visibility: hidden
 }
 
-.mu-container a:focus:before,.mu-container a:hover:before {
+.mu-typo a:focus:before,.mu-typo a:hover:before {
   -webkit-transform: scaleX(1);
   transform: scaleX(1);
 }

@@ -1,7 +1,7 @@
 <template>
-  <mu-container class="mu-typo">
+  <mu-container>
     <mu-card v-for="article in articleList" :key="article.id" style="margin: 10px 0">
-      <div class=" mu-card-title-container">
+      <div class=" mu-card-title-container mu-typo">
         <div class="mu-card-title">
           <router-link :to="{path: 'article', query: {id: article.id}}">{{article.title}}</router-link>
         </div>
