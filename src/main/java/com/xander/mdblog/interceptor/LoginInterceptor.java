@@ -35,7 +35,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
 
-        String userToken = request.getHeader("X-User-Token");
+        String userToken = request.getHeader("md-token");
         log.info("remoteAddr={},  method={}, uri={}, userToken={}", remoteAddr, method, uri, userToken);
 
         if (userToken == null) {
