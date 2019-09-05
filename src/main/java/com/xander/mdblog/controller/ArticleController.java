@@ -46,15 +46,14 @@ public class ArticleController {
     /**
      * 添加文章
      * @param article
-     * @param session
      * @return com.xander.mdblog.base.ResultBean
      * @author yezhendong
      * @date 2019-07-11
      */
     @ApiOperation(value="添加文章",notes="需要登录")
     @PostMapping("add")
-    public ResultBean addArticle(Article article, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+    public ResultBean addArticle(Article article) {
+        User user = (User) RequestContextHolder.get();
         article.setAuthorId(user.getId());
         article.setCreator(user.getNickname());
         articleService.save(article);

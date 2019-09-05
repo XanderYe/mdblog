@@ -52,46 +52,29 @@ public class UserController {
         return new ResultBean<>();
     }
 
-    @ApiOperation(value="注销",notes="")
-    @GetMapping("logout")
-    public ResultBean logout(HttpSession session) {
-        session.invalidate();
-        return new ResultBean();
-    }
-
     /**
      * 设置主题
      *
      * @param primary
      * @param accent
      * @param layout
-     * @param session
      * @return com.xander.mdblog.base.ResultBean
      * @author yezhendong
      * @date 2019-07-11
      */
     @ApiOperation(value="设置主题",notes="")
     @PostMapping("theme")
-    public ResultBean changeTheme(String primary, String accent, String layout, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        OwnerVO ownerVO = (OwnerVO) session.getAttribute("owner");
+    public ResultBean changeTheme(String primary, String accent, String layout) {
+        User user = (User) RequestContextHolder.get();
         if (!("").equals(primary)) {
             user.setThemePrimary(primary);
-            ownerVO.setThemePrimary(primary);
         }
         if (!("").equals(accent)) {
             user.setThemeAccent(accent);
-            ownerVO.setThemeAccent(accent);
         }
         if (!("").equals(layout)) {
             user.setThemeLayout(layout);
-            ownerVO.setThemeLayout(layout);
         }
-        userService.update(user);
-        session.removeAttribute("user");
-        session.removeAttribute("theme");
-        session.setAttribute("user", user);
-        session.setAttribute("owner", ownerVO);
         return new ResultBean();
     }
 
