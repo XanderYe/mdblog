@@ -24,6 +24,6 @@ public class SecureRandomUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(nextHex(64));
+        System.out.println(nextHex(32));
     }
 }

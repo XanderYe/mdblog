@@ -8,6 +8,8 @@ import com.xander.mdblog.constant.Constants;
 import com.xander.mdblog.entity.User;
 import com.xander.mdblog.service.UserService;
 import com.xander.mdblog.util.ShortUUIDUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,7 @@ import java.util.Date;
  * @author 叶振东
  * @date 2018-11-20
  */
+@Api(value="用户controller",tags={"用户操作接口"})
 @RestController
 @RequestMapping("user")
 public class UserController {
@@ -34,12 +37,14 @@ public class UserController {
     @Value("${user.avatar}")
     private String avatarPath;
 
+    @ApiOperation(value="登录",notes="")
     @PostMapping("login")
     public ResultBean login(User user) {
         UserVO userVO = userService.login(user);
         return new ResultBean<>(userVO);
     }
 
+    @ApiOperation(value="注册",notes="")
     @PostMapping("register")
     public ResultBean register(HttpSession session, User user, String verCode) {
         String code = (String) session.getAttribute("captcha");
@@ -47,6 +52,7 @@ public class UserController {
         return new ResultBean<>();
     }
 
+    @ApiOperation(value="注销",notes="")
     @GetMapping("logout")
     public ResultBean logout(HttpSession session) {
         session.invalidate();
@@ -64,6 +70,7 @@ public class UserController {
      * @author yezhendong
      * @date 2019-07-11
      */
+    @ApiOperation(value="设置主题",notes="")
     @PostMapping("theme")
     public ResultBean changeTheme(String primary, String accent, String layout, HttpSession session) {
         User user = (User) session.getAttribute("user");
@@ -96,6 +103,7 @@ public class UserController {
      * @author yezhendong
      * @date 2019-07-11
      */
+    @ApiOperation(value="上传头像",notes="")
     @PostMapping("uploadAvatar")
     public ResultBean uploadAvatar(@RequestParam("avatar") MultipartFile file) throws Exception {
         User user = RequestContextHolder.get();
@@ -123,6 +131,7 @@ public class UserController {
      * @author yezhendong
      * @date 2019/8/27
      */
+    @ApiOperation(value="获取博客信息",notes="")
     @GetMapping("getOwner")
     public ResultBean getOwner() {
         User user = userService.getUserByPermission(Constants.BLOG_OWNER);

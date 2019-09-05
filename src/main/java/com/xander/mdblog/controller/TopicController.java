@@ -5,14 +5,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.xander.mdblog.base.ResultBean;
 import com.xander.mdblog.constant.Constants;
 import com.xander.mdblog.entity.Topic;
+import com.xander.mdblog.exception.BusinessException;
 import com.xander.mdblog.service.TopicService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import net.sf.jsqlparser.statement.select.Top;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -21,6 +21,7 @@ import java.util.List;
  * @author hbxz
  * @date 2018/12/20 0020
  */
+@Api(value="主题controller",tags={"主题操作接口"})
 @RestController
 @RequestMapping("topic")
 public class TopicController {
@@ -34,7 +35,8 @@ public class TopicController {
      * @author yezhendong
      * @date 2019-07-10
      */
-    @RequestMapping("delete")
+    @ApiOperation(value="删除主题",notes="需要登录，必填id")
+    @PutMapping("delete")
     public ResultBean delTopic(Long id) {
         Topic topic = new Topic();
         topic.setId(id);
@@ -49,7 +51,8 @@ public class TopicController {
      * @author yezhendong
      * @date 2019-07-10
      */
-    @RequestMapping("getAll")
+    @ApiOperation(value="获取所有主题",notes="不需要登录")
+    @GetMapping("getAll")
     public ResultBean getAllTopic() {
         Topic topic = new Topic();
         topic.setDelFlag(Constants.IS_NOT_DELETED);
@@ -64,8 +67,12 @@ public class TopicController {
      * @author yezhendong
      * @date 2019-07-10
      */
-    @RequestMapping("getById")
+    @ApiOperation(value="根据id获取主题",notes="需要登录，id必填")
+    @GetMapping("getById")
     public ResultBean getTopicById(Long id) {
+        if(id == null){
+            throw new BusinessException("id不为空");
+        }
         Topic topic = topicService.queryById(id);
         return new ResultBean<>(topic);
     }
@@ -77,7 +84,8 @@ public class TopicController {
      * @author yezhendong
      * @date 2019-07-10
      */
-    @RequestMapping("save")
+    @ApiOperation(value="保存主题",notes="添加和修改都是这个接口")
+    @PostMapping("save")
     public ResultBean saveTopic(Topic topic) {
         if (topic.getId() == null) {
             topic.setCreateTime(new Date());

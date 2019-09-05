@@ -10,6 +10,8 @@ import com.xander.mdblog.exception.BusinessException;
 import com.xander.mdblog.service.ArticleService;
 import com.xander.mdblog.util.ArticleUtil;
 import com.xander.mdblog.util.ShortUUIDUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,8 @@ import java.util.List;
  * @author hbxz
  * @date 2018/12/20 0020
  */
+
+@Api(value="文章controller",tags={"文章操作接口"})
 @RestController
 @RequestMapping("article")
 public class ArticleController {
@@ -47,7 +51,8 @@ public class ArticleController {
      * @author yezhendong
      * @date 2019-07-11
      */
-    @RequestMapping("add")
+    @ApiOperation(value="添加文章",notes="需要登录")
+    @PostMapping("add")
     public ResultBean addArticle(Article article, HttpSession session) {
         User user = (User) session.getAttribute("user");
         article.setAuthorId(user.getId());
@@ -63,7 +68,8 @@ public class ArticleController {
      * @author yezhendong
      * @date 2019-07-11
      */
-    @RequestMapping("update")
+    @ApiOperation(value="更新文章",notes="需要登录")
+    @PostMapping("update")
     public ResultBean updateArticle(Article article) {
         User user = RequestContextHolder.get();
         article.setAuthorId(user.getId());
@@ -80,6 +86,7 @@ public class ArticleController {
      * @author yezhendong
      * @date 2019-07-11
      */
+    @ApiOperation(value="根据id获取文章",notes="不需要登录，id必填")
     @GetMapping("getById")
     public ResultBean getById(Long id) {
         if (id == null) {
@@ -96,6 +103,7 @@ public class ArticleController {
      * @author yezhendong
      * @date 2019-07-11
      */
+    @ApiOperation(value="获取最近的几篇文章",notes="不需要登录，参数不是必填")
     @GetMapping("getRecentArticles")
     public ResultBean getRecentArticles(Long topicId, Integer page) {
         // 默认第一页
@@ -118,6 +126,7 @@ public class ArticleController {
      * @author yezhendong
      * @date 2019-07-11
      */
+    @ApiOperation(value="上传图片",notes="需要登录")
     @PostMapping("upload")
     public String uploadImg(@RequestParam("file") MultipartFile[] files, HttpServletRequest request) {
         JSONObject result = new JSONObject();
