@@ -1,7 +1,14 @@
 <template>
   <mu-container class="mu-typo">
     <mu-card v-for="article in articleList" :key="article.id" style="margin: 10px 0">
-      <mu-card-title :title="article.title" :sub-title="article.createTime"></mu-card-title>
+      <div class=" mu-card-title-container">
+        <div class="mu-card-title">
+          <router-link :to="{path: 'article', query: {id: article.id}}">{{article.title}}</router-link>
+        </div>
+        <div class="mu-card-sub-title">
+          {{article.createTime}}
+        </div>
+      </div>
       <mu-card-text v-html="article.content">
       </mu-card-text>
       <mu-card-actions>
