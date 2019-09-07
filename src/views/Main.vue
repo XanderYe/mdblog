@@ -77,7 +77,6 @@
 
 <script>
   export default {
-    components: {Live2d},
     data() {
       const desktop = this.isDesktop();
       return {
