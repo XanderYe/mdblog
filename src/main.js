@@ -7,6 +7,7 @@ import 'muse-ui/dist/muse-ui.css';
 import {router} from './router/index'
 import requests from './libs/ajax';
 import store from './store';
+import $ from 'jquery';
 
 Vue.config.productionTip = false
 Vue.use(MuseUI);

@@ -29,7 +29,7 @@ const requests = {
         url,
         params: param,
         headers: {
-          "X-User-Token": localStorage.getItem("X-User-Token")
+          "md-token": localStorage.getItem("md-token")
         }
       }).then(res => {
         this.error(res.data.code);
@@ -46,7 +46,7 @@ const requests = {
         url,
         data: param,
         headers: {
-          "X-User-Token": localStorage.getItem("X-User-Token")
+          "md-token": localStorage.getItem("md-token")
         }
       }).then(res => {
         this.error(res.data.code);
@@ -62,7 +62,7 @@ const requests = {
     return new Promise((resolve, reject) => {
       axios.get(url, {
         headers: {
-          "X-User-Token": localStorage.getItem("X-User-Token")
+          "md-token": localStorage.getItem("md-token")
         },
         params: params,
         responseType: 'blob',
@@ -80,10 +80,9 @@ const requests = {
       })
     })
   },
-  setHeader(token) {
-
-    localStorage.removeItem("X-User-Token");
-    localStorage.setItem("X-User-Token", token);
+  setToken(token) {
+    localStorage.removeItem("md-token");
+    localStorage.setItem("md-token", token);
   },
 
   error(status) {

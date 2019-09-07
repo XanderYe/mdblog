@@ -42,6 +42,7 @@
         </mu-list-item>
 
       </mu-list>
+
     </mu-drawer>
 
     <mu-appbar :class="['mu-appbar-header', isOpen]" color="primary">
@@ -76,6 +77,7 @@
 
 <script>
   export default {
+    components: {Live2d},
     data() {
       const desktop = this.isDesktop();
       return {
