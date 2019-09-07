@@ -27,8 +27,8 @@ export const router = new Router({
         {
           path: 'article',
           title: '文章',
-          name: 'article',
-          component: () => import('@/views/article.vue'),
+          name: 'article-detail',
+          component: () => import('@/views/article-detail.vue'),
         }
       ]
     }

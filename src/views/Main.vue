@@ -50,27 +50,49 @@
         <mu-icon value="menu"></mu-icon>
       </mu-button>
       XanderYe的博客
-      <mu-menu slot="right">
-        <mu-button flat>MENU</mu-button>
-        <mu-list slot="content">
-          <mu-list-item button>
-            <mu-list-item-content>
-              <mu-list-item-title>Menu Item 1</mu-list-item-title>
-            </mu-list-item-content>
-          </mu-list-item>
-          <mu-list-item button>
-            <mu-list-item-content>
-              <mu-list-item-title>Menu Item 2</mu-list-item-title>
-            </mu-list-item-content>
-          </mu-list-item>
-        </mu-list>
-      </mu-menu>
+
+      <!--未登录-->
+      <div slot="right" v-if="!isLogin" style="margin-right: 5px;">
+        <mu-button flat @click="loginDialog = true">登录</mu-button>
+        <mu-button flat @click="registerDialog = true">注册</mu-button>
+      </div>
+
+      <!--已登录-->
+      <template slot="right" v-else>
+
+      </template>
+
     </mu-appbar>
 
     <div :class="['mu-container', isOpen]">
       <router-view/>
     </div>
 
+    <mu-dialog width="448" transition="scale" :fullscreen="!desktop" :open.sync="loginDialog" class="login-dialog">
+      <!--桌面端-->
+      <div v-if="desktop" class="desktop-login-dialog">
+        <mu-appbar color="primary" title="登录">
+          <mu-button slot="left" icon @click="loginDialog = false">
+            <mu-icon value="close"></mu-icon>
+          </mu-button>
+        </mu-appbar>
+
+        <div style="height: 350px;">
+
+        </div>
+      </div>
+      <!--移动端-->
+      <div v-else>
+        <mu-appbar color="primary" title="登录">
+          <mu-button slot="left" icon @click="loginDialog = false">
+            <mu-icon value="close"></mu-icon>
+          </mu-button>
+
+
+        </mu-appbar>
+      </div>
+
+    </mu-dialog>
   </div>
 
 </template>
@@ -80,6 +102,7 @@
     data() {
       const desktop = this.isDesktop();
       return {
+        isLogin: false,
         topicList: [],
         open: desktop,
         docked: desktop,
@@ -93,7 +116,9 @@
           github: "https://github.com/XanderYe",
           description: "这里是一条咸鱼的博客",
           occupation: "java开发工程师"
-        }
+        },
+        loginDialog: false,
+        registerDialog: false,
       }
     },
     methods: {
@@ -117,8 +142,8 @@
         }
         this.desktop = desktop
       },
-      
-      getOwner(){
+
+      getOwner() {
         this.$requests.get("/user/getOwner", null).then(res => {
           if (res.data.code == 0) {
             this.owner = res.data.data;
@@ -148,12 +173,16 @@
         this.changeNav();
       };
       window.addEventListener('resize', this.handleResize)
+      // 判断登录状态
+      if (localStorage.getItem("md-token") != null) {
+        this.isLogin = true;
+      }
     },
     watch: {
       '$route': function (to, from) {
         // 移动端点击后自动关闭抽屉
-        if(!this.isDesktop()){
-          if(this.open){
+        if (!this.isDesktop()) {
+          if (this.open) {
             this.open = false;
           }
         }

@@ -10,7 +10,7 @@
 
 <script>
   export default {
-    name: "article",
+    name: "article-detail",
     data() {
       return {
         articleId: 0,
