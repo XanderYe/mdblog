@@ -23,7 +23,7 @@ public class CorsFilter implements Filter {
         String originHeader = request.getHeader("Origin");
         response.setHeader("Access-Control-Allow-Origin", originHeader);
         response.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT,OPTIONS,DELETE");
-        response.setHeader("Access-Control-Allow-Headers", "x-requested-with,Origin,No-Cache,X-User-Token");
+        response.setHeader("Access-Control-Allow-Headers", "x-requested-with,Origin,No-Cache,md-token");
         //是否支持cookie跨域
         response.setHeader("Access-Control-Allow-Credentials","true");
 
