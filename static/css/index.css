@@ -39,20 +39,10 @@ body {
   left: 256px;
 }
 
-.mu-appbar .mu-flat-button, .mu-appbar .mu-menu{
+.mu-appbar .mu-flat-button, .mu-appbar .mu-menu {
   height: 36px !important;
   line-height: 36px !important;
   min-width: 88px !important;
-}
-
-.login-dialog .mu-dialog-body{
-  padding: 0;
-}
-
-.login-dialog .desktop-login-dialog header{
-  height: 200px;
-  padding-bottom: 136px;
-  box-shadow: none;
 }
 
 .mu-container {
@@ -64,21 +54,7 @@ body {
   overflow-y: scroll;
 }
 
-/*卡片悬浮阴影*/
-.mu-hoverable {
-  -webkit-transition: -webkit-box-shadow .25s cubic-bezier(.4,0,.2,1);
-  transition: -webkit-box-shadow .25s cubic-bezier(.4,0,.2,1);
-  transition: box-shadow .25s cubic-bezier(.4,0,.2,1);
-  transition: box-shadow .25s cubic-bezier(.4,0,.2,1),-webkit-box-shadow .25s cubic-bezier(.4,0,.2,1);
-  will-change: box-shadow
-}
-
-.mu-hoverable:focus,.mu-hoverable:hover {
-  -webkit-box-shadow: 0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12);
-  box-shadow: 0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12)
-}
-
-.mu-typo a{
+.mu-typo a {
   position: relative;
   display: inline-block;
   overflow: hidden;
@@ -104,15 +80,15 @@ body {
   backface-visibility: hidden
 }
 
-.mu-typo a:focus:before,.mu-typo a:hover:before {
+.mu-typo a:focus:before, .mu-typo a:hover:before {
   -webkit-transform: scaleX(1);
   transform: scaleX(1);
 }
 
 /* 移动端 */
-@media screen and (max-width: 993px){
-  .mu-container{
-    height:90%;
+@media screen and (max-width: 993px) {
+  .mu-container {
+    height: 90%;
   }
 
   ::-webkit-scrollbar {
@@ -128,12 +104,7 @@ body {
 }
 
 /* 桌面端 */
-@media screen and (min-width: 993px){
-  .mu-container{
-    height:92%;
-    margin-top:10px;
-  }
-
+@media screen and (min-width: 993px) {
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -143,6 +114,35 @@ body {
   ::-webkit-scrollbar-thumb {
     border-radius: 8px;
     background: #BDBDBD;
+  }
+
+  .mu-container {
+    height: 92%;
+    margin-top: 10px;
+  }
+
+  .login-dialog .mu-dialog-body{
+    padding: 0;
+  }
+
+  .login-dialog header{
+    height: 200px;
+    padding-bottom: 136px;
+    box-shadow: none;
+  }
+
+  /*卡片悬浮阴影*/
+  .mu-hoverable {
+    -webkit-transition: -webkit-box-shadow .25s cubic-bezier(.4, 0, .2, 1);
+    transition: -webkit-box-shadow .25s cubic-bezier(.4, 0, .2, 1);
+    transition: box-shadow .25s cubic-bezier(.4, 0, .2, 1);
+    transition: box-shadow .25s cubic-bezier(.4, 0, .2, 1), -webkit-box-shadow .25s cubic-bezier(.4, 0, .2, 1);
+    will-change: box-shadow
+  }
+
+  .mu-hoverable:focus, .mu-hoverable:hover {
+    -webkit-box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2), 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12);
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2), 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12)
   }
 }
 
@@ -154,8 +154,9 @@ body {
 .mu-typo p, .mu-typo pre {
   margin: 0 0 1.2em 0;
 }
+
 /*X轴滚动条*/
-.mu-card-text{
+.mu-card-text {
   overflow-x: scroll;
 }
 

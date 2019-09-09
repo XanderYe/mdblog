@@ -18,7 +18,7 @@
       </mu-card>
       <mu-list toggle-nested>
 
-        <mu-list-item button :to="{name:'index'}">
+        <mu-list-item button :to="{name:'index'}"  @click="changeNavName('首页')">
           <mu-list-item-action>
             <mu-icon value="home"></mu-icon>
           </mu-list-item-action>
@@ -35,7 +35,7 @@
           </mu-list-item-action>
 
           <mu-list-item button slot="nested" v-for="topic in topicList" :key="topic.id"
-                        :to="{name:'index', query:{id : topic.id}}">
+                        :to="{name:'index', query:{id : topic.id}}" @click="changeNavName(topic.name)">
             <mu-list-item-title>{{topic.name}}</mu-list-item-title>
           </mu-list-item>
 
@@ -49,7 +49,7 @@
       <mu-button icon slot="left" @click="toggleNav" v-if="!desktop">
         <mu-icon value="menu"></mu-icon>
       </mu-button>
-      XanderYe的博客
+      {{appBarName}}
 
       <!--未登录-->
       <div slot="right" v-if="!isLogin" style="margin-right: 5px;">
@@ -70,7 +70,7 @@
 
     <mu-dialog width="448" transition="scale" :fullscreen="!desktop" :open.sync="loginDialog" class="login-dialog">
       <!--桌面端-->
-      <div v-if="desktop" class="desktop-login-dialog">
+      <div>
         <mu-appbar color="primary" title="登录">
           <mu-button slot="left" icon @click="loginDialog = false">
             <mu-icon value="close"></mu-icon>
@@ -80,16 +80,6 @@
         <div style="height: 350px;">
 
         </div>
-      </div>
-      <!--移动端-->
-      <div v-else>
-        <mu-appbar color="primary" title="登录">
-          <mu-button slot="left" icon @click="loginDialog = false">
-            <mu-icon value="close"></mu-icon>
-          </mu-button>
-
-
-        </mu-appbar>
       </div>
 
     </mu-dialog>
@@ -109,6 +99,7 @@
         desktop: desktop,
         isOpen: desktop ? "is-open" : "",
         openItem: "",
+        appBarName: "首页",
         owner: {
           owner: "XanderYe",
           avatar: "/static/img/my.jpg",
@@ -143,6 +134,10 @@
         this.desktop = desktop
       },
 
+      changeNavName(name){
+        this.appBarName = name;
+      },
+
       getOwner() {
         this.$requests.get("/user/getOwner", null).then(res => {
           if (res.data.code == 0) {
@@ -161,7 +156,7 @@
       },
 
       isDesktop() {
-        return window.innerWidth > 993
+        return window.innerWidth > 993;
       }
     },
     mounted() {
@@ -172,7 +167,7 @@
       this.handleResize = () => {
         this.changeNav();
       };
-      window.addEventListener('resize', this.handleResize)
+      window.addEventListener('resize', this.handleResize);
       // 判断登录状态
       if (localStorage.getItem("md-token") != null) {
         this.isLogin = true;
