@@ -1,6 +1,6 @@
 <template>
   <mu-container>
-    <mu-card  class="mu-shadow mu-hoverable" v-for="article in articleList" :key="article.id" style="margin: 10px 0">
+    <mu-card class="mu-shadow mu-hoverable" v-for="article in articleList" :key="article.id" style="margin: 10px 0">
       <div class=" mu-card-title-container mu-typo">
         <div class="mu-card-title">
           <router-link :to="{path: 'article', query: {id: article.id}}">{{article.title}}</router-link>
@@ -35,7 +35,7 @@
         })
       }
     },
-    mounted() {
+    created() {
       this.getArticleList();
     },
     watch: {

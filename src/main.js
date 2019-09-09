@@ -33,7 +33,15 @@ new Vue({
     theme.addCreateTheme((theme) => {
       return `
         .mu-typo a:before {
-          background-color: ${theme.primary};
+          background-color: ${theme.secondary};
+        }
+        
+        .mu-form-item__focus, .mu-input__focus {
+          color: ${theme.secondary};
+        }
+        
+        .mu-checkbox-checked {
+          color: ${theme.secondary};
         }
       `;
     });

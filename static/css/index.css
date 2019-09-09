@@ -101,6 +101,11 @@ body {
     border-radius: 4px;
     background: #BDBDBD;
   }
+
+  .login-form .mu-form, .register-form .mu-form {
+    margin-top: 24px;
+    padding: 0 24px 24px 24px;
+  }
 }
 
 /* 桌面端 */
@@ -121,14 +126,19 @@ body {
     margin-top: 10px;
   }
 
-  .login-dialog .mu-dialog-body{
+  .login-dialog .mu-dialog-body, .register-dialog .mu-dialog-body {
     padding: 0;
   }
 
-  .login-dialog header{
+  .login-dialog header, .register-dialog header {
     height: 200px;
     padding-bottom: 136px;
     box-shadow: none;
+  }
+
+  .login-form .mu-form, .register-form .mu-form {
+    margin-top: 24px;
+    padding: 0 40px 62px 40px;
   }
 
   /*卡片悬浮阴影*/

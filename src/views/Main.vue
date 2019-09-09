@@ -18,7 +18,7 @@
       </mu-card>
       <mu-list toggle-nested>
 
-        <mu-list-item button :to="{name:'index'}"  @click="changeNavName('首页')">
+        <mu-list-item button :to="{name:'index'}" @click="changeNavName('首页')">
           <mu-list-item-action>
             <mu-icon value="home"></mu-icon>
           </mu-list-item-action>
@@ -69,7 +69,6 @@
     </div>
 
     <mu-dialog width="448" transition="scale" :fullscreen="!desktop" :open.sync="loginDialog" class="login-dialog">
-      <!--桌面端-->
       <div>
         <mu-appbar color="primary" title="登录">
           <mu-button slot="left" icon @click="loginDialog = false">
@@ -77,8 +76,54 @@
           </mu-button>
         </mu-appbar>
 
-        <div style="height: 350px;">
+        <div class="login-form" style="height: 350px;">
+          <mu-form ref="loginForm" :model="loginData" label-position="top" label-width="100">
+            <mu-form-item prop="username" label="用户名" :rules="usernameRules">
+              <mu-text-field v-model="loginData.username"></mu-text-field>
+            </mu-form-item>
 
+            <mu-form-item prop="password" label="密码" :rules="passwordRules">
+              <mu-text-field v-model="loginData.password"></mu-text-field>
+            </mu-form-item>
+
+            <mu-form-item>
+              <mu-checkbox v-model="loginData.remember" value="true" label="记住密码"></mu-checkbox>
+            </mu-form-item>
+
+            <mu-button style="float: right;" color="secondary" @click="login">登录</mu-button>
+
+          </mu-form>
+        </div>
+      </div>
+
+    </mu-dialog>
+
+    <mu-dialog width="448" transition="scale" :fullscreen="!desktop" :open.sync="registerDialog"
+               class="register-dialog">
+      <div>
+        <mu-appbar color="primary" title="注册">
+          <mu-button slot="left" icon @click="registerDialog = false">
+            <mu-icon value="close"></mu-icon>
+          </mu-button>
+        </mu-appbar>
+
+        <div class="register-form" style="height: 350px;">
+          <mu-form ref="registerForm" :model="registerData" label-position="top" label-width="100">
+            <mu-form-item prop="username" label="用户名" :rules="usernameRules">
+              <mu-text-field v-model="registerData.username"></mu-text-field>
+            </mu-form-item>
+
+            <mu-form-item prop="password" label="密码" :rules="passwordRules">
+              <mu-text-field v-model="registerData.password"></mu-text-field>
+            </mu-form-item>
+
+            <mu-form-item prop="password2" label="重复密码" :rules="password2Rules">
+              <mu-text-field v-model="registerData.password2"></mu-text-field>
+            </mu-form-item>
+
+            <mu-button style="float: right;" color="secondary" @click="register">注册</mu-button>
+
+          </mu-form>
         </div>
       </div>
 
@@ -110,6 +155,27 @@
         },
         loginDialog: false,
         registerDialog: false,
+        loginData: {
+          username: "",
+          password: "",
+          remember: false
+        },
+        registerData: {
+          username: "",
+          password: "",
+          password2: "",
+        },
+        usernameRules: [
+          { validate: (val) => !!val, message: '必须填写用户名'},
+        ],
+        passwordRules: [
+          { validate: (val) => !!val, message: '必须填写密码'},
+          { validate: (val) => val.length >= 6 && val.length <= 12, message: '密码长度大于6小于12'}
+        ],
+        password2Rules: [
+          { validate: (val) => !!val, message: '必须填写密码'},
+          { validate: (val) => val == this.registerData.password, message: '两次密码不一致'}
+        ],
       }
     },
     methods: {
@@ -134,7 +200,7 @@
         this.desktop = desktop
       },
 
-      changeNavName(name){
+      changeNavName(name) {
         this.appBarName = name;
       },
 
@@ -157,9 +223,25 @@
 
       isDesktop() {
         return window.innerWidth > 993;
-      }
+      },
+
+      login(){
+        this.$refs.loginForm.validate().then((validate) => {
+          if(validate){
+
+          }
+        })
+      },
+
+      register(){
+        this.$refs.registerForm.validate().then((validate) => {
+          if(validate){
+
+          }
+        })
+      },
     },
-    mounted() {
+    created() {
       this.getOwner();
       this.getAllTopic();
 
@@ -169,9 +251,7 @@
       };
       window.addEventListener('resize', this.handleResize);
       // 判断登录状态
-      if (localStorage.getItem("md-token") != null) {
-        this.isLogin = true;
-      }
+      this.isLogin = localStorage.getItem("md-token") != null;
     },
     watch: {
       '$route': function (to, from) {
