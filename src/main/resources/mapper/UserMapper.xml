@@ -34,4 +34,10 @@
             and permission=#{permission}
         </if>
     </sql>
+    <select id="findUserByUsername" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumn"></include>
+        FROM user
+        WHERE username = #{usename}
+    </select>
 </mapper>

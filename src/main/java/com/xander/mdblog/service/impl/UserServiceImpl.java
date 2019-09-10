@@ -40,8 +40,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
     @Override
     public UserVO login(User user) {
-        check(StringUtils.isNoneEmpty(user.getPassword()), ErrorCodeEnum.PARAMETER_EMPTY, "user={}", user);
-        User findUser = userMapper.selectOne(user);
+        check(StringUtils.isNotEmpty(user.getUsername()), ErrorCodeEnum.PARAMETER_EMPTY, "user={}", user);
+        check(StringUtils.isNotEmpty(user.getPassword()), ErrorCodeEnum.PARAMETER_EMPTY, "user={}", user);
+        User findUser = userMapper.findUserByUsername(user.getUsername());
         check(null != findUser, ErrorCodeEnum.ACCOUNT_NOTEXIST, "user={}", user);
         check(findUser.getPassword().equals(MD5Utils.encryptPwd(user.getPassword(), Constants.SALT)), ErrorCodeEnum.ACCOUNT_OR_PASSWORD_ERROR, "user={}", user);
         UserVO userVO = new UserVO();
