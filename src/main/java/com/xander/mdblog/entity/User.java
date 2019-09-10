@@ -41,6 +41,8 @@ public class User {
 
     private String phone;
 
+    private String occupation;
+
     private String description;
 
     private String github;
