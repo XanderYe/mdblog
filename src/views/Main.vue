@@ -53,8 +53,8 @@
 
       <!--未登录-->
       <div slot="right" v-if="!isLogin" style="margin-right: 5px;">
-        <mu-button flat @click="loginDialog = true">登录</mu-button>
-        <mu-button flat @click="registerDialog = true">注册</mu-button>
+        <mu-button flat @click="openLogin">登录</mu-button>
+        <mu-button flat @click="openRegister">注册</mu-button>
       </div>
 
       <!--已登录-->
@@ -68,7 +68,8 @@
       <router-view/>
     </div>
 
-    <mu-dialog width="448" transition="scale" :fullscreen="!desktop" :open.sync="loginDialog" class="login-dialog">
+    <mu-dialog width="448" transition="scale" :fullscreen="!desktop" :open.sync="loginDialog" :overlay-close="false"
+               class="login-dialog">
       <div>
         <mu-appbar color="primary" title="登录">
           <mu-button slot="left" icon @click="loginDialog = false">
@@ -83,7 +84,10 @@
             </mu-form-item>
 
             <mu-form-item prop="password" label="密码" :rules="passwordRules">
-              <mu-text-field v-model="loginData.password"></mu-text-field>
+              <mu-text-field v-model="loginData.password"
+                             :action-icon="loginVisibility ? 'visibility_off' : 'visibility'"
+                             :action-click="() => (loginVisibility = !loginVisibility)"
+                             :type="loginVisibility ? 'text' : 'password'"></mu-text-field>
             </mu-form-item>
 
             <mu-form-item>
@@ -99,7 +103,7 @@
     </mu-dialog>
 
     <mu-dialog width="448" transition="scale" :fullscreen="!desktop" :open.sync="registerDialog"
-               class="register-dialog">
+               :overlay-close="false" class="register-dialog">
       <div>
         <mu-appbar color="primary" title="注册">
           <mu-button slot="left" icon @click="registerDialog = false">
@@ -113,12 +117,18 @@
               <mu-text-field v-model="registerData.username"></mu-text-field>
             </mu-form-item>
 
-            <mu-form-item prop="password" label="密码" :rules="passwordRules">
-              <mu-text-field v-model="registerData.password"></mu-text-field>
+            <mu-form-item prop="password" label="密码" :rules="password1Rules">
+              <mu-text-field v-model="registerData.password"
+                             :action-icon="registerVisibility1 ? 'visibility_off' : 'visibility'"
+                             :action-click="() => (registerVisibility1 = !registerVisibility1)"
+                             :type="registerVisibility1 ? 'text' : 'password'"></mu-text-field>
             </mu-form-item>
 
-            <mu-form-item prop="password2" label="重复密码" :rules="password2Rules">
-              <mu-text-field v-model="registerData.password2"></mu-text-field>
+            <mu-form-item prop="password2" label="确认密码" :rules="password2Rules">
+              <mu-text-field v-model="registerData.password2"
+                             :action-icon="registerVisibility2 ? 'visibility_off' : 'visibility'"
+                             :action-click="() => (registerVisibility2 = !registerVisibility2)"
+                             :type="registerVisibility2 ? 'text' : 'password'"></mu-text-field>
             </mu-form-item>
 
             <mu-button style="float: right;" color="secondary" @click="register">注册</mu-button>
@@ -128,11 +138,18 @@
       </div>
 
     </mu-dialog>
+
+    <mu-snackbar position="top" :open.sync="snackbar.open">
+      {{snackbar.message}}
+      <mu-button flat slot="action" color="secondary" @click="snackbar.open = false">关闭</mu-button>
+    </mu-snackbar>
   </div>
 
 </template>
 
 <script>
+  import user from "../store/modules/user";
+
   export default {
     data() {
       const desktop = this.isDesktop();
@@ -155,6 +172,9 @@
         },
         loginDialog: false,
         registerDialog: false,
+        loginVisibility: false,
+        registerVisibility1: false,
+        registerVisibility2: false,
         loginData: {
           username: "",
           password: "",
@@ -165,16 +185,23 @@
           password: "",
           password2: "",
         },
+        snackbar: {
+          message: "",
+          open: false,
+        },
         usernameRules: [
-          { validate: (val) => !!val, message: '必须填写用户名'},
+          {validate: (val) => !!val, message: '必须填写用户名'},
         ],
         passwordRules: [
-          { validate: (val) => !!val, message: '必须填写密码'},
-          { validate: (val) => val.length >= 6 && val.length <= 12, message: '密码长度大于6小于12'}
+          {validate: (val) => !!val, message: '必须填写密码'},
+        ],
+        password1Rules: [
+          {validate: (val) => !!val, message: '必须填写密码'},
+          {validate: (val) => val.length >= 6 && val.length <= 12, message: '密码长度大于6小于12'}
         ],
         password2Rules: [
-          { validate: (val) => !!val, message: '必须填写密码'},
-          { validate: (val) => val == this.registerData.password, message: '两次密码不一致'}
+          {validate: (val) => !!val, message: '必须填写密码'},
+          {validate: (val) => val == this.registerData.password, message: '两次密码不一致'}
         ],
       }
     },
@@ -225,17 +252,65 @@
         return window.innerWidth > 993;
       },
 
-      login(){
-        this.$refs.loginForm.validate().then((validate) => {
-          if(validate){
+      openSnackbar(msg) {
+        this.snackbar.message = msg;
+        this.snackbar.open = true;
+        setTimeout(() => {
+          if (this.snackbar.open) {
+            this.snackbar.open = false;
+          }
+        }, 3000)
+      },
 
+      openLogin() {
+        this.loginDialog = true;
+        this.loginVisibility = false;
+        let username = localStorage.getItem("username");
+        let password = localStorage.getItem("password");
+        if (username != null && password != null) {
+          this.loginData.username = username;
+          this.loginData.password = password;
+        }
+      },
+
+      login() {
+        this.$refs.loginForm.validate().then((validate) => {
+          if (validate) {
+            if (this.loginData.remember) {
+              localStorage.setItem("username", this.loginData.username);
+              localStorage.setItem("password", this.loginData.password);
+            }
+            let form = new FormData;
+            form.append("username", this.loginData.username);
+            form.append("password", this.loginData.password);
+            this.$requests.post("/user/login", form).then(res => {
+              if (res.data.code === 0) {
+                this.openSnackbar("登录成功");
+                localStorage.setItem("md-token", res.data.data.token);
+                this.isLogin = true;
+                this.loginDialog = false;
+              } else {
+                this.openSnackbar(res.data.msg);
+              }
+            })
           }
         })
       },
 
-      register(){
+      openRegister() {
+        this.registerDialog = true;
+        this.registerVisibility1 = false;
+        this.registerVisibility2 = false;
+        this.registerData = {
+          username: "",
+          password: "",
+          password2: "",
+        }
+      },
+
+      register() {
         this.$refs.registerForm.validate().then((validate) => {
-          if(validate){
+          if (validate) {
 
           }
         })
@@ -251,7 +326,8 @@
       };
       window.addEventListener('resize', this.handleResize);
       // 判断登录状态
-      this.isLogin = localStorage.getItem("md-token") != null;
+      const mdToken = localStorage.getItem("md-token");
+      this.isLogin = mdToken != null && mdToken !== "";
     },
     watch: {
       '$route': function (to, from) {

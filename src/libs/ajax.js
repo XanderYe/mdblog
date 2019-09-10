@@ -32,7 +32,6 @@ const requests = {
           "md-token": localStorage.getItem("md-token")
         }
       }).then(res => {
-        this.error(res.data.code);
         resolve(res)
       })
     })
@@ -49,7 +48,6 @@ const requests = {
           "md-token": localStorage.getItem("md-token")
         }
       }).then(res => {
-        this.error(res.data.code);
         resolve(res);
       }).catch((res) => {
         // this.error(res.data.status);
