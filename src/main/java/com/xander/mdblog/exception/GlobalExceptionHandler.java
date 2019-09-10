@@ -20,25 +20,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception e, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        log.error(e.getMessage(), e);
+        //log.error(e.getMessage(), e);
         return super.handleExceptionInternal(e, body, headers, status, request);
     }
 
     @ExceptionHandler
     public ResponseEntity<Object> handleBusinessException(BusinessException e) {
-        log.error(e.getSnapshot(), e);
+        //log.error(e.getSnapshot(), e);
         return new ResponseEntity<>(new ResultBean(e.getCode(), e.getMessage()), HttpStatus.OK);
     }
 
     @ExceptionHandler
     public ResponseEntity<Object> handleRuntimeException(RuntimeException e) {
-        log.error(e.getMessage(), e);
+        //log.error(e.getMessage(), e);
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler
     public ResponseEntity<Object> handleException(Exception e) {
-        log.error(e.getMessage(), e);
+        //log.error(e.getMessage(), e);
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

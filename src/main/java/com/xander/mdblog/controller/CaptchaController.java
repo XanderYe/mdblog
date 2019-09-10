@@ -3,6 +3,7 @@ package com.xander.mdblog.controller;
 import com.xander.mdblog.util.VerifyCodeUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpSession;
  * @date 2019/8/27
  */
 @Api(value="验证码controller",tags={"验证码操作接口"})
-@RequestMapping
+@Controller
 public class CaptchaController {
 
     /**

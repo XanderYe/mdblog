@@ -24,7 +24,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     private UserService userService;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
         String remoteAddr = request.getRemoteAddr();
         String method = request.getMethod();
