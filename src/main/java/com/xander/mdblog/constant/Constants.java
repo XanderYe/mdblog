@@ -22,6 +22,21 @@ public final class Constants {
     public static final Integer IS_NOT_DELETED = 1;
 
     /**
+     * 数据缓存名
+     */
+    public static final String EHCACHE_NAME = "verCode";
+
+    /**
+     * 验证码长度
+     */
+    public static int IMAGE_WIDTH = 100;
+
+    /**
+     * 验证码宽度
+     */
+    public static int IMAGE_HEIGHT = 30;
+
+    /**
      * 删除状态
      */
     public static final Integer IS_DELETED = 0;

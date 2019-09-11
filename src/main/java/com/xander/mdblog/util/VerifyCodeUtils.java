@@ -1,15 +1,20 @@
 package com.xander.mdblog.util;
 
+import sun.misc.BASE64Encoder;
+
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
  * 验证码工具类
+ *
  * @author 叶振东
  * @date 2018-11-20
  */
@@ -29,13 +34,16 @@ public class VerifyCodeUtils {
     }
 
     /**
-     * 具体获取验证码的方法
+     * 生成验证码BufferedImage
+     *
      * @param width
      * @param height
-     * @param sos
      * @param code
+     * @return java.awt.image.BufferedImage
+     * @author yezhendong
+     * @date 2019/9/11
      */
-    public static void outputImage(int width, int height, ServletOutputStream sos, String code) {
+    public static BufferedImage generateImage(int width, int height, String code) {
         int lineCount = 19;//混淆线个数  默认值：19
         int fontSize = 20;//字体大小像素
         //定义随机数类
@@ -69,6 +77,19 @@ public class VerifyCodeUtils {
         for (int i = 0; i < codeCount; i++) {
             g.drawString(c[i] + "", ((width / codeCount) * i + 2), height * 4 / 5);
         }
+        return buffImg;
+    }
+
+    /**
+     * 具体获取验证码的方法
+     *
+     * @param width
+     * @param height
+     * @param sos
+     * @param code
+     */
+    public static void outputImage(int width, int height, ServletOutputStream sos, String code) {
+        BufferedImage buffImg = generateImage(width, height, code);
         try {
             //5.输出到屏幕
             ImageIO.write(buffImg, "png", sos);
@@ -77,6 +98,29 @@ public class VerifyCodeUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+    }
+
+    /**
+     * 生成base64验证码
+     *
+     * @param width
+     * @param height
+     * @param code
+     */
+    public static String imageBase64(int width, int height, String code) {
+        BufferedImage buffImg = generateImage(width, height, code);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(buffImg, "png", baos);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        byte[] bytes = baos.toByteArray();//转换成字节
+        BASE64Encoder encoder = new BASE64Encoder();
+        String base64 = encoder.encodeBuffer(bytes).trim();
+        base64 = base64.replaceAll("\n", "").replaceAll("\r", "");
+        return base64;
 
     }
 }

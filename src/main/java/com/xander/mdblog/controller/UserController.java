@@ -1,5 +1,7 @@
 package com.xander.mdblog.controller;
 
+import com.xander.mdblog.config.VerCodeCache;
+import com.xander.mdblog.util.VerifyCodeUtils;
 import com.xander.mdblog.vo.OwnerVO;
 import com.xander.mdblog.vo.UserVO;
 import com.xander.mdblog.base.RequestContextHolder;
@@ -30,6 +32,8 @@ import java.util.Date;
 @RequestMapping("user")
 public class UserController {
     @Autowired
+    private VerCodeCache verCodeCache;
+    @Autowired
     private UserService userService;
 
     @Value("${upload.root}")
@@ -47,8 +51,8 @@ public class UserController {
 
     @ApiOperation(value="注册",notes="")
     @PostMapping("register")
-    public ResultBean register(HttpSession session, User user, String verCode) {
-        String code = (String) session.getAttribute("captcha");
+    public ResultBean register(User user, String uuid, String verCode) {
+        String code =  verCodeCache.get(uuid);
         this.userService.register(user, code, verCode);
         return new ResultBean<>();
     }
