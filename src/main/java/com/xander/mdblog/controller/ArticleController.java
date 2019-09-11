@@ -105,10 +105,10 @@ public class ArticleController {
      */
     @ApiOperation(value="获取最近的几篇文章",notes="不需要登录，参数不是必填")
     @GetMapping("getRecentArticles")
-    public ResultBean getRecentArticles(Long topicId, Integer page) {
+    public ResultBean getRecentArticles(Long topicId, Integer page, Integer rows) {
         // 默认第一页
         page = page == null ? 1 : page;
-        int rows = 5;
+        rows = rows == null ? 5 : rows;
         Article article = new Article();
         if(topicId != null && topicId != 0){
             article.setTopicId(topicId);
