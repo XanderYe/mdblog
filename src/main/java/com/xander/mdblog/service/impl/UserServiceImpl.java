@@ -57,14 +57,18 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         check(StringUtils.isNotEmpty(verCode) && code.toLowerCase().equals(verCode.toLowerCase()), ErrorCodeEnum.CAPTCHA_ERROR, "code={},verCode={}", code, verCode);
         check(StringUtils.isNotEmpty(user.getUsername()) || StringUtils.isNotEmpty(user.getNickname()) || StringUtils.isNotEmpty(user.getPassword()), ErrorCodeEnum.PARAMETER_EMPTY, "user={}", user);
         check(user.getPassword().length() >= 6, ErrorCodeEnum.UNSAFE_PASSWORD, "user={}", user);
-        User findUser = new User();
-        findUser.setUsername(user.getUsername());
-        User tmp = userMapper.selectOne(findUser);
+        User tmp = userMapper.findUserByUsername(user.getUsername());
         check(tmp == null, ErrorCodeEnum.ACCOUNT_EXIST, "user={}", user);
         // 设置密码
         user.setPassword(MD5Utils.encryptPwd(user.getPassword(), Constants.SALT));
         // 设置token
         user.setToken(SecureRandomUtil.nextHex());
+        // 性别
+        user.setGender(user.getGender() == null ? 0 : user.getGender());
+        // 账号状态
+        user.setStatus(0);
+        // 权限
+        user.setPermission(0);
         // 生成头像
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
         String fileName = sdf.format(new Date()) + "_" + ShortUUIDUtil.getShortUUID();
