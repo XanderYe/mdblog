@@ -79,18 +79,18 @@
 
         <div class="login-form" style="height: 350px;">
           <mu-form ref="loginForm" :model="loginData" label-position="top" label-width="100">
-            <mu-form-item prop="username" label="用户名" :rules="usernameRules">
+            <mu-form-item prop="username" label="用户名" :rules="usernameRules" icon="account_circle">
               <mu-text-field v-model="loginData.username"></mu-text-field>
             </mu-form-item>
 
-            <mu-form-item prop="password" label="密码" :rules="passwordRules">
+            <mu-form-item prop="password" label="密码" :rules="passwordRules" icon="locked">
               <mu-text-field v-model="loginData.password"
                              :action-icon="loginVisibility ? 'visibility_off' : 'visibility'"
                              :action-click="() => (loginVisibility = !loginVisibility)"
                              :type="loginVisibility ? 'text' : 'password'"></mu-text-field>
             </mu-form-item>
 
-            <mu-form-item>
+            <mu-form-item style="margin-left: 16px;">
               <mu-checkbox v-model="loginData.remember" value="true" label="记住密码"></mu-checkbox>
             </mu-form-item>
 
@@ -111,24 +111,35 @@
           </mu-button>
         </mu-appbar>
 
-        <div class="register-form" style="height: 350px;">
+        <div class="register-form" style="height: 500px;">
           <mu-form ref="registerForm" :model="registerData" label-position="top" label-width="100">
-            <mu-form-item prop="username" label="用户名" :rules="usernameRules">
+            <mu-form-item prop="username" label="用户名" :rules="username2Rules" icon="account_circle">
               <mu-text-field v-model="registerData.username"></mu-text-field>
             </mu-form-item>
 
-            <mu-form-item prop="password" label="密码" :rules="password1Rules">
+            <mu-form-item prop="username" label="昵称" :rules="nicknameRules" icon="supervised_user_circle">
+              <mu-text-field v-model="registerData.nickname"></mu-text-field>
+            </mu-form-item>
+
+            <mu-form-item prop="password" label="密码" :rules="password1Rules" icon="locked">
               <mu-text-field v-model="registerData.password"
                              :action-icon="registerVisibility1 ? 'visibility_off' : 'visibility'"
                              :action-click="() => (registerVisibility1 = !registerVisibility1)"
                              :type="registerVisibility1 ? 'text' : 'password'"></mu-text-field>
             </mu-form-item>
 
-            <mu-form-item prop="password2" label="确认密码" :rules="password2Rules">
+            <mu-form-item prop="password2" label="确认密码" :rules="password2Rules" icon="done">
               <mu-text-field v-model="registerData.password2"
                              :action-icon="registerVisibility2 ? 'visibility_off' : 'visibility'"
                              :action-click="() => (registerVisibility2 = !registerVisibility2)"
                              :type="registerVisibility2 ? 'text' : 'password'"></mu-text-field>
+            </mu-form-item>
+
+            <mu-form-item prop="verCode" label="验证码" :rules="verCodeRules" icon="image">
+              <mu-text-field v-model="registerData.verCode" type="text" maxLength="4" style="width: 50%;"></mu-text-field>
+              <div style="width: 50%; height: 30px; text-align: right;">
+                <img style="line-height:30px;" :src="imgSrc" @click="changeCode">
+              </div>
             </mu-form-item>
 
             <mu-button style="float: right;" color="secondary" @click="register">注册</mu-button>
@@ -148,7 +159,6 @@
 </template>
 
 <script>
-  import user from "../store/modules/user";
 
   export default {
     data() {
@@ -182,15 +192,25 @@
         },
         registerData: {
           username: "",
+          nickname: "",
           password: "",
           password2: "",
+          verCode: "",
+          uuid: "",
         },
         snackbar: {
           message: "",
           open: false,
         },
+        imgSrc: "",
         usernameRules: [
           {validate: (val) => !!val, message: '必须填写用户名'},
+        ],
+        username2Rules: [
+          {validate: (val) => !!val, message: '必须填写用户名'},
+        ],
+        nicknameRules: [
+          {validate: (val) => !!val, message: '必须填写昵称'},
         ],
         passwordRules: [
           {validate: (val) => !!val, message: '必须填写密码'},
@@ -201,8 +221,12 @@
         ],
         password2Rules: [
           {validate: (val) => !!val, message: '必须填写密码'},
-          {validate: (val) => val == this.registerData.password, message: '两次密码不一致'}
+          {validate: (val) => val === this.registerData.password, message: '两次密码不一致'}
         ],
+        verCodeRules: [
+        {validate: (val) => !!val, message: '必须填写验证码'},
+        {validate: (val) => val.length === 4, message: '验证码必须是4位数'}
+      ],
       }
     },
     methods: {
@@ -262,6 +286,16 @@
         }, 3000)
       },
 
+      changeCode(){
+        this.$requests.get("/captcha?r=" + Math.random(), null).then(res => {
+          if(res.data.code === 0){
+            this.imgSrc = "data:image/png;base64," + res.data.data.image;
+            this.registerData.uuid = res.data.data.uuid;
+          }
+        })
+
+      },
+
       openLogin() {
         this.loginDialog = true;
         this.loginVisibility = false;
@@ -305,13 +339,33 @@
           username: "",
           password: "",
           password2: "",
-        }
+          verCode: "",
+          uuid: "",
+        };
+        this.changeCode();
       },
 
       register() {
         this.$refs.registerForm.validate().then((validate) => {
           if (validate) {
-
+            let form = new FormData;
+            form.append("username", this.registerData.username);
+            form.append("nickname", this.registerData.nickname);
+            form.append("password", this.registerData.password);
+            form.append("password2", this.registerData.password2);
+            form.append("verCode", this.registerData.verCode);
+            form.append("uuid", this.registerData.uuid);
+            this.$requests.post("/user/register", form).then(res => {
+              if (res.data.code === 0) {
+                this.openSnackbar("注册成功");
+                this.isLogin = true;
+                this.registerDialog = false;
+                this.loginDialog = true;
+              } else {
+                this.changeCode();
+                this.openSnackbar(res.data.msg);
+              }
+            })
           }
         })
       },
@@ -319,8 +373,8 @@
     created() {
       this.getOwner();
       this.getAllTopic();
-
       this.changeNav();
+      this.changeCode();
       this.handleResize = () => {
         this.changeNav();
       };
