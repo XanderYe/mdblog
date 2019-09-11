@@ -56,7 +56,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     public void register(User user, String code, String verCode) {
         check(StringUtils.isNotEmpty(verCode) && code.toLowerCase().equals(verCode.toLowerCase()), ErrorCodeEnum.CAPTCHA_ERROR, "code={},verCode={}", code, verCode);
         check(StringUtils.isNotEmpty(user.getUsername()) || StringUtils.isNotEmpty(user.getNickname()) || StringUtils.isNotEmpty(user.getPassword()), ErrorCodeEnum.PARAMETER_EMPTY, "user={}", user);
-        check(user.getPassword().length() > 6, ErrorCodeEnum.UNSAFE_PASSWORD, "user={}", user);
+        check(user.getPassword().length() >= 6, ErrorCodeEnum.UNSAFE_PASSWORD, "user={}", user);
         User findUser = new User();
         findUser.setUsername(user.getUsername());
         User tmp = userMapper.selectOne(findUser);
@@ -73,7 +73,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         } catch (IOException e) {
             e.printStackTrace();
         }
-        user.setAvatar("avatarPath" + File.separator + fileName + ".jpg");
+        user.setAvatar(avatarPath + File.separator + fileName + ".jpg");
         userMapper.insert(user);
     }
 
