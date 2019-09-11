@@ -15,6 +15,10 @@
         <mu-button flat :to="{path: 'article', query: {id: article.id}}">继续阅读</mu-button>
       </mu-card-actions>
     </mu-card>
+
+    <mu-flex justify-content="end" style="padding-bottom: 10px;">
+      <mu-pagination raised circle :page-size="pageSize" :total="total" :current.sync="page" @change="changePage"></mu-pagination>
+    </mu-flex>
   </mu-container>
 </template>
 
@@ -25,12 +29,19 @@
       topicId: null,
       articleList: [],
       page: 1,
+      total: 1,
+      pageSize: 5,
     }),
     methods: {
+      changePage() {
+        // TODO 滚到顶部
+        this.getArticleList();
+      },
       getArticleList() {
-        this.$requests.get("/article/getRecentArticles", {topicId: this.topicId, page: this.page}).then((res) => {
+        this.$requests.get("/article/getRecentArticles", {topicId: this.topicId, page: this.page, rows: this.pageSize}).then((res) => {
           if (res.data.code == 0) {
             this.articleList = res.data.data.list;
+            this.total = res.data.data.total;
           }
         })
       }
