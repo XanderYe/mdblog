@@ -66,6 +66,10 @@
 
     <div :class="['mu-container', isOpen]">
       <router-view/>
+
+      <mu-button class="scroll-btn" fab color="secondary" @click="scrollToTop" v-show="scrollBtnStatus">
+        <mu-icon value="arrow_upward"></mu-icon>
+      </mu-button>
     </div>
 
     <mu-dialog width="448" transition="scale" :fullscreen="!desktop" :open.sync="loginDialog" :overlay-close="false"
@@ -202,12 +206,14 @@
           message: "",
           open: false,
         },
+        scrollBtnStatus: false,
         imgSrc: "",
         usernameRules: [
           {validate: (val) => !!val, message: '必须填写用户名'},
         ],
         username2Rules: [
           {validate: (val) => !!val, message: '必须填写用户名'},
+          {validate: (val) => this.checkUsername(val), message: '用户名已存在'},
         ],
         nicknameRules: [
           {validate: (val) => !!val, message: '必须填写昵称'},
@@ -251,6 +257,7 @@
         this.desktop = desktop
       },
 
+      // 改变菜单栏名称
       changeNavName(name) {
         this.appBarName = name;
       },
@@ -264,6 +271,7 @@
         })
       },
 
+      // 获取主题
       getAllTopic() {
         this.$requests.get("/topic/getAll", null).then((res) => {
           if (res.data.code == 0) {
@@ -272,10 +280,12 @@
         })
       },
 
+      // 是否是桌面端
       isDesktop() {
         return window.innerWidth > 993;
       },
 
+      // 打开通知
       openSnackbar(msg) {
         this.snackbar.message = msg;
         this.snackbar.open = true;
@@ -286,6 +296,15 @@
         }, 3000)
       },
 
+      // 滚到顶部
+      scrollToTop(){
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+        console.log(scrollTop)
+        let browserHeight = window.outerHeight;
+        this.scrollBtnStatus = scrollTop > browserHeight;
+      },
+
+      // 更改验证码
       changeCode(){
         this.$requests.get("/captcha?r=" + Math.random(), null).then(res => {
           if(res.data.code === 0){
@@ -296,6 +315,7 @@
 
       },
 
+      // 打开登录框
       openLogin() {
         this.loginDialog = true;
         this.loginVisibility = false;
@@ -307,6 +327,7 @@
         }
       },
 
+      // 登录
       login() {
         this.$refs.loginForm.validate().then((validate) => {
           if (validate) {
@@ -331,6 +352,7 @@
         })
       },
 
+      // 打开注册框
       openRegister() {
         this.registerDialog = true;
         this.registerVisibility1 = false;
@@ -345,6 +367,20 @@
         this.changeCode();
       },
 
+      // 检查用户名
+      checkUsername(username){
+        this.$requests.get("/user/check", {username: username}).then(res => {
+          if (res.data.code === 0) {
+            console.log("456");
+            return true;
+          } else {
+            return false;
+          }
+        })
+        console.log("123");
+      },
+
+      // 注册
       register() {
         this.$refs.registerForm.validate().then((validate) => {
           if (validate) {
@@ -375,13 +411,23 @@
       this.getAllTopic();
       this.changeNav();
       this.changeCode();
-      this.handleResize = () => {
-        this.changeNav();
-      };
-      window.addEventListener('resize', this.handleResize);
+
       // 判断登录状态
       const mdToken = localStorage.getItem("md-token");
       this.isLogin = mdToken != null && mdToken !== "";
+    },
+    mounted(){
+      this.handleResize = () => {
+        this.changeNav();
+      };
+      // 拖动窗口事件
+      window.addEventListener('resize', this.handleResize);
+
+      // 滚动事件
+      this.$nextTick(() => {
+        window.addEventListener('scroll', this.scrollToTop, true);
+      });
+
     },
     watch: {
       '$route': function (to, from) {

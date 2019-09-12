@@ -52,6 +52,7 @@
     watch: {
       '$route': function (to, from) {
         this.topicId = this.$route.query.id;
+        this.page = 1;
         this.getArticleList();
       }
     }
