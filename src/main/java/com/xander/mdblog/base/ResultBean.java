@@ -28,5 +28,4 @@ public class ResultBean<T> implements Serializable {
     public ResultBean(T data) {
         this.data = data;
     }
-
 }

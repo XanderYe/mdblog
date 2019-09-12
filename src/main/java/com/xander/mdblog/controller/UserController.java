@@ -1,6 +1,8 @@
 package com.xander.mdblog.controller;
 
 import com.xander.mdblog.config.VerCodeCache;
+import com.xander.mdblog.enums.ErrorCodeEnum;
+import com.xander.mdblog.exception.BusinessException;
 import com.xander.mdblog.util.VerifyCodeUtils;
 import com.xander.mdblog.vo.OwnerVO;
 import com.xander.mdblog.vo.UserVO;
@@ -22,6 +24,8 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static com.xander.mdblog.util.CheckUtil.check;
 
 /**
  * @author 叶振东
@@ -54,6 +58,15 @@ public class UserController {
     public ResultBean register(User user, String uuid, String verCode) {
         String code =  verCodeCache.get(uuid);
         this.userService.register(user, code, verCode);
+        return new ResultBean<>();
+    }
+
+    @ApiOperation(value="检查用户名",notes="")
+    @GetMapping("check")
+    public ResultBean checkUser(String username) {
+        check(StringUtils.isNotEmpty(username), ErrorCodeEnum.PARAMETER_ERROR, "");
+        User findUser = userService.findUserByUsername(username);
+        check(findUser != null, ErrorCodeEnum.ACCOUNT_EXIST, "");
         return new ResultBean<>();
     }
 

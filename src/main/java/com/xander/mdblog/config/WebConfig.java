@@ -39,6 +39,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/captcha")
                 .excludePathPatterns("/user/login")
                 .excludePathPatterns("/user/register")
+                .excludePathPatterns("/user/check")
                 .excludePathPatterns("/topic/getRouters")
                 .excludePathPatterns("/article/getRecentArticles")
                 .excludePathPatterns("/topic/getAll")

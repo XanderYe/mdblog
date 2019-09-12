@@ -38,4 +38,13 @@ public interface UserService extends BaseService<User> {
      * @date 2019-07-10
      */
     User selectByToken(String token);
+
+    /**
+     * 根据用户名查找
+     * @param username
+     * @return com.xander.mdblog.entity.User
+     * @author yezhendong
+     * @date 2019/9/12
+     */
+    User findUserByUsername(String username);
 }

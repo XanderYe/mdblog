@@ -26,7 +26,7 @@ import java.util.Map;
 @Configuration
 public class TransactionConfig {
 
-    private static final String pointcutExpression = "execution (* cn.zjweu.edu.tsdasystem.service.*.*(..))";
+    private static final String pointcutExpression = "execution (* com.xander.mdblog.service.*.*(..))";
 
     @Autowired
     private PlatformTransactionManager transactionManager;
