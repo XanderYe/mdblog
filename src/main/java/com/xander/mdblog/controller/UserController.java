@@ -66,7 +66,7 @@ public class UserController {
     public ResultBean checkUser(String username) {
         check(StringUtils.isNotEmpty(username), ErrorCodeEnum.PARAMETER_ERROR, "");
         User findUser = userService.findUserByUsername(username);
-        check(findUser != null, ErrorCodeEnum.ACCOUNT_EXIST, "");
+        check(findUser == null, ErrorCodeEnum.ACCOUNT_EXIST, "");
         return new ResultBean<>();
     }
 
