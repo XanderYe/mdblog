@@ -6,6 +6,7 @@ import com.xander.mdblog.enums.ErrorCodeEnum;
 import com.xander.mdblog.exception.BusinessException;
 import com.xander.mdblog.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,7 +39,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         String userToken = request.getHeader("md-token");
         log.info("remoteAddr={},  method={}, uri={}, userToken={}", remoteAddr, method, uri, userToken);
 
-        if (userToken == null) {
+        if (StringUtils.isEmpty(userToken)) {
             throw new BusinessException(ErrorCodeEnum.ACCOUNT_AUTH_ERROR, "remoteAddr={}, method={}, uri={}, userToken={}", remoteAddr, method, uri, userToken);
         }
 

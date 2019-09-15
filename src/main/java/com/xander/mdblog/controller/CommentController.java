@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author hbxz
  * @date 2018/12/20 0020
  */
-@Api(value="评论controller",tags={"评论操作接口"})
+@Api(value = "评论controller", tags = {"评论操作接口"})
 @RestController
 @RequestMapping("comment")
 public class CommentController {
@@ -26,22 +26,23 @@ public class CommentController {
 
     /**
      * 添加评论
+     *
      * @param comment
      * @return com.xander.mdblog.base.ResultBean
      * @author yezhendong
      * @date 2019-07-11
      */
-    @ApiOperation(value="添加评论",notes="不需要登录")
+    @ApiOperation(value = "添加评论", notes = "不需要登录")
     @PostMapping("add")
-    public ResultBean addComment(Comment comment){
+    public ResultBean addComment(Comment comment) {
         User user = RequestContextHolder.get();
-        if(user != null){
+        if (user != null) {
             comment.setNickname(user.getNickname());
             comment.setEmail(user.getEmail());
             comment.setAuthorId(user.getId());
             comment.setCreator(user.getNickname());
-        }else {
-           comment.setCreator("游客："+comment.getNickname());
+        } else {
+            comment.setCreator("游客：" + comment.getNickname());
         }
         commentService.insertComment(comment);
         return new ResultBean<>();

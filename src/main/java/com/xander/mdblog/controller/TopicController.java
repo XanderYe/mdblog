@@ -22,7 +22,7 @@ import java.util.List;
  * @author hbxz
  * @date 2018/12/20 0020
  */
-@Api(value="主题controller",tags={"主题操作接口"})
+@Api(value = "主题controller", tags = {"主题操作接口"})
 @RestController
 @RequestMapping("topic")
 public class TopicController {
@@ -31,15 +31,16 @@ public class TopicController {
 
     /**
      * 假删主题
+     *
      * @param id
      * @return com.xander.mdblog.base.ResultBean
      * @author yezhendong
      * @date 2019-07-10
      */
-    @ApiOperation(value="删除主题",notes="需要登录，必填id")
+    @ApiOperation(value = "删除主题", notes = "需要登录，必填id")
     @PostMapping("delete")
     public ResultBean delTopic(Long id) {
-        if(id == null){
+        if (id == null) {
             throw new BusinessException(ErrorCodeEnum.PARAMETER_EMPTY);
         }
         Topic topic = new Topic();
@@ -50,12 +51,13 @@ public class TopicController {
 
     /**
      * 获取所有主题
+     *
      * @param
      * @return com.xander.mdblog.base.ResultBean
      * @author yezhendong
      * @date 2019-07-10
      */
-    @ApiOperation(value="获取所有主题",notes="不需要登录")
+    @ApiOperation(value = "获取所有主题", notes = "不需要登录")
     @GetMapping("getAll")
     public ResultBean getAllTopic() {
         Topic topic = new Topic();
@@ -66,15 +68,16 @@ public class TopicController {
 
     /**
      * 根据id获取主题
+     *
      * @param
      * @return com.xander.mdblog.base.ResultBean
      * @author yezhendong
      * @date 2019-07-10
      */
-    @ApiOperation(value="根据id获取主题",notes="需要登录，id必填")
+    @ApiOperation(value = "根据id获取主题", notes = "需要登录，id必填")
     @GetMapping("getById")
     public ResultBean getTopicById(Long id) {
-        if(id == null){
+        if (id == null) {
             throw new BusinessException(ErrorCodeEnum.PARAMETER_EMPTY);
         }
         Topic topic = topicService.queryById(id);
@@ -83,12 +86,13 @@ public class TopicController {
 
     /**
      * 新增或修改主题
+     *
      * @param topic
      * @return com.xander.mdblog.base.ResultBean
      * @author yezhendong
      * @date 2019-07-10
      */
-    @ApiOperation(value="保存主题",notes="添加和修改都是这个接口")
+    @ApiOperation(value = "保存主题", notes = "添加和修改都是这个接口")
     @PostMapping("save")
     public ResultBean saveTopic(Topic topic) {
         if (topic.getId() == null) {

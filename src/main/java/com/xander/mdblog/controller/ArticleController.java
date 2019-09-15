@@ -31,7 +31,7 @@ import java.util.List;
  * @date 2018/12/20 0020
  */
 
-@Api(value="文章controller",tags={"文章操作接口"})
+@Api(value = "文章controller", tags = {"文章操作接口"})
 @RestController
 @RequestMapping("article")
 public class ArticleController {
@@ -46,12 +46,13 @@ public class ArticleController {
 
     /**
      * 添加文章
+     *
      * @param article
      * @return com.xander.mdblog.base.ResultBean
      * @author yezhendong
      * @date 2019-07-11
      */
-    @ApiOperation(value="添加文章",notes="需要登录")
+    @ApiOperation(value = "添加文章", notes = "需要登录")
     @PostMapping("add")
     public ResultBean addArticle(Article article) {
         User user = RequestContextHolder.get();
@@ -63,12 +64,13 @@ public class ArticleController {
 
     /**
      * 更新文章
+     *
      * @param article
      * @return com.xander.mdblog.base.ResultBean
      * @author yezhendong
      * @date 2019-07-11
      */
-    @ApiOperation(value="更新文章",notes="需要登录")
+    @ApiOperation(value = "更新文章", notes = "需要登录")
     @PostMapping("update")
     public ResultBean updateArticle(Article article) {
         User user = RequestContextHolder.get();
@@ -81,15 +83,16 @@ public class ArticleController {
 
     /**
      * 根据id获取文章
+     *
      * @param id
      * @return com.xander.mdblog.base.ResultBean
      * @author yezhendong
      * @date 2019-07-11
      */
-    @ApiOperation(value="根据id获取文章",notes="不需要登录，id必填")
+    @ApiOperation(value = "根据id获取文章", notes = "不需要登录，id必填")
     @GetMapping("getById")
     public ResultBean getById(Long id) {
-        if(id == null){
+        if (id == null) {
             throw new BusinessException(ErrorCodeEnum.PARAMETER_EMPTY);
         }
         Article article = articleService.findArticleById(id);
@@ -98,19 +101,20 @@ public class ArticleController {
 
     /**
      * 获取最近几篇文章
+     *
      * @param
      * @return com.xander.mdblog.base.ResultBean
      * @author yezhendong
      * @date 2019-07-11
      */
-    @ApiOperation(value="获取最近的几篇文章",notes="不需要登录，参数不是必填")
+    @ApiOperation(value = "获取最近的几篇文章", notes = "不需要登录，参数不是必填")
     @GetMapping("getRecentArticles")
     public ResultBean getRecentArticles(Long topicId, Integer page, Integer rows) {
         // 默认第一页
         page = page == null ? 1 : page;
         rows = rows == null ? 5 : rows;
         Article article = new Article();
-        if(topicId != null && topicId != 0){
+        if (topicId != null && topicId != 0) {
             article.setTopicId(topicId);
         }
         PageInfo<Article> articlePageInfo = articleService.queryPageListByWhereDesc(Article.class, article, page, rows);
@@ -120,13 +124,14 @@ public class ArticleController {
 
     /**
      * 上传图片
+     *
      * @param files
      * @param request
      * @return java.lang.String
      * @author yezhendong
      * @date 2019-07-11
      */
-    @ApiOperation(value="上传图片",notes="需要登录")
+    @ApiOperation(value = "上传图片", notes = "需要登录")
     @PostMapping("upload")
     public String uploadImg(@RequestParam("file") MultipartFile[] files, HttpServletRequest request) {
         JSONObject result = new JSONObject();

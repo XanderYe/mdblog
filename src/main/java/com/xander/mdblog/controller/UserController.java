@@ -31,7 +31,7 @@ import static com.xander.mdblog.util.CheckUtil.check;
  * @author 叶振东
  * @date 2018-11-20
  */
-@Api(value="用户controller",tags={"用户操作接口"})
+@Api(value = "用户controller", tags = {"用户操作接口"})
 @RestController
 @RequestMapping("user")
 public class UserController {
@@ -46,22 +46,22 @@ public class UserController {
     @Value("${user.avatar}")
     private String avatarPath;
 
-    @ApiOperation(value="登录",notes="")
+    @ApiOperation(value = "登录", notes = "")
     @PostMapping("login")
     public ResultBean login(User user) {
         UserVO userVO = userService.login(user);
         return new ResultBean<>(userVO);
     }
 
-    @ApiOperation(value="注册",notes="")
+    @ApiOperation(value = "注册", notes = "")
     @PostMapping("register")
     public ResultBean register(User user, String uuid, String verCode) {
-        String code =  verCodeCache.get(uuid);
+        String code = verCodeCache.get(uuid);
         this.userService.register(user, code, verCode);
         return new ResultBean<>();
     }
 
-    @ApiOperation(value="检查用户名",notes="")
+    @ApiOperation(value = "检查用户名", notes = "")
     @GetMapping("check")
     public ResultBean checkUser(String username) {
         check(StringUtils.isNotEmpty(username), ErrorCodeEnum.PARAMETER_ERROR, "");
@@ -80,7 +80,7 @@ public class UserController {
      * @author yezhendong
      * @date 2019-07-11
      */
-    @ApiOperation(value="设置主题",notes="")
+    @ApiOperation(value = "设置主题", notes = "")
     @PostMapping("theme")
     public ResultBean changeTheme(String primary, String accent, String layout) {
         User user = RequestContextHolder.get();
@@ -104,7 +104,7 @@ public class UserController {
      * @author yezhendong
      * @date 2019-07-11
      */
-    @ApiOperation(value="上传头像",notes="")
+    @ApiOperation(value = "上传头像", notes = "")
     @PostMapping("uploadAvatar")
     public ResultBean uploadAvatar(@RequestParam("avatar") MultipartFile file) throws Exception {
         User user = RequestContextHolder.get();
@@ -127,12 +127,13 @@ public class UserController {
 
     /**
      * 获取博客拥有者主题
+     *
      * @param
      * @return com.xander.mdblog.base.ResultBean
      * @author yezhendong
      * @date 2019/8/27
      */
-    @ApiOperation(value="获取博客信息",notes="")
+    @ApiOperation(value = "获取博客信息", notes = "")
     @GetMapping("getOwner")
     public ResultBean getOwner() {
         User user = userService.getUserByPermission(Constants.BLOG_OWNER);
