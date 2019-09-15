@@ -16,47 +16,54 @@
       </mu-card-actions>
     </mu-card>
 
-    <mu-flex justify-content="end" style="padding-bottom: 10px;">
-      <mu-pagination raised circle :page-size="pageSize" :total="total" :current.sync="page" @change="changePage"></mu-pagination>
+    <mu-flex justify-content="end" style="padding-bottom: 10px;" v-if="articleList.length > 0">
+      <mu-pagination raised circle :page-size="pageSize" :total="total" :current.sync="page"
+                     @change="changePage"></mu-pagination>
     </mu-flex>
   </mu-container>
 </template>
 
 <script>
-  export default {
-    name: "index",
-    data: () => ({
-      topicId: null,
-      articleList: [],
-      page: 1,
-      total: 1,
-      pageSize: 5,
-    }),
-    methods: {
-      changePage() {
-        // TODO 滚到顶部
-        this.getArticleList();
-      },
-      getArticleList() {
-        this.$requests.get("/article/getRecentArticles", {topicId: this.topicId, page: this.page, rows: this.pageSize}).then((res) => {
-          if (res.data.code == 0) {
-            this.articleList = res.data.data.list;
-            this.total = res.data.data.total;
-          }
-        })
-      }
-    },
-    created() {
-      this.getArticleList();
-    },
-    watch: {
-      '$route': function (to, from) {
-        this.topicId = this.$route.query.id;
-        this.page = 1;
-        this.getArticleList();
-      }
-    }
-  }
+	export default {
+		name: "index",
+		data: () => ({
+			topicId: null,
+			articleList: [],
+			page: 1,
+			total: 1,
+			pageSize: 5,
+		}),
+		methods: {
+			changePage() {
+				this.getArticleList();
+				// 滚动到顶部
+				document.documentElement.scrollTop = 0;
+				document.body.scrollTop = 0;
+			},
+			getArticleList() {
+				this.$requests.get("/article/getRecentArticles", {
+					topicId: this.topicId,
+					page: this.page,
+					rows: this.pageSize
+				}).then((res) => {
+					if (res.data.code == 0) {
+						this.articleList = res.data.data.list;
+						this.total = res.data.data.total;
+					}
+				})
+			}
+		},
+		created() {
+			this.getArticleList();
+		},
+		watch: {
+			'$route': function (to, from) {
+				this.topicId = this.$route.query.id;
+				this.page = 1;
+				this.getArticleList();
+			}
+		}
+	}
 </script>
 
 <style scoped>

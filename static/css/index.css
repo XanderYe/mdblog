@@ -6,7 +6,7 @@
   src: url(../fonts/materialicons.woff2) format('woff2');
 }
 
-html, body {
+body {
   font-family: Roboto, Noto, Helvetica, Arial, sans-serif !important;
   height: 100%;
 }

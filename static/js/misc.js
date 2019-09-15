@@ -1,1 +1,1 @@
-const ajaxUrl = "http://192.168.10.242:8083"
+const ajaxUrl = "http://47.100.229.37:8083";
