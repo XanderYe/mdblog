@@ -30,11 +30,11 @@ public class CaptchaController {
     /**
      * 验证码
      *
-     * @return void
+     * @return com.xander.mdblog.base.ResultBean
      * @author yezhendong
      * @date 2019-07-11
      */
-    @ApiOperation(value = "获取验证码", notes = "不需要登录，直接输出图片")
+    @ApiOperation(value = "获取验证码", notes = "不需要登录;返回uuid和base64码")
     @GetMapping("captcha")
     public ResultBean captcha() {
         JSONObject captcha = new JSONObject();
