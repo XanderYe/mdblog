@@ -22,6 +22,11 @@ public final class Constants {
     public static final Integer IS_NOT_DELETED = 1;
 
     /**
+     * 日期格式
+     */
+    public static final String DATE_FORMAT = "yyyyMMddhhmmss";
+
+    /**
      * 数据缓存名
      */
     public static final String EHCACHE_NAME = "verCode";

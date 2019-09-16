@@ -21,14 +21,14 @@ public interface UserService extends BaseService<User> {
      * @param user
      * @return
      */
-    public void register(User user, String code, String verCode);
+    void register(User user, String code, String verCode);
 
     /**
      * 根据permission获取博客拥有者
      * @param permission
      * @return
      */
-    User getUserByPermission(int permission);
+    User findUserByPermission(Integer permission);
 
     /**
      * 根据token查询用户
@@ -37,7 +37,7 @@ public interface UserService extends BaseService<User> {
      * @author yezhendong
      * @date 2019-07-10
      */
-    User selectByToken(String token);
+    User findByToken(String token);
 
     /**
      * 根据用户名查找

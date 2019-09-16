@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.xander.mdblog.base.RequestContextHolder;
 import com.xander.mdblog.base.ResultBean;
+import com.xander.mdblog.constant.Constants;
 import com.xander.mdblog.entity.Article;
 import com.xander.mdblog.entity.User;
 import com.xander.mdblog.enums.ErrorCodeEnum;
@@ -93,7 +94,7 @@ public class ArticleController {
     @GetMapping("getById")
     public ResultBean getById(Long id) {
         if (id == null) {
-            throw new BusinessException(ErrorCodeEnum.PARAMETER_EMPTY);
+            return ResultBean.error(ErrorCodeEnum.PARAMETER_EMPTY);
         }
         Article article = articleService.findArticleById(id);
         return new ResultBean<>(article);
@@ -151,7 +152,7 @@ public class ArticleController {
                     String originalFilename = file.getOriginalFilename();
                     //判断是否有文件且是否为图片文件
                     if (originalFilename != null && !"".equalsIgnoreCase(originalFilename.trim())) {
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+                        SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
                         String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
                         String fileName = sdf.format(new Date()) + "_" + ShortUUIDUtil.getShortUUID() + "." + suffix;
                         file.transferTo(new File(uploadRoot + articleImgPath + File.separator + fileName));

@@ -2,8 +2,6 @@ package com.xander.mdblog.controller;
 
 import com.xander.mdblog.config.VerCodeCache;
 import com.xander.mdblog.enums.ErrorCodeEnum;
-import com.xander.mdblog.exception.BusinessException;
-import com.xander.mdblog.util.VerifyCodeUtils;
 import com.xander.mdblog.vo.OwnerVO;
 import com.xander.mdblog.vo.UserVO;
 import com.xander.mdblog.base.RequestContextHolder;
@@ -20,7 +18,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -109,7 +106,7 @@ public class UserController {
     public ResultBean uploadAvatar(@RequestParam("avatar") MultipartFile file) throws Exception {
         User user = RequestContextHolder.get();
         String originalFilename = file.getOriginalFilename();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+        SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
         String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
         String fileName = sdf.format(new Date()) + "_" + ShortUUIDUtil.getShortUUID() + "." + suffix;
         String destFileName = uploadRoot + avatarPath + File.separator + fileName;
@@ -136,7 +133,7 @@ public class UserController {
     @ApiOperation(value = "获取博客信息", notes = "")
     @GetMapping("getOwner")
     public ResultBean getOwner() {
-        User user = userService.getUserByPermission(Constants.BLOG_OWNER);
+        User user = userService.findUserByPermission(Constants.BLOG_OWNER);
         OwnerVO owner = new OwnerVO();
         owner.setOwner(user.getNickname());
         owner.setDescription(user.getDescription());

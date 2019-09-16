@@ -41,7 +41,7 @@ public class TopicController {
     @PostMapping("delete")
     public ResultBean delTopic(Long id) {
         if (id == null) {
-            throw new BusinessException(ErrorCodeEnum.PARAMETER_EMPTY);
+            return ResultBean.error(ErrorCodeEnum.PARAMETER_EMPTY);
         }
         Topic topic = new Topic();
         topic.setId(id);
@@ -78,7 +78,7 @@ public class TopicController {
     @GetMapping("getById")
     public ResultBean getTopicById(Long id) {
         if (id == null) {
-            throw new BusinessException(ErrorCodeEnum.PARAMETER_EMPTY);
+            return ResultBean.error(ErrorCodeEnum.PARAMETER_EMPTY);
         }
         Topic topic = topicService.queryById(id);
         return new ResultBean<>(topic);

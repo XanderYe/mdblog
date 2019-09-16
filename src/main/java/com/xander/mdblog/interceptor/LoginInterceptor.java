@@ -3,7 +3,6 @@ package com.xander.mdblog.interceptor;
 import com.xander.mdblog.base.RequestContextHolder;
 import com.xander.mdblog.entity.User;
 import com.xander.mdblog.enums.ErrorCodeEnum;
-import com.xander.mdblog.exception.BusinessException;
 import com.xander.mdblog.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +13,8 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import static com.xander.mdblog.util.CheckUtil.check;
 
 /**
  * Created by Xander on 2018-11-05.
@@ -39,15 +40,17 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         String userToken = request.getHeader("md-token");
         log.info("remoteAddr={},  method={}, uri={}, userToken={}", remoteAddr, method, uri, userToken);
 
-        if (StringUtils.isEmpty(userToken)) {
-            throw new BusinessException(ErrorCodeEnum.ACCOUNT_AUTH_ERROR, "remoteAddr={}, method={}, uri={}, userToken={}", remoteAddr, method, uri, userToken);
-        }
+        // token不为空
+        check(StringUtils.isNoneEmpty(userToken), ErrorCodeEnum.ACCOUNT_AUTH_ERROR,
+                "remoteAddr={}, method={}, uri={}, userToken={}", remoteAddr, method, uri, userToken);
 
-        User user = userService.selectByToken(userToken);
-        if (user == null) {
-            throw new BusinessException(ErrorCodeEnum.ACCOUNT_NOTEXIST, "remoteAddr={}, method={}, uri={}, userToken={}", remoteAddr, method, uri, userToken);
-        }
+        // 查询用户
+        User user = userService.findByToken(userToken);
+        check(user != null, ErrorCodeEnum.ACCOUNT_NOTEXIST,
+                "remoteAddr={}, method={}, uri={}, userToken={}", remoteAddr, method, uri, userToken);
 
+
+        // 保存user
         RequestContextHolder.set(user);
         return true;
     }

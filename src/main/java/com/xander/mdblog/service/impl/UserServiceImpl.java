@@ -40,10 +40,12 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
     @Override
     public UserVO login(User user) {
-        check(StringUtils.isNotEmpty(user.getUsername()), ErrorCodeEnum.PARAMETER_EMPTY, "user={}", user);
-        check(StringUtils.isNotEmpty(user.getPassword()), ErrorCodeEnum.PARAMETER_EMPTY, "user={}", user);
+        // 校验参数是否为空
+        check(StringUtils.isNotEmpty(user.getUsername()) && StringUtils.isNotEmpty(user.getPassword()), ErrorCodeEnum.PARAMETER_EMPTY, "user={}", user);
+        // 查询用户是否为空
         User findUser = userMapper.findUserByUsername(user.getUsername());
         check(null != findUser, ErrorCodeEnum.ACCOUNT_NOTEXIST, "user={}", user);
+        // 校验密码是否相同
         check(findUser.getPassword().equals(MD5Utils.encryptPwd(user.getPassword(), Constants.SALT)), ErrorCodeEnum.ACCOUNT_OR_PASSWORD_ERROR, "user={}", user);
         UserVO userVO = new UserVO();
         userVO.setId(findUser.getId());
@@ -54,11 +56,15 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
     @Override
     public void register(User user, String code, String verCode) {
+        // 校验验证码是否相同
         check(StringUtils.isNotEmpty(verCode) && code.toLowerCase().equals(verCode.toLowerCase()), ErrorCodeEnum.CAPTCHA_ERROR, "code={},verCode={}", code, verCode);
-        check(StringUtils.isNotEmpty(user.getUsername()) || StringUtils.isNotEmpty(user.getNickname()) || StringUtils.isNotEmpty(user.getPassword()), ErrorCodeEnum.PARAMETER_EMPTY, "user={}", user);
-        check(user.getPassword().length() >= 6, ErrorCodeEnum.UNSAFE_PASSWORD, "user={}", user);
+        // 校验参数是否为空
+        check(StringUtils.isNotEmpty(user.getUsername()) && StringUtils.isNotEmpty(user.getNickname()) && StringUtils.isNotEmpty(user.getPassword()), ErrorCodeEnum.PARAMETER_EMPTY, "user={}", user);
+        // 查询用户是否存在
         User tmp = userMapper.findUserByUsername(user.getUsername());
-        check(tmp == null, ErrorCodeEnum.ACCOUNT_EXIST, "user={}", user);
+        check(null == tmp, ErrorCodeEnum.ACCOUNT_EXIST, "user={}", user);
+        //校验密码安全性
+        check(user.getPassword().length() >= 6, ErrorCodeEnum.UNSAFE_PASSWORD, "user={}", user);
         // 设置密码
         user.setPassword(MD5Utils.encryptPwd(user.getPassword(), Constants.SALT));
         // 设置token
@@ -70,7 +76,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         // 权限
         user.setPermission(0);
         // 生成头像
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+        SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
         String fileName = sdf.format(new Date()) + "_" + ShortUUIDUtil.getShortUUID();
         try {
             NamePictureUtil.generateImg(user.getNickname(), uploadRoot + avatarPath, fileName);
@@ -82,14 +88,14 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     }
 
     @Override
-    public User getUserByPermission(int permission) {
+    public User findUserByPermission(Integer permission) {
         User user = new User();
         user.setPermission(permission);
         return userMapper.selectOne(user);
     }
 
     @Override
-    public User selectByToken(String token) {
+    public User findByToken(String token) {
         User user = new User();
         user.setToken(token);
         return userMapper.selectOne(user);
