@@ -12,5 +12,7 @@ public class UserVO {
 
     private String username;
 
+    private String avatar;
+
     private String token;
 }

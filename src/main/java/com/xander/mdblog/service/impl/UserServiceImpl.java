@@ -51,6 +51,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         userVO.setId(findUser.getId());
         userVO.setUsername(findUser.getUsername());
         userVO.setToken(findUser.getToken());
+        userVO.setAvatar(findUser.getAvatar());
         return userVO;
     }
 
