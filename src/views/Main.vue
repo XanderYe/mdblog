@@ -381,30 +381,11 @@
 
             // 检查用户名
             checkUsername(username) {
-                let result = false;
-                new Promise(resolve => {
-                    this.$requests.get("/user/check", {username: username}).then(res => {
-                        resolve(res.data.code === 0);
-                    })
-                }).then(res => {
-                    result = res;
-                    //console.log(result)
+                let result = true;
+                this.$requests.asynGet("/user/check", {username: username}, (res) => {
+                    result = res.code === 0;
                 });
                 return result;
-            },
-
-            test() {
-                return new Promise(resolve => {
-                    setTimeout(() => {
-                        resolve("123");
-                    }, 1000);
-                })
-            },
-
-            async test2() {
-                let test = await this.test();
-                console.log(test);
-                return test;
             },
 
             // 注册
@@ -457,8 +438,6 @@
             this.$nextTick(() => {
                 window.addEventListener('scroll', this.scrollToTop, true);
             });
-
-            console.log("test" + this.test2("12345"));
 
         },
         watch: {
