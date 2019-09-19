@@ -8,7 +8,6 @@ const app = {
   mutations:{
     setTopicMenu(state, obj){
       state.topicMenu = obj;
-      sessionStorage.setItem("topicMenu", state.permissionList);
     }
   }
 }

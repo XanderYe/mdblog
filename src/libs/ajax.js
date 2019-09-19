@@ -18,6 +18,8 @@ axios.interceptors.response.use(response => {
   return Promise.reject(err.response);
 });
 
+const mdToken = localStorage.getItem("user") ? localStorage.getItem("user").token : "";
+
 const requests = {
 
   //get请求
@@ -29,7 +31,7 @@ const requests = {
         url,
         params: param,
         headers: {
-          "md-token": localStorage.getItem("md-token")
+          "md-token": mdToken
         }
       }).then(res => {
         resolve(res)
@@ -45,7 +47,7 @@ const requests = {
         url,
         data: param,
         headers: {
-          "md-token": localStorage.getItem("md-token")
+          "md-token": mdToken
         }
       }).then(res => {
         resolve(res);
@@ -60,7 +62,7 @@ const requests = {
     return new Promise((resolve, reject) => {
       axios.get(url, {
         headers: {
-          "md-token": localStorage.getItem("md-token")
+          "md-token": mdToken
         },
         params: params,
         responseType: 'blob',
@@ -77,10 +79,6 @@ const requests = {
         reject(err)
       })
     })
-  },
-  setToken(token) {
-    localStorage.removeItem("md-token");
-    localStorage.setItem("md-token", token);
   },
 
   error(status) {

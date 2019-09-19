@@ -167,286 +167,311 @@
 
 <script>
 
-	export default {
-		data() {
-			const desktop = this.isDesktop();
-			return {
-				isLogin: false,
-				topicList: [],
-				open: desktop,
-				docked: desktop,
-				desktop: desktop,
-				isOpen: desktop ? "is-open" : "",
-				openItem: "",
-				appBarName: "首页",
-				owner: {
-					owner: "XanderYe",
-					avatar: "/static/img/my.jpg",
-					email: "mailto:XanderYe@outlook.com",
-					github: "https://github.com/XanderYe",
-					description: "这里是一条咸鱼的博客",
-					occupation: "java开发工程师"
-				},
-				loginDialog: false,
-				registerDialog: false,
-				loginVisibility: false,
-				registerVisibility1: false,
-				registerVisibility2: false,
-				loginData: {
-					username: "",
-					password: "",
-					remember: false
-				},
-				registerData: {
-					username: "",
-					nickname: "",
-					password: "",
-					password2: "",
-					verCode: "",
-					uuid: "",
-				},
-				snackbar: {
-					message: "",
-					open: false,
-				},
-				scrollBtnStatus: false,
-				imgSrc: "",
-				usernameRules: [
-					{validate: (val) => !!val, message: '必须填写用户名'},
-				],
-				username2Rules: [
-					{validate: (val) => !!val, message: '必须填写用户名'},
-					{validate: (val) => this.checkUsername(val), message: '用户名已存在'},
-				],
-				nicknameRules: [
-					{validate: (val) => !!val, message: '必须填写昵称'},
-				],
-				passwordRules: [
-					{validate: (val) => !!val, message: '必须填写密码'},
-				],
-				password1Rules: [
-					{validate: (val) => !!val, message: '必须填写密码'},
-					{validate: (val) => val.length >= 6 && val.length <= 12, message: '密码长度大于6小于12'}
-				],
-				password2Rules: [
-					{validate: (val) => !!val, message: '必须填写密码'},
-					{validate: (val) => val === this.registerData.password, message: '两次密码不一致'}
-				],
-				verCodeRules: [
-					{validate: (val) => !!val, message: '必须填写验证码'},
-					{validate: (val) => val.length === 4, message: '验证码必须是4位数'}
-				],
-			}
-		},
-		methods: {
+    export default {
+        data() {
+            const desktop = this.isDesktop();
+            return {
+                isLogin: false,
+                topicList: [],
+                open: desktop,
+                docked: desktop,
+                desktop: desktop,
+                isOpen: desktop ? "is-open" : "",
+                openItem: "",
+                appBarName: "首页",
+                owner: {
+                    owner: "XanderYe",
+                    avatar: "/static/img/my.jpg",
+                    email: "mailto:XanderYe@outlook.com",
+                    github: "https://github.com/XanderYe",
+                    description: "这里是一条咸鱼的博客",
+                    occupation: "java开发工程师"
+                },
+                loginDialog: false,
+                registerDialog: false,
+                loginVisibility: false,
+                registerVisibility1: false,
+                registerVisibility2: false,
+                loginData: {
+                    username: "",
+                    password: "",
+                    remember: false
+                },
+                registerData: {
+                    username: "",
+                    nickname: "",
+                    password: "",
+                    password2: "",
+                    verCode: "",
+                    uuid: "",
+                },
+                snackbar: {
+                    message: "",
+                    open: false,
+                },
+                scrollBtnStatus: false,
+                imgSrc: "",
+                usernameRules: [
+                    {validate: (val) => !!val, message: '必须填写用户名'},
+                ],
+                username2Rules: [
+                    {validate: (val) => !!val, message: '必须填写用户名'},
+                    {validate: (val) => this.checkUsername(val), message: '用户名已存在'},
+                ],
+                nicknameRules: [
+                    {validate: (val) => !!val, message: '必须填写昵称'},
+                ],
+                passwordRules: [
+                    {validate: (val) => !!val, message: '必须填写密码'},
+                ],
+                password1Rules: [
+                    {validate: (val) => !!val, message: '必须填写密码'},
+                    {validate: (val) => val.length >= 6 && val.length <= 12, message: '密码长度大于6小于12'}
+                ],
+                password2Rules: [
+                    {validate: (val) => !!val, message: '必须填写密码'},
+                    {validate: (val) => val === this.registerData.password, message: '两次密码不一致'}
+                ],
+                verCodeRules: [
+                    {validate: (val) => !!val, message: '必须填写验证码'},
+                    {validate: (val) => val.length === 4, message: '验证码必须是4位数'}
+                ],
+            }
+        },
+        methods: {
 
-			toggleNav() {
-				this.open = !this.open
-			},
-			changeNav() {
-				const desktop = this.isDesktop();
-				this.docked = desktop;
-				if (desktop === this.desktop) {
-					return;
-				}
-				if (!desktop && this.desktop && this.open) {
-					this.open = false;
-					this.isOpen = "";
-				}
-				if (desktop && !this.desktop && !this.open) {
-					this.open = true;
-					this.isOpen = "is-open";
-				}
-				this.desktop = desktop
-			},
+            toggleNav() {
+                this.open = !this.open
+            },
+            changeNav() {
+                const desktop = this.isDesktop();
+                this.docked = desktop;
+                if (desktop === this.desktop) {
+                    return;
+                }
+                if (!desktop && this.desktop && this.open) {
+                    this.open = false;
+                    this.isOpen = "";
+                }
+                if (desktop && !this.desktop && !this.open) {
+                    this.open = true;
+                    this.isOpen = "is-open";
+                }
+                this.desktop = desktop
+            },
 
-			// 改变菜单栏名称
-			changeNavName(name) {
-				this.appBarName = name;
-			},
+            // 改变菜单栏名称
+            changeNavName(name) {
+                this.appBarName = name;
+            },
 
-			getOwner() {
-				this.$requests.get("/user/getOwner", null).then(res => {
-					if (res.data.code == 0) {
-						this.owner = res.data.data;
-						this.owner.avatar = ajaxUrl + res.data.data.avatar;
-					}
-				})
-			},
+            getOwner() {
+                this.$requests.get("/user/getOwner", null).then(res => {
+                    if (res.data.code == 0) {
+                        this.owner = res.data.data;
+                        this.owner.avatar = ajaxUrl + res.data.data.avatar;
+                    }
+                })
+            },
 
-			// 获取主题
-			getAllTopic() {
-				this.$requests.get("/topic/getAll", null).then((res) => {
-					if (res.data.code == 0) {
-						this.topicList = res.data.data;
-					}
-				})
-			},
+            // 获取主题
+            getAllTopic() {
+                this.$requests.get("/topic/getAll", null).then((res) => {
+                    if (res.data.code == 0) {
+                        this.topicList = res.data.data;
+                    }
+                })
+            },
 
-			// 是否是桌面端
-			isDesktop() {
-				return window.innerWidth > 993;
-			},
+            // 是否是桌面端
+            isDesktop() {
+                return window.innerWidth > 993;
+            },
 
-			// 打开通知
-			openSnackbar(msg) {
-				this.snackbar.message = msg;
-				this.snackbar.open = true;
-				setTimeout(() => {
-					if (this.snackbar.open) {
-						this.snackbar.open = false;
-					}
-				}, 3000)
-			},
+            // 打开通知
+            openSnackbar(msg) {
+                this.snackbar.message = msg;
+                this.snackbar.open = true;
+                setTimeout(() => {
+                    if (this.snackbar.open) {
+                        this.snackbar.open = false;
+                    }
+                }, 3000)
+            },
 
-			toTop() {
-				document.documentElement.scrollTop = 0;
-				document.body.scrollTop = 0;
-			},
+            toTop() {
+                document.documentElement.scrollTop = 0;
+                document.body.scrollTop = 0;
+            },
 
-			// 滚到顶部
-			scrollToTop() {
-				let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-				let browserHeight = window.outerHeight;
-				this.scrollBtnStatus = scrollTop > browserHeight;
-			},
+            // 滚到顶部
+            scrollToTop() {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+                let browserHeight = window.outerHeight;
+                this.scrollBtnStatus = scrollTop > browserHeight;
+            },
 
-			// 更改验证码
-			changeCode() {
-				this.$requests.get("/captcha?r=" + Math.random(), null).then(res => {
-					if (res.data.code === 0) {
-						this.imgSrc = "data:image/png;base64," + res.data.data.image;
-						this.registerData.uuid = res.data.data.uuid;
-					}
-				})
+            // 更改验证码
+            changeCode() {
+                this.$requests.get("/captcha?r=" + Math.random(), null).then(res => {
+                    if (res.data.code === 0) {
+                        this.imgSrc = "data:image/png;base64," + res.data.data.image;
+                        this.registerData.uuid = res.data.data.uuid;
+                    }
+                })
 
-			},
+            },
 
-			// 打开登录框
-			openLogin() {
-				this.loginDialog = true;
-				this.loginVisibility = false;
-				let username = localStorage.getItem("username");
-				let password = localStorage.getItem("password");
-				if (username != null && password != null) {
-					this.loginData.username = username;
-					this.loginData.password = password;
-				}
-			},
+            // 打开登录框
+            openLogin() {
+                this.loginDialog = true;
+                this.loginVisibility = false;
+                let username = localStorage.getItem("username");
+                let password = localStorage.getItem("password");
+                if (username != null && password != null) {
+                    this.loginData.username = username;
+                    this.loginData.password = password;
+                }
+            },
 
-			// 登录
-			login() {
-				this.$refs.loginForm.validate().then((validate) => {
-					if (validate) {
-						if (this.loginData.remember) {
-							localStorage.setItem("username", this.loginData.username);
-							localStorage.setItem("password", this.loginData.password);
-						}
-						let form = new FormData;
-						form.append("username", this.loginData.username);
-						form.append("password", this.loginData.password);
-						this.$requests.post("/user/login", form).then(res => {
-							if (res.data.code === 0) {
-								this.openSnackbar("登录成功");
-								localStorage.setItem("md-token", res.data.data.token);
-								this.isLogin = true;
-								this.loginDialog = false;
-							} else {
-								this.openSnackbar(res.data.msg);
-							}
-						})
-					}
-				})
-			},
+            // 登录
+            login() {
+                this.$refs.loginForm.validate().then((validate) => {
+                    if (validate) {
+                        if (this.loginData.remember) {
+                            localStorage.setItem("username", this.loginData.username);
+                            localStorage.setItem("password", this.loginData.password);
+                        }
+                        let form = new FormData;
+                        form.append("username", this.loginData.username);
+                        form.append("password", this.loginData.password);
+                        this.$requests.post("/user/login", form).then(res => {
+                            if (res.data.code === 0) {
+                                this.openSnackbar("登录成功");
+                                // 存储到localStorage
+                                localStorage.removeItem("user");
+                                localStorage.setItem("user", JSON.stringify(res.data.data));
+                                // 存储到vueX
+                                this.$store.commit("setUser", res.data.data);
+                                this.isLogin = true;
+                                this.loginDialog = false;
 
-			// 打开注册框
-			openRegister() {
-				this.registerDialog = true;
-				this.registerVisibility1 = false;
-				this.registerVisibility2 = false;
-				this.registerData = {
-					username: "",
-					password: "",
-					password2: "",
-					verCode: "",
-					uuid: "",
-				};
-				this.changeCode();
-			},
+                            } else {
+                                this.openSnackbar(res.data.msg);
+                            }
+                        })
+                    }
+                })
+            },
 
-			// 检查用户名
-			checkUsername(username) {
-				this.$requests.get("/user/check", {username: username}).then(res => {
-					if (res.data.code === 0) {
-						console.log("456");
-						return true;
-					} else {
-						return false;
-					}
-				})
-				console.log("123");
-			},
+            // 打开注册框
+            openRegister() {
+                this.registerDialog = true;
+                this.registerVisibility1 = false;
+                this.registerVisibility2 = false;
+                this.registerData = {
+                    username: "",
+                    password: "",
+                    password2: "",
+                    verCode: "",
+                    uuid: "",
+                };
+                this.changeCode();
+            },
 
-			// 注册
-			register() {
-				this.$refs.registerForm.validate().then((validate) => {
-					if (validate) {
-						let form = new FormData;
-						form.append("username", this.registerData.username);
-						form.append("nickname", this.registerData.nickname);
-						form.append("password", this.registerData.password);
-						form.append("password2", this.registerData.password2);
-						form.append("verCode", this.registerData.verCode);
-						form.append("uuid", this.registerData.uuid);
-						this.$requests.post("/user/register", form).then(res => {
-							if (res.data.code === 0) {
-								this.openSnackbar("注册成功");
-								this.isLogin = true;
-								this.registerDialog = false;
-								this.loginDialog = true;
-							} else {
-								this.changeCode();
-								this.openSnackbar(res.data.msg);
-							}
-						})
-					}
-				})
-			},
-		},
-		created() {
-			this.getOwner();
-			this.getAllTopic();
-			this.changeNav();
-			this.changeCode();
+            // 检查用户名
+            checkUsername(username) {
+                let result = false;
+                new Promise(resolve => {
+                    this.$requests.get("/user/check", {username: username}).then(res => {
+                        resolve(res.data.code === 0);
+                    })
+                }).then(res => {
+                    result = res;
+                    //console.log(result)
+                });
+                return result;
+            },
 
-			// 判断登录状态
-			const mdToken = localStorage.getItem("md-token");
-			this.isLogin = mdToken != null && mdToken !== "";
-		},
-		mounted() {
-			this.handleResize = () => {
-				this.changeNav();
-			};
-			// 拖动窗口事件
-			window.addEventListener('resize', this.handleResize);
+            test() {
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve("123");
+                    }, 1000);
+                })
+            },
 
-			// 滚动事件
-			this.$nextTick(() => {
-				window.addEventListener('scroll', this.scrollToTop, true);
-			});
+            async test2() {
+                let test = await this.test();
+                console.log(test);
+                return test;
+            },
 
-		},
-		watch: {
-			'$route': function (to, from) {
-				// 移动端点击后自动关闭抽屉
-				if (!this.isDesktop()) {
-					if (this.open) {
-						this.open = false;
-					}
-				}
-			}
-		}
-	}
+            // 注册
+            register() {
+                this.$refs.registerForm.validate().then((validate) => {
+                    if (validate) {
+                        let form = new FormData;
+                        form.append("username", this.registerData.username);
+                        form.append("nickname", this.registerData.nickname);
+                        form.append("password", this.registerData.password);
+                        form.append("password2", this.registerData.password2);
+                        form.append("verCode", this.registerData.verCode);
+                        form.append("uuid", this.registerData.uuid);
+                        this.$requests.post("/user/register", form).then(res => {
+                            if (res.data.code === 0) {
+                                this.openSnackbar("注册成功");
+                                this.isLogin = true;
+                                this.registerDialog = false;
+                                this.loginDialog = true;
+                            } else {
+                                this.changeCode();
+                                this.openSnackbar(res.data.msg);
+                            }
+                        })
+                    }
+                })
+            },
+        },
+        created() {
+            this.getOwner();
+            this.getAllTopic();
+            this.changeNav();
+            this.changeCode();
+
+            // 判断登录状态
+            const user = localStorage.getItem("user");
+            if (user) {
+                this.isLogin = true;
+                this.$store.commit("setUser", JSON.parse(user));
+            }
+        },
+        mounted() {
+            this.handleResize = () => {
+                this.changeNav();
+            };
+            // 拖动窗口事件
+            window.addEventListener('resize', this.handleResize);
+
+            // 滚动事件
+            this.$nextTick(() => {
+                window.addEventListener('scroll', this.scrollToTop, true);
+            });
+
+            console.log("test" + this.test2("12345"));
+
+        },
+        watch: {
+            '$route': function (to, from) {
+                // 移动端点击后自动关闭抽屉
+                if (!this.isDesktop()) {
+                    if (this.open) {
+                        this.open = false;
+                    }
+                }
+            }
+        }
+    }
 </script>
 
 <style lang="less" scoped>

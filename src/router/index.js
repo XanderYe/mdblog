@@ -33,6 +33,4 @@ export const router = new Router({
       ]
     }
   ]
-})
-
-let topicMenu = [];
+});
