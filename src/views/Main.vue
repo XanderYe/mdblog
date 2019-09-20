@@ -41,6 +41,25 @@
 
         </mu-list-item>
 
+        <mu-list-item v-if="isOwner" button nested :open="openItem === '博客管理'" @toggle-nested="openItem = arguments[0] ? '博客管理' : ''">
+          <mu-list-item-action>
+            <mu-icon value="settings"></mu-icon>
+          </mu-list-item-action>
+          <mu-list-item-title>博客管理</mu-list-item-title>
+          <mu-list-item-action>
+            <mu-icon class="toggle-icon" size="24" value="keyboard_arrow_down"></mu-icon>
+          </mu-list-item-action>
+
+          <mu-list-item button slot="nested" :to="{name:'topic-list'}" @click="changeNavName('主题管理')">
+            <mu-list-item-title>主题管理</mu-list-item-title>
+          </mu-list-item>
+
+          <mu-list-item button slot="nested" :to="{name:'article-list'}" @click="changeNavName('文章管理')">
+            <mu-list-item-title>文章管理</mu-list-item-title>
+          </mu-list-item>
+
+        </mu-list-item>
+
       </mu-list>
 
     </mu-drawer>
@@ -171,7 +190,10 @@
         data() {
             const desktop = this.isDesktop();
             return {
+                // 登陆状态
                 isLogin: false,
+                // 用于计算是否是owner
+                userId: 0,
                 topicList: [],
                 open: desktop,
                 docked: desktop,
@@ -180,6 +202,7 @@
                 openItem: "",
                 appBarName: "首页",
                 owner: {
+                    id: 1,
                     owner: "XanderYe",
                     avatar: "/static/img/my.jpg",
                     email: "mailto:XanderYe@outlook.com",
@@ -187,10 +210,15 @@
                     description: "这里是一条咸鱼的博客",
                     occupation: "java开发工程师"
                 },
+                // 登录dialog
                 loginDialog: false,
+                // 注册dialog
                 registerDialog: false,
+                // 登录密码状态
                 loginVisibility: false,
+                // 注册密码状态
                 registerVisibility1: false,
+                // 注册确认密码状态
                 registerVisibility2: false,
                 loginData: {
                     username: "",
@@ -209,7 +237,9 @@
                     message: "",
                     open: false,
                 },
+                // 回顶部按钮状态
                 scrollBtnStatus: false,
+                // 验证码src
                 imgSrc: "",
                 usernameRules: [
                     {validate: (val) => !!val, message: '必须填写用户名'},
@@ -236,6 +266,11 @@
                     {validate: (val) => !!val, message: '必须填写验证码'},
                     {validate: (val) => val.length === 4, message: '验证码必须是4位数'}
                 ],
+            }
+        },
+        computed: {
+            isOwner(){
+                return this.userId === this.owner.id;
             }
         },
         methods: {
@@ -353,6 +388,7 @@
                                 localStorage.setItem("user", JSON.stringify(res.data.data));
                                 // 存储到vueX
                                 this.$store.commit("setUser", res.data.data);
+                                this.userId = res.data.data.id;
                                 this.isLogin = true;
                                 this.loginDialog = false;
 
@@ -421,10 +457,11 @@
             this.changeCode();
 
             // 判断登录状态
-            const user = localStorage.getItem("user");
+            const user = JSON.parse(localStorage.getItem("user"));
             if (user) {
                 this.isLogin = true;
-                this.$store.commit("setUser", JSON.parse(user));
+                this.userId = user.id;
+                this.$store.commit("setUser", user);
             }
         },
         mounted() {

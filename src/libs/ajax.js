@@ -18,7 +18,8 @@ axios.interceptors.response.use(response => {
   return Promise.reject(err.response);
 });
 
-const mdToken = localStorage.getItem("user") ? localStorage.getItem("user").token : "";
+const user = JSON.parse(localStorage.getItem("user"));
+const mdToken = user ? user.token : "";
 
 const requests = {
 

@@ -19,17 +19,23 @@ export const router = new Router({
           component: () => import('@/views/index.vue'),
         },
         {
-          path: 'topic',
-          title: '主题',
-          name: 'topic',
-          component: () => import('@/views/topic.vue'),
+          path: 'article',
+          title: '文章详情',
+          name: 'articledetail',
+          component: () => import('@/views/article-detail.vue'),
         },
         {
-          path: 'article',
-          title: '文章',
-          name: 'article-detail',
-          component: () => import('@/views/article-detail.vue'),
-        }
+          path: 'topiclist',
+          title: '主题管理',
+          name: 'topic-list',
+          component: () => import('@/views/topic-list.vue'),
+        },
+        {
+          path: 'articlelist',
+          title: '文章管理',
+          name: 'article-list',
+          component: () => import('@/views/article-list.vue'),
+        },
       ]
     }
   ]
