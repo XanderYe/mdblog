@@ -8,6 +8,8 @@ import lombok.Data;
  */
 @Data
 public class OwnerVO {
+    private Long id;
+
     private String owner;
 
     private String avatar;

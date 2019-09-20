@@ -135,6 +135,7 @@ public class UserController {
     public ResultBean getOwner() {
         User user = userService.findUserByPermission(Constants.BLOG_OWNER);
         OwnerVO owner = new OwnerVO();
+        owner.setId(user.getId());
         owner.setOwner(user.getNickname());
         owner.setDescription(user.getDescription());
         owner.setEmail(user.getEmail());
