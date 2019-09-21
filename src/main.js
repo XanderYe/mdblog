@@ -3,30 +3,42 @@
 import Vue from 'vue'
 import App from './App'
 import MuseUI from 'muse-ui';
-import Toast from 'muse-ui-toast';
 import 'muse-ui/dist/muse-ui.css';
 import theme from 'muse-ui/lib/theme';
 import {router} from './router/index'
 import requests from './libs/ajax';
 import store from './store';
 import $ from 'jquery';
-
-const toastOption = {
-  position: 'top', // 弹出的位置
-  time: 3000, // 显示的时长
-  closeIcon: 'close',
-  close: true,
-  successIcon: 'check_circle',
-  infoIcon: 'info',
-  warningIcon: 'priority_high',
-  errorIcon: 'warning'
-}
+import NProgress from 'nprogress';
 
 Vue.config.productionTip = false;
 Vue.use(MuseUI);
-Vue.use(Toast, toastOption);
 Vue.prototype.$requests = requests;
 
+NProgress.configure({
+  // 动画方式
+  easing: 'ease',
+  // 递增进度条的速度
+  speed: 500,
+  // 是否显示加载ico
+  showSpinner: false,
+  // 自动递增间隔
+  trickleSpeed: 200,
+  // 初始化时的最小百分比
+  minimum: 0.3
+});
+
+//当路由开始跳转时
+router.beforeEach((to, from, next) => {
+  // 进度条
+  NProgress.start();
+  next();
+});
+//当路由跳转结束后
+router.afterEach(() => {
+  // 关闭进度条
+  NProgress.done();
+});
 
 /* eslint-disable no-new */
 new Vue({
@@ -41,7 +53,8 @@ new Vue({
       secondary: '#009688',
     }, 'light');
 
-    // a标签悬浮底色
+
+    // 需要主题颜色的css加入主题控制
     theme.addCreateTheme((theme) => {
       return `
         .mu-typo a:before {
@@ -58,6 +71,14 @@ new Vue({
         
         .mu-pagination-item.mu-button.is-current {
           background-color: ${theme.secondary};
+        }
+        
+        #nprogress .bar {
+          background: ${theme.secondary};
+        }
+        
+        #nprogress .peg {
+          box-shadow: 0 0 10px ${theme.secondary}, 0 0 5px ${theme.secondary};
         }
       `;
     });
