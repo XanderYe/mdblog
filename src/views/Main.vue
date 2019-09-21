@@ -190,7 +190,7 @@
         data() {
             const desktop = this.isDesktop();
             return {
-                // 登陆状态
+                // 登录状态
                 isLogin: false,
                 // 用于计算是否是owner
                 userId: 0,
