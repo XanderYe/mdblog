@@ -41,7 +41,8 @@
 
         </mu-list-item>
 
-        <mu-list-item v-if="isOwner" button nested :open="openItem === '博客管理'" @toggle-nested="openItem = arguments[0] ? '博客管理' : ''">
+        <mu-list-item v-if="isOwner" button nested :open="openItem === '博客管理'"
+                      @toggle-nested="openItem = arguments[0] ? '博客管理' : ''">
           <mu-list-item-action>
             <mu-icon value="settings"></mu-icon>
           </mu-list-item-action>
@@ -84,7 +85,11 @@
     </mu-appbar>
 
     <div :class="['mu-container', isOpen]">
-      <router-view/>
+
+      <keep-alive :include="['index']">
+        <router-view></router-view>
+      </keep-alive>
+
 
       <mu-scale-transition>
         <mu-button class="scroll-btn" fab color="secondary" @click="toTop" v-show="scrollBtnStatus">
@@ -269,7 +274,7 @@
             }
         },
         computed: {
-            isOwner(){
+            isOwner() {
                 return this.userId === this.owner.id;
             }
         },

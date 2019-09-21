@@ -58,9 +58,14 @@
         },
         watch: {
             '$route': function (to, from) {
-                this.topicId = this.$route.query.id;
-                this.page = 1;
-                this.getArticleList();
+                // 切换左侧导航栏时刷新数据
+                if (to.path === from.path) {
+                    document.documentElement.scrollTop = 0;
+                    document.body.scrollTop = 0;
+                    this.topicId = this.$route.query.id;
+                    this.page = 1;
+                    this.getArticleList();
+                }
             }
         }
     }
