@@ -10,10 +10,18 @@ import requests from './libs/ajax';
 import store from './store';
 import $ from 'jquery';
 import NProgress from 'nprogress';
+import hljs from 'highlight.js';
 
 Vue.config.productionTip = false;
 Vue.use(MuseUI);
 Vue.prototype.$requests = requests;
+
+Vue.directive('highlight',function (el) {
+  let blocks = el.querySelectorAll('pre code');
+  blocks.forEach((block)=>{
+    hljs.highlightBlock(block);
+  })
+})
 
 NProgress.configure({
   // 动画方式

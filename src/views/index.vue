@@ -9,7 +9,7 @@
           {{article.createTime}}
         </div>
       </div>
-      <mu-card-text class="mu-typo" v-html="article.content">
+      <mu-card-text class="mu-typo" v-html="article.content" v-highlight>
       </mu-card-text>
       <mu-card-actions>
         <mu-button flat :to="{path: 'article', query: {id: article.id}}">继续阅读</mu-button>

@@ -178,11 +178,10 @@ body {
 }
 
 .mu-typo pre {
-  padding: 12px 16px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  border: 1px solid rgba(0, 0, 0, .12);
-  border-radius: 2px;
+  white-space: pre-wrap;
+  word-break: normal;
 }
 
 .mu-typo code, kbd, pre, samp {
