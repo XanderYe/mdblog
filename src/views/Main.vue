@@ -12,8 +12,17 @@
           <img src="/static/img/card.jpg">
         </mu-card-media>
         <mu-card-actions>
-          <mu-button flat style="width: 117px" :href="owner.github">GITHUB</mu-button>
-          <mu-button flat style="width: 117px" :href="'mailto:' + owner.email">邮件</mu-button>
+
+          <mu-button flat :href="owner.github" style="width: 117px">
+            GITHUB
+            <mu-icon :size="24" right value=":mudocs-icon-custom-github"></mu-icon>
+          </mu-button>
+          
+          <mu-button flat :href="'mailto:' + owner.email" style="width: 117px">
+            EMAIL
+            <mu-icon :size="24" right value="email"></mu-icon>
+          </mu-button>
+
         </mu-card-actions>
       </mu-card>
       <mu-list toggle-nested>
