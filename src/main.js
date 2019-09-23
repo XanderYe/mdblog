@@ -21,7 +21,7 @@ Vue.directive('highlight',function (el) {
   blocks.forEach((block)=>{
     hljs.highlightBlock(block);
   })
-})
+});
 
 NProgress.configure({
   // 动画方式
@@ -60,7 +60,6 @@ new Vue({
       primary: '#009688',
       secondary: '#009688',
     }, 'light');
-
 
     // 需要主题颜色的css加入主题控制
     theme.addCreateTheme((theme) => {

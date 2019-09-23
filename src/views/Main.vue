@@ -477,9 +477,7 @@
             window.addEventListener('resize', this.handleResize);
 
             // 滚动事件
-            this.$nextTick(() => {
-                window.addEventListener('scroll', this.scrollToTop, true);
-            });
+            window.addEventListener('scroll', this.scrollToTop, true);
 
         },
         watch: {
