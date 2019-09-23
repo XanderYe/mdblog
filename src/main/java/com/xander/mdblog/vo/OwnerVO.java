@@ -18,6 +18,8 @@ public class OwnerVO {
 
     private String description;
 
+    private String occupation;
+
     private String github;
 
     private String themePrimary;

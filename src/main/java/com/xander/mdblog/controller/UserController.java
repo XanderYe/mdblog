@@ -138,6 +138,7 @@ public class UserController {
         owner.setId(user.getId());
         owner.setOwner(user.getNickname());
         owner.setDescription(user.getDescription());
+        owner.setOccupation(user.getOccupation());
         owner.setEmail(user.getEmail());
         owner.setGithub(user.getGithub());
         owner.setAvatar(user.getAvatar());
