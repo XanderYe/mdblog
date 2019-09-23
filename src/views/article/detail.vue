@@ -20,7 +20,7 @@
         methods: {
             getArticle() {
                 this.$requests.get("/article/getById", {id: this.articleId}).then(res => {
-                    if (res.data.code == 0) {
+                    if (res.data.code === 0) {
                         this.article = res.data.data;
                     }
                 })

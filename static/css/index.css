@@ -16,7 +16,60 @@ body {
   left: 256px;
 }
 
-.mu-appbar .mu-flat-button, .mu-appbar .mu-menu {
+/*个人信息弹窗*/
+.avatar-button .mu-button {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 50%;
+}
+
+.avatar-button img {
+  width: 36px;
+  border-radius: 50%;
+}
+
+.popover-div {
+  width: 330px;
+  height: 192px;
+}
+
+.popover-div .info {
+  position: absolute;
+  height: 139px;
+  padding: 22px 20px;
+}
+
+.popover-div .info .avatar {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  overflow: hidden;
+  float: left;
+}
+
+.popover-div .upload-button {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  left: 50%;
+  top: 50%;
+  margin-left: -24px;
+  margin-top: -24px;
+  background-color: rgba(0, 0, 0, 0.26) !important;
+}
+
+.popover-div .avatar-upload {
+  position: absolute;
+  width: 96px;
+  height: 96px;
+}
+
+.popover-div #upload-avatar {
+  display: none;
+}
+
+.anon-buttons .mu-flat-button {
   height: 36px !important;
   line-height: 36px !important;
   min-width: 88px !important;
@@ -103,6 +156,14 @@ body {
   ::-webkit-scrollbar-thumb {
     border-radius: 8px;
     background: #BDBDBD;
+  }
+
+  .popover-div .avatar-upload {
+    opacity: 0;
+  }
+
+  .popover-div .avatar-upload:hover {
+    opacity: 1;
   }
 
   .mu-container {

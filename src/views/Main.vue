@@ -17,7 +17,7 @@
             GITHUB
             <mu-icon :size="24" right value=":mudocs-icon-custom-github"></mu-icon>
           </mu-button>
-          
+
           <mu-button flat :href="'mailto:' + owner.email" style="width: 117px">
             EMAIL
             <mu-icon :size="24" right value="email"></mu-icon>
@@ -81,15 +81,32 @@
       {{appBarName}}
 
       <!--未登录-->
-      <div slot="right" v-if="!isLogin" style="margin-right: 5px;">
+      <div slot="right" class="anon-buttons" v-if="!isLogin" style="margin-right: 5px;">
         <mu-button flat @click="openLogin">登录</mu-button>
         <mu-button flat @click="openRegister">注册</mu-button>
       </div>
 
       <!--已登录-->
-      <template slot="right" v-else>
-
-      </template>
+      <div slot="right" class="avatar-button" v-else style="margin-right: 5px;">
+        <mu-button flat ref="avatarButton" @click="openUserMenu">
+          <img :src="avatarUrl">
+        </mu-button>
+        <mu-popover cover placement="left-start" :open.sync="userMenu" :trigger="userMenuTrigger">
+          <div class="popover-div">
+            <div class="info">
+              <div class="avatar">
+                <div class="avatar-upload">
+                  <mu-button fab class="upload-button">
+                    <mu-icon value="camera_alt"></mu-icon>
+                  </mu-button>
+                  <input type="file" title=" " accept="image/*" id="upload-avatar">
+                </div>
+                <img :src="avatarUrl" width="96" height="96">
+              </div>
+            </div>
+          </div>
+        </mu-popover>
+      </div>
 
     </mu-appbar>
 
@@ -100,6 +117,7 @@
       </keep-alive>
 
 
+      <!--返回顶部按钮-->
       <mu-scale-transition>
         <mu-button class="scroll-btn" fab color="secondary" @click="toTop" v-show="scrollBtnStatus">
           <mu-icon value="arrow_upward"></mu-icon>
@@ -214,6 +232,7 @@
                 desktop: desktop,
                 isOpen: desktop ? "is-open" : "",
                 openItem: "",
+                // 导航栏名称
                 appBarName: "首页",
                 owner: {
                     id: 1,
@@ -224,6 +243,10 @@
                     description: "这里是一条咸鱼的博客",
                     occupation: "java开发工程师"
                 },
+                // 用户菜单
+                userMenu: false,
+                // 菜单弹出绑定元素
+                userMenuTrigger: null,
                 // 登录dialog
                 loginDialog: false,
                 // 注册dialog
@@ -285,6 +308,9 @@
         computed: {
             isOwner() {
                 return this.userId === this.owner.id;
+            },
+            avatarUrl() {
+                return ajaxUrl + this.$store.state.user.avatar;
             }
         },
         methods: {
@@ -316,7 +342,7 @@
 
             getOwner() {
                 this.$requests.get("/user/getOwner", null).then(res => {
-                    if (res.data.code == 0) {
+                    if (res.data.code === 0) {
                         this.owner = res.data.data;
                         this.owner.avatar = ajaxUrl + res.data.data.avatar;
                     }
@@ -326,7 +352,7 @@
             // 获取主题
             getAllTopic() {
                 this.$requests.get("/topic/getAll", null).then((res) => {
-                    if (res.data.code == 0) {
+                    if (res.data.code === 0) {
                         this.topicList = res.data.data;
                     }
                 })
@@ -369,6 +395,10 @@
                     }
                 })
 
+            },
+
+            openUserMenu() {
+                this.userMenu = true;
             },
 
             // 打开登录框
@@ -488,6 +518,8 @@
             // 滚动事件
             window.addEventListener('scroll', this.scrollToTop, true);
 
+            //绑定菜单弹出元素
+            this.userMenuTrigger = this.$refs.avatarButton.$el;
         },
         watch: {
             '$route': function (to, from) {

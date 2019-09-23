@@ -46,7 +46,7 @@
                     page: this.page,
                     rows: this.pageSize
                 }).then((res) => {
-                    if (res.data.code == 0) {
+                    if (res.data.code === 0) {
                         this.articleList = res.data.data.list;
                         this.total = res.data.data.total;
                     }
