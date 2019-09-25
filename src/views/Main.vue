@@ -81,7 +81,7 @@
       {{appBarName}}
 
       <!--未登录-->
-      <div slot="right" class="anon-buttons" v-show="!isLogin" style="margin-right: 5px;">
+      <div slot="right" class="anon-buttons" v-if="!isLogin" style="margin-right: 5px;">
         <div>
           <mu-button flat @click="openLogin">登录</mu-button>
           <mu-button flat @click="openRegister">注册</mu-button>
@@ -89,7 +89,7 @@
       </div>
 
       <!--已登录-->
-      <div slot="right" class="avatar-button" v-show="isLogin" style="margin-right: 5px;">
+      <div slot="right" class="avatar-button" v-else="isLogin" style="margin-right: 5px;">
         <mu-button flat ref="avatarButton" @click="openUserMenu">
           <img :src="user.avatar">
         </mu-button>
@@ -445,6 +445,10 @@
                                 this.user.avatar = ajaxUrl + user.avatar;
                                 this.isLogin = true;
                                 this.loginDialog = false;
+                                this.$nextTick(() => {
+                                    //绑定菜单弹出元素
+                                    this.userMenuTrigger = this.$refs.avatarButton.$el;
+                                })
 
                             } else {
                                 this.openSnackbar(res.data.msg);
@@ -515,6 +519,7 @@
                     avatar: "",
                 };
                 this.$store.commit("removeUser");
+                this.openSnackbar("注销成功");
 
             },
         },
@@ -545,8 +550,10 @@
             // 滚动事件
             window.addEventListener('scroll', this.scrollToTop, true);
 
-            //绑定菜单弹出元素
-            this.userMenuTrigger = this.$refs.avatarButton.$el;
+            if(this.isLogin){
+                //绑定菜单弹出元素
+                this.userMenuTrigger = this.$refs.avatarButton.$el;
+            }
         },
         watch: {
             '$route': function (to, from) {
