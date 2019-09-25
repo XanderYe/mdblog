@@ -1,10 +1,21 @@
 <template>
+  <div>
 
+
+  </div>
 </template>
 
 <script>
     export default {
-        name: "article-list"
+        name: "article-list",
+        data() {
+            return {
+
+            }
+        },
+        mounted() {
+
+        }
     }
 </script>
 

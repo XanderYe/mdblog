@@ -89,8 +89,8 @@
       </div>
 
       <!--已登录-->
-      <div slot="right" class="avatar-button" v-else="isLogin" style="margin-right: 5px;">
-        <mu-button flat ref="avatarButton" @click="openUserMenu">
+      <div slot="right" class="avatar-button" v-else style="margin-right: 5px;">
+        <mu-button flat ref="avatarButton" @click="userMenu = !userMenu">
           <img :src="user.avatar">
         </mu-button>
         <mu-popover cover placement="left-start" :open.sync="userMenu" :trigger="userMenuTrigger">
@@ -403,10 +403,6 @@
                     }
                 })
 
-            },
-
-            openUserMenu() {
-                this.userMenu = true;
             },
 
             // 打开登录框
