@@ -29,14 +29,18 @@ body {
 }
 
 .popover-div {
-  width: 330px;
   height: 192px;
+}
+
+.mu-popover {
+  max-width: 100% !important;
 }
 
 .popover-div .info {
   position: absolute;
   height: 139px;
   padding: 22px 20px;
+  width: 100%;
 }
 
 .popover-div .info .avatar {
@@ -67,6 +71,24 @@ body {
 
 .popover-div #upload-avatar {
   display: none;
+}
+
+.popover-div .username {
+  font-weight: bold;
+  line-height: 20px;
+  margin-left: 114px;
+}
+
+.popover-div .bottom {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  border-top: 1px solid #ccc;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-color: #f5f5f5;
+  padding: 10px 20px;
 }
 
 .anon-buttons .mu-flat-button {
@@ -124,6 +146,10 @@ body {
 
 /* 移动端 */
 @media screen and (max-width: 993px) {
+  .popover-div {
+    width: 300px;
+  }
+
   .mu-container {
     height: 90%;
   }
@@ -156,6 +182,10 @@ body {
   ::-webkit-scrollbar-thumb {
     border-radius: 8px;
     background: #BDBDBD;
+  }
+
+  .popover-div {
+    width: 330px;
   }
 
   .popover-div .avatar-upload {

@@ -1,5 +1,6 @@
 const user = {
   state: {
+    id: 0,
     username: "",
     nickname: "",
     avatar: "",
@@ -12,6 +13,14 @@ const user = {
       state.nickname = obj.nickname;
       state.avatar = obj.avatar;
       state.token = obj.token;
+    },
+    removeUser(state){
+      state.id = 0;
+      state.username = "";
+      state.nickname = "";
+      state.avatar = "";
+      state.token = "";
+      localStorage.removeItem("user");
     }
   }
 }

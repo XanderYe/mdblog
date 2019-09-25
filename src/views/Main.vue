@@ -81,15 +81,17 @@
       {{appBarName}}
 
       <!--未登录-->
-      <div slot="right" class="anon-buttons" v-if="!isLogin" style="margin-right: 5px;">
-        <mu-button flat @click="openLogin">登录</mu-button>
-        <mu-button flat @click="openRegister">注册</mu-button>
+      <div slot="right" class="anon-buttons" v-show="!isLogin" style="margin-right: 5px;">
+        <div>
+          <mu-button flat @click="openLogin">登录</mu-button>
+          <mu-button flat @click="openRegister">注册</mu-button>
+        </div>
       </div>
 
       <!--已登录-->
-      <div slot="right" class="avatar-button" v-else style="margin-right: 5px;">
+      <div slot="right" class="avatar-button" v-show="isLogin" style="margin-right: 5px;">
         <mu-button flat ref="avatarButton" @click="openUserMenu">
-          <img :src="avatarUrl">
+          <img :src="user.avatar">
         </mu-button>
         <mu-popover cover placement="left-start" :open.sync="userMenu" :trigger="userMenuTrigger">
           <div class="popover-div">
@@ -101,8 +103,13 @@
                   </mu-button>
                   <input type="file" title=" " accept="image/*" id="upload-avatar">
                 </div>
-                <img :src="avatarUrl" width="96" height="96">
+                <img :src="user.avatar" width="96" height="96">
               </div>
+              <div class="username">{{user.nickname}}</div>
+              <mu-button color="secondary" style="margin: 16px 0 0 18px">个人中心</mu-button>
+            </div>
+            <div class="bottom">
+              <mu-button style="float: right" @click="logout">退出</mu-button>
             </div>
           </div>
         </mu-popover>
@@ -224,8 +231,12 @@
             return {
                 // 登录状态
                 isLogin: false,
-                // 用于计算是否是owner
-                userId: 0,
+                user: {
+                    id: 0,
+                    username: "",
+                    nickname: "",
+                    avatar: "",
+                },
                 topicList: [],
                 open: desktop,
                 docked: desktop,
@@ -238,7 +249,7 @@
                     id: 1,
                     owner: "XanderYe",
                     avatar: "/static/img/my.jpg",
-                    email: "mailto:XanderYe@outlook.com",
+                    email: "XanderYe@outlook.com",
                     github: "https://github.com/XanderYe",
                     description: "这里是一条咸鱼的博客",
                     occupation: "java开发工程师"
@@ -307,11 +318,8 @@
         },
         computed: {
             isOwner() {
-                return this.userId === this.owner.id;
+                return this.user.id === this.owner.id;
             },
-            avatarUrl() {
-                return ajaxUrl + this.$store.state.user.avatar;
-            }
         },
         methods: {
 
@@ -427,12 +435,14 @@
                         this.$requests.post("/user/login", form).then(res => {
                             if (res.data.code === 0) {
                                 this.openSnackbar("登录成功");
+                                let user = res.data.data;
                                 // 存储到localStorage
                                 localStorage.removeItem("user");
-                                localStorage.setItem("user", JSON.stringify(res.data.data));
+                                localStorage.setItem("user", JSON.stringify(user));
                                 // 存储到vueX
-                                this.$store.commit("setUser", res.data.data);
-                                this.userId = res.data.data.id;
+                                this.$store.commit("setUser", user);
+                                this.user = user;
+                                this.user.avatar = ajaxUrl + user.avatar;
                                 this.isLogin = true;
                                 this.loginDialog = false;
 
@@ -493,6 +503,20 @@
                     }
                 })
             },
+
+            // 注销
+            logout() {
+                this.userMenu = false;
+                this.isLogin = false;
+                this.user = {
+                    id: 0,
+                    username: "",
+                    nickname: "",
+                    avatar: "",
+                };
+                this.$store.commit("removeUser");
+
+            },
         },
         created() {
             this.getOwner();
@@ -504,7 +528,10 @@
             const user = JSON.parse(localStorage.getItem("user"));
             if (user) {
                 this.isLogin = true;
-                this.userId = user.id;
+                this.user = user;
+                if(user.avatar){
+                    this.user.avatar = ajaxUrl + user.avatar;
+                }
                 this.$store.commit("setUser", user);
             }
         },
