@@ -83,7 +83,7 @@ body {
 .mu-typo pre {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  white-space: pre-wrap;
+  white-space: pre;
   word-break: normal;
 }
 
