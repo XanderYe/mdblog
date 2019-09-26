@@ -43,7 +43,7 @@
             <mu-icon class="toggle-icon" size="24" value="keyboard_arrow_down"></mu-icon>
           </mu-list-item-action>
 
-          <mu-list-item button slot="nested" v-for="topic in topicList" :key="topic.id"
+          <mu-list-item :class="isActived(topic.name)" button slot="nested" v-for="topic in topicList" :key="topic.id"
                         :to="{name:'index', query:{id : topic.id}}" @click="changeNavName(topic.name)">
             <mu-list-item-title>{{topic.name}}</mu-list-item-title>
           </mu-list-item>
@@ -60,13 +60,11 @@
             <mu-icon class="toggle-icon" size="24" value="keyboard_arrow_down"></mu-icon>
           </mu-list-item-action>
 
-          <mu-list-item button slot="nested" :to="{name:'topic-list'}" @click="changeNavName('主题管理')">
-            <mu-list-item-title>主题管理</mu-list-item-title>
+          <mu-list-item :class="isActived(setting.name)" button slot="nested" v-for="setting in blogSettingList" :key="setting.id"
+                        :to="{name: setting.routerName}" @click="changeNavName(setting.name)">
+            <mu-list-item-title>{{setting.name}}</mu-list-item-title>
           </mu-list-item>
 
-          <mu-list-item button slot="nested" :to="{name:'article-list'}" @click="changeNavName('文章管理')">
-            <mu-list-item-title>文章管理</mu-list-item-title>
-          </mu-list-item>
 
         </mu-list-item>
 
@@ -245,6 +243,23 @@
                 openItem: "",
                 // 导航栏名称
                 appBarName: "首页",
+                blogSettingList: [
+                    {
+                        id: 1,
+                        name: "主题管理",
+                        routerName: "topic-list"
+                    },
+                    {
+                        id: 2,
+                        name: "文章管理",
+                        routerName: "article-list"
+                    },
+                    {
+                        id: 3,
+                        name: "发表文章",
+                        routerName: "article-add"
+                    }
+                ],
                 owner: {
                     id: 1,
                     owner: "XanderYe",
@@ -320,6 +335,15 @@
             isOwner() {
                 return this.user.id === this.owner.id;
             },
+            isActived() {
+                return (name) => {
+                    if (name == this.appBarName) {
+                        return ['actived'];
+                    } else {
+                        return [];
+                    }
+                }
+            }
         },
         methods: {
 
@@ -530,7 +554,7 @@
             if (user) {
                 this.isLogin = true;
                 this.user = user;
-                if(user.avatar){
+                if (user.avatar) {
                     this.user.avatar = ajaxUrl + user.avatar;
                 }
                 this.$store.commit("setUser", user);
@@ -546,7 +570,7 @@
             // 滚动事件
             window.addEventListener('scroll', this.scrollToTop, true);
 
-            if(this.isLogin){
+            if (this.isLogin) {
                 //绑定菜单弹出元素
                 this.userMenuTrigger = this.$refs.avatarButton.$el;
             }
