@@ -29,9 +29,10 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(this.loginInterceptor).addPathPatterns("/**")
                 // swagger页面
-                .excludePathPatterns("/swagger-ui.html")
+                .excludePathPatterns("/doc.html")
                 .excludePathPatterns("/swagger-resources/**")
                 .excludePathPatterns("/v2/api-docs")
+                .excludePathPatterns("/v2/api-docs-ext")
                 // swagger 静态资源
                 .excludePathPatterns("/webjars/**")
                 .excludePathPatterns("/upload/**")

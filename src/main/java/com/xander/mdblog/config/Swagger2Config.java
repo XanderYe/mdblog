@@ -42,8 +42,9 @@ public class Swagger2Config {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("api文档")
+                .title("swagger-bootstrap-ui RESTful APIs")
                 .description("mdblog的api文档")
+                .contact("XanderYe@outlook.com")
                 .version("1.0")
                 .build();
     }
