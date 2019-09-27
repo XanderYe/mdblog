@@ -76,6 +76,10 @@ new Vue({
           color: ${theme.secondary};
         }
         
+        .mu-option.is-selected .mu-item {
+          color: ${theme.secondary};
+        }
+        
         .mu-pagination-item.mu-button.is-current {
           background-color: ${theme.secondary};
         }
