@@ -14,9 +14,10 @@
           </mu-form-item>
         </mu-form>
 
+        <div ref="editor" class="mu-typo" style="text-align:left" v-highlight></div>
 
       </div>
-      <mu-card-text class="mu-typo" v-highlight>
+      <mu-card-text class="mu-typo" v-html="articleContent" v-highlight>
       </mu-card-text>
       <mu-card-actions style="overflow: hidden">
         <mu-button color="secondary" @click="" style="float: right">发表</mu-button>
@@ -26,25 +27,28 @@
 </template>
 
 <script>
+    import Editor from 'wangeditor';
+    import hljs from 'highlight.js';
+
     export default {
         name: "article-add",
         data() {
             return {
+                // 用于编辑时数据显示在wangEditor上
+                articleContent: "",
                 article: {
                     title: "",
                     topicId: null,
                     content: "",
                 },
                 topicList: [],
-                options: [
-                    'Option 1', 'Option 2', 'Option 3', 'Option 4',
-                    'Option 5', 'Option 6', 'Option 7', 'Option 8',
-                    'Option 9', 'Option 10'
-                ],
 
             }
         },
         methods: {
+            getContent: function () {
+                alert(this.article.content)
+            },
             // 获取主题
             getAllTopic() {
                 this.$requests.get("/topic/getAll", null).then((res) => {
@@ -53,9 +57,24 @@
                     }
                 })
             },
+            highlight() {
+                let blocks = this.$el.querySelectorAll('pre code');
+                blocks.forEach((block)=>{
+                    hljs.highlightBlock(block);
+                })
+            },
         },
         created() {
             this.getAllTopic();
+        },
+        mounted() {
+            let that = this;
+            let editor = new Editor(this.$refs.editor);
+            editor.customConfig.onchange = (html) => {
+                that.article.content = html;
+                that.highlight();
+            };
+            editor.create();
         }
     }
 </script>
