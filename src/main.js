@@ -91,6 +91,10 @@ new Vue({
         #nprogress .peg {
           box-shadow: 0 0 10px ${theme.secondary}, 0 0 5px ${theme.secondary};
         }
+        
+        .w-e-toolbar .w-e-active i, .w-e-toolbar .w-e-active:hover i {
+          color: ${theme.secondary};
+        }
       `;
     });
     theme.use('teal');

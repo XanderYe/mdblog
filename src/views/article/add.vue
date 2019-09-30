@@ -70,6 +70,9 @@
         mounted() {
             let that = this;
             let editor = new Editor(this.$refs.editor);
+            editor.customConfig.uploadFileName = 'file';
+            editor.customConfig.zIndex = '0';
+            editor.customConfig.uploadImgServer = ajaxUrl + '/article/upload';
             editor.customConfig.onchange = (html) => {
                 that.article.content = html;
                 that.highlight();
@@ -79,6 +82,17 @@
     }
 </script>
 
-<style scoped lang="less">
-
+<style lang="less">
+  .w-e-toolbar {
+    background-color: rgb(255,255,255) !important;
+    border: none !important;
+    display: block;
+    height: 31px;
+  }
+  .w-e-menu {
+    float: left;
+  }
+  .w-e-text-container {
+    border: none !important;
+  }
 </style>
