@@ -13,11 +13,9 @@
             </mu-select>
           </mu-form-item>
         </mu-form>
-
-        <div ref="editor" class="mu-typo" style="text-align:left" v-highlight></div>
-
       </div>
-      <mu-card-text class="mu-typo" v-html="articleContent" v-highlight>
+      <mu-card-text class="mu-typo">
+        <div ref="editor" style="text-align:left" v-highlight></div>
       </mu-card-text>
       <mu-card-actions style="overflow: hidden">
         <mu-button color="secondary" @click="" style="float: right">发表</mu-button>
@@ -34,9 +32,9 @@
         name: "article-add",
         data() {
             return {
-                // 用于编辑时数据显示在wangEditor上
-                articleContent: "",
+                editor: null,
                 article: {
+                    id: null,
                     title: "",
                     topicId: null,
                     content: "",
@@ -46,9 +44,6 @@
             }
         },
         methods: {
-            getContent: function () {
-                alert(this.article.content)
-            },
             // 获取主题
             getAllTopic() {
                 this.$requests.get("/topic/getAll", null).then((res) => {
@@ -63,21 +58,41 @@
                     hljs.highlightBlock(block);
                 })
             },
+            getArticle() {
+                this.$requests.get("/article/getById", {id: this.article.id}).then(res => {
+                    if (res.data.code === 0) {
+                        if(res.data.data != null) {
+                            this.article.topicId = res.data.data.topicId;
+                            this.article.title = res.data.data.title;
+                            this.wangEditor(res.data.data.content);
+                        }
+                    }
+                })
+            },
+            wangEditor(content) {
+                let that = this;
+                let editor = new Editor(this.$refs.editor);
+                editor.customConfig.uploadFileName = 'file';
+                editor.customConfig.zIndex = '0';
+                editor.customConfig.uploadImgServer = ajaxUrl + '/article/upload';
+                editor.customConfig.onchange = (html) => {
+                    that.article.content = html;
+                    that.highlight();
+                };
+                editor.create();
+                editor.txt.html(content);
+            },
         },
         created() {
             this.getAllTopic();
         },
         mounted() {
-            let that = this;
-            let editor = new Editor(this.$refs.editor);
-            editor.customConfig.uploadFileName = 'file';
-            editor.customConfig.zIndex = '0';
-            editor.customConfig.uploadImgServer = ajaxUrl + '/article/upload';
-            editor.customConfig.onchange = (html) => {
-                that.article.content = html;
-                that.highlight();
-            };
-            editor.create();
+            this.article.id = this.$route.query.id;
+            if(this.article.id){
+                this.getArticle();
+            }else{
+                this.wangEditor();
+            }
         }
     }
 </script>
