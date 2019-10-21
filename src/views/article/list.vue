@@ -6,17 +6,15 @@
 </template>
 
 <script>
-    export default {
-        name: "article-list",
-        data() {
-            return {
+  export default {
+    name: "article-list",
+    data() {
+      return {}
+    },
+    mounted() {
 
-            }
-        },
-        mounted() {
-
-        }
     }
+  }
 </script>
 
 <style scoped>

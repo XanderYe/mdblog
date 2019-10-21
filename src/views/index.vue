@@ -24,51 +24,51 @@
 </template>
 
 <script>
-    export default {
-        name: "index",
-        data: () => ({
-            topicId: null,
-            articleList: [],
-            page: 1,
-            total: 1,
-            pageSize: 5,
-        }),
-        methods: {
-            changePage() {
-                this.getArticleList();
-                // 滚动到顶部
-                document.documentElement.scrollTop = 0;
-                document.body.scrollTop = 0;
-            },
-            getArticleList() {
-                this.$requests.get("/article/getRecentArticles", {
-                    topicId: this.topicId,
-                    page: this.page,
-                    rows: this.pageSize
-                }).then((res) => {
-                    if (res.data.code === 0) {
-                        this.articleList = res.data.data.list;
-                        this.total = res.data.data.total;
-                    }
-                })
-            }
-        },
-        created() {
-            this.getArticleList();
-        },
-        watch: {
-            '$route': function (to, from) {
-                // 切换左侧导航栏时刷新数据
-                if (to.path === from.path) {
-                    document.documentElement.scrollTop = 0;
-                    document.body.scrollTop = 0;
-                    this.topicId = this.$route.query.id;
-                    this.page = 1;
-                    this.getArticleList();
-                }
-            }
+  export default {
+    name: "index",
+    data: () => ({
+      topicId: null,
+      articleList: [],
+      page: 1,
+      total: 1,
+      pageSize: 5,
+    }),
+    methods: {
+      changePage() {
+        this.getArticleList();
+        // 滚动到顶部
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      },
+      getArticleList() {
+        this.$requests.get("/article/getRecentArticles", {
+          topicId: this.topicId,
+          page: this.page,
+          rows: this.pageSize
+        }).then((res) => {
+          if (res.data.code === 0) {
+            this.articleList = res.data.data.list;
+            this.total = res.data.data.total;
+          }
+        })
+      }
+    },
+    created() {
+      this.getArticleList();
+    },
+    watch: {
+      '$route': function (to, from) {
+        // 切换左侧导航栏时刷新数据
+        if (to.path === from.path) {
+          document.documentElement.scrollTop = 0;
+          document.body.scrollTop = 0;
+          this.topicId = this.$route.query.id;
+          this.page = 1;
+          this.getArticleList();
         }
+      }
     }
+  }
 </script>
 
 <style scoped>

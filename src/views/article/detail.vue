@@ -9,28 +9,28 @@
 </template>
 
 <script>
-    export default {
-        name: "article-detail",
-        data() {
-            return {
-                articleId: 0,
-                article: {},
-            }
-        },
-        methods: {
-            getArticle() {
-                this.$requests.get("/article/getById", {id: this.articleId}).then(res => {
-                    if (res.data.code === 0) {
-                        this.article = res.data.data;
-                    }
-                })
-            },
-        },
-        created() {
-            this.articleId = this.$route.query.id;
-            this.getArticle();
-        },
-    }
+  export default {
+    name: "article-detail",
+    data() {
+      return {
+        articleId: 0,
+        article: {},
+      }
+    },
+    methods: {
+      getArticle() {
+        this.$requests.get("/article/getById", {id: this.articleId}).then(res => {
+          if (res.data.code === 0) {
+            this.article = res.data.data;
+          }
+        })
+      },
+    },
+    created() {
+      this.articleId = this.$route.query.id;
+      this.getArticle();
+    },
+  }
 </script>
 
 <style scoped>

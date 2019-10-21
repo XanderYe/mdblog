@@ -25,88 +25,90 @@
 </template>
 
 <script>
-    import Editor from 'wangeditor';
-    import hljs from 'highlight.js';
+  import Editor from 'wangeditor';
+  import hljs from 'highlight.js';
 
-    export default {
-        name: "article-add",
-        data() {
-            return {
-                editor: null,
-                article: {
-                    id: null,
-                    title: "",
-                    topicId: null,
-                    content: "",
-                },
-                topicList: [],
+  export default {
+    name: "article-add",
+    data() {
+      return {
+        editor: null,
+        article: {
+          id: null,
+          title: "",
+          topicId: null,
+          content: "",
+        },
+        topicList: [],
 
+      }
+    },
+    methods: {
+      // 获取主题
+      getAllTopic() {
+        this.$requests.get("/topic/getAll", null).then((res) => {
+          if (res.data.code === 0) {
+            this.topicList = res.data.data;
+          }
+        })
+      },
+      highlight() {
+        let blocks = this.$el.querySelectorAll('pre code');
+        blocks.forEach((block) => {
+          hljs.highlightBlock(block);
+        })
+      },
+      getArticle() {
+        this.$requests.get("/article/getById", {id: this.article.id}).then(res => {
+          if (res.data.code === 0) {
+            if (res.data.data != null) {
+              this.article.topicId = res.data.data.topicId;
+              this.article.title = res.data.data.title;
+              this.wangEditor(res.data.data.content);
             }
-        },
-        methods: {
-            // 获取主题
-            getAllTopic() {
-                this.$requests.get("/topic/getAll", null).then((res) => {
-                    if (res.data.code === 0) {
-                        this.topicList = res.data.data;
-                    }
-                })
-            },
-            highlight() {
-                let blocks = this.$el.querySelectorAll('pre code');
-                blocks.forEach((block)=>{
-                    hljs.highlightBlock(block);
-                })
-            },
-            getArticle() {
-                this.$requests.get("/article/getById", {id: this.article.id}).then(res => {
-                    if (res.data.code === 0) {
-                        if(res.data.data != null) {
-                            this.article.topicId = res.data.data.topicId;
-                            this.article.title = res.data.data.title;
-                            this.wangEditor(res.data.data.content);
-                        }
-                    }
-                })
-            },
-            wangEditor(content) {
-                let that = this;
-                let editor = new Editor(this.$refs.editor);
-                editor.customConfig.uploadFileName = 'file';
-                editor.customConfig.zIndex = '0';
-                editor.customConfig.uploadImgServer = ajaxUrl + '/article/upload';
-                editor.customConfig.onchange = (html) => {
-                    that.article.content = html;
-                    that.highlight();
-                };
-                editor.create();
-                editor.txt.html(content);
-            },
-        },
-        created() {
-            this.getAllTopic();
-        },
-        mounted() {
-            this.article.id = this.$route.query.id;
-            if(this.article.id){
-                this.getArticle();
-            }else{
-                this.wangEditor();
-            }
-        }
+          }
+        })
+      },
+      wangEditor(content) {
+        let that = this;
+        let editor = new Editor(this.$refs.editor);
+        editor.customConfig.uploadFileName = 'file';
+        editor.customConfig.zIndex = '0';
+        editor.customConfig.uploadImgServer = ajaxUrl + '/article/upload';
+        editor.customConfig.onchange = (html) => {
+          that.article.content = html;
+          that.highlight();
+        };
+        editor.create();
+        editor.txt.html(content);
+      },
+    },
+    created() {
+      this.getAllTopic();
+    },
+    mounted() {
+      this.article.id = this.$route.query.id;
+      if (this.article.id) {
+        this.getArticle();
+      } else {
+        this.wangEditor();
+      }
     }
+  }
 </script>
 
 <style lang="less">
   .w-e-toolbar {
-    background-color: rgb(255,255,255) !important;
+    background-color: rgb(255, 255, 255) !important;
     border: none !important;
     display: block;
     height: 31px;
   }
+
   .w-e-menu {
     float: left;
   }
+
   .w-e-text-container {
     border: none !important;
   }

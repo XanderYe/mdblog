@@ -60,7 +60,8 @@
             <mu-icon class="toggle-icon" size="24" value="keyboard_arrow_down"></mu-icon>
           </mu-list-item-action>
 
-          <mu-list-item :class="isActived(setting.name)" button slot="nested" v-for="setting in blogSettingList" :key="setting.id"
+          <mu-list-item :class="isActived(setting.name)" button slot="nested" v-for="setting in blogSettingList"
+                        :key="setting.id"
                         :to="{name: setting.routerName}" @click="changeNavName(setting.name)">
             <mu-list-item-title>{{setting.name}}</mu-list-item-title>
           </mu-list-item>
@@ -223,369 +224,369 @@
 
 <script>
 
-    export default {
-        data() {
-            const desktop = this.isDesktop();
-            return {
-                // 登录状态
-                isLogin: false,
-                user: {
-                    id: 0,
-                    username: "",
-                    nickname: "",
-                    avatar: "",
-                },
-                topicList: [],
-                open: desktop,
-                docked: desktop,
-                desktop: desktop,
-                isOpen: desktop ? "is-open" : "",
-                openItem: "",
-                // 导航栏名称
-                appBarName: "首页",
-                blogSettingList: [
-                    {
-                        id: 1,
-                        name: "主题管理",
-                        routerName: "topic-list"
-                    },
-                    {
-                        id: 2,
-                        name: "文章管理",
-                        routerName: "article-list"
-                    },
-                    {
-                        id: 3,
-                        name: "发表文章",
-                        routerName: "article-add"
-                    }
-                ],
-                owner: {
-                    id: 1,
-                    owner: "XanderYe",
-                    avatar: "/static/img/my.jpg",
-                    email: "XanderYe@outlook.com",
-                    github: "https://github.com/XanderYe",
-                    description: "这里是一条咸鱼的博客",
-                    occupation: "java开发工程师"
-                },
-                // 用户菜单
-                userMenu: false,
-                // 菜单弹出绑定元素
-                userMenuTrigger: null,
-                // 登录dialog
-                loginDialog: false,
-                // 注册dialog
-                registerDialog: false,
-                // 登录密码状态
-                loginVisibility: false,
-                // 注册密码状态
-                registerVisibility1: false,
-                // 注册确认密码状态
-                registerVisibility2: false,
-                loginData: {
-                    username: "",
-                    password: "",
-                    remember: false
-                },
-                registerData: {
-                    username: "",
-                    nickname: "",
-                    password: "",
-                    password2: "",
-                    verCode: "",
-                    uuid: "",
-                },
-                snackbar: {
-                    message: "",
-                    open: false,
-                },
-                // 回顶部按钮状态
-                scrollBtnStatus: false,
-                // 验证码src
-                imgSrc: "",
-                usernameRules: [
-                    {validate: (val) => !!val, message: '必须填写用户名'},
-                ],
-                username2Rules: [
-                    {validate: (val) => !!val, message: '必须填写用户名'},
-                    {validate: (val) => this.checkUsername(val), message: '用户名已存在'},
-                ],
-                nicknameRules: [
-                    {validate: (val) => !!val, message: '必须填写昵称'},
-                ],
-                passwordRules: [
-                    {validate: (val) => !!val, message: '必须填写密码'},
-                ],
-                password1Rules: [
-                    {validate: (val) => !!val, message: '必须填写密码'},
-                    {validate: (val) => val.length >= 6 && val.length <= 12, message: '密码长度大于6小于12'}
-                ],
-                password2Rules: [
-                    {validate: (val) => !!val, message: '必须填写密码'},
-                    {validate: (val) => val === this.registerData.password, message: '两次密码不一致'}
-                ],
-                verCodeRules: [
-                    {validate: (val) => !!val, message: '必须填写验证码'},
-                    {validate: (val) => val.length === 4, message: '验证码必须是4位数'}
-                ],
-            }
+  export default {
+    data() {
+      const desktop = this.isDesktop();
+      return {
+        // 登录状态
+        isLogin: false,
+        user: {
+          id: 0,
+          username: "",
+          nickname: "",
+          avatar: "",
         },
-        computed: {
-            isOwner() {
-                return this.user.id === this.owner.id;
-            },
-            isActived() {
-                return (name) => {
-                    if (name == this.appBarName) {
-                        return ['actived'];
-                    } else {
-                        return [];
-                    }
-                }
-            }
+        topicList: [],
+        open: desktop,
+        docked: desktop,
+        desktop: desktop,
+        isOpen: desktop ? "is-open" : "",
+        openItem: "",
+        // 导航栏名称
+        appBarName: "首页",
+        blogSettingList: [
+          {
+            id: 1,
+            name: "主题管理",
+            routerName: "topic-list"
+          },
+          {
+            id: 2,
+            name: "文章管理",
+            routerName: "article-list"
+          },
+          {
+            id: 3,
+            name: "发表文章",
+            routerName: "article-add"
+          }
+        ],
+        owner: {
+          id: 1,
+          owner: "XanderYe",
+          avatar: "/static/img/my.jpg",
+          email: "XanderYe@outlook.com",
+          github: "https://github.com/XanderYe",
+          description: "这里是一条咸鱼的博客",
+          occupation: "java开发工程师"
         },
-        methods: {
-
-            toggleNav() {
-                this.open = !this.open
-            },
-            changeNav() {
-                const desktop = this.isDesktop();
-                this.docked = desktop;
-                if (desktop === this.desktop) {
-                    return;
-                }
-                if (!desktop && this.desktop && this.open) {
-                    this.open = false;
-                    this.isOpen = "";
-                }
-                if (desktop && !this.desktop && !this.open) {
-                    this.open = true;
-                    this.isOpen = "is-open";
-                }
-                this.desktop = desktop
-            },
-
-            // 改变菜单栏名称
-            changeNavName(name) {
-                this.appBarName = name;
-            },
-
-            getOwner() {
-                this.$requests.get("/user/getOwner", null).then(res => {
-                    if (res.data.code === 0) {
-                        this.owner = res.data.data;
-                        this.owner.avatar = ajaxUrl + res.data.data.avatar;
-                    }
-                })
-            },
-
-            // 获取主题
-            getAllTopic() {
-                this.$requests.get("/topic/getAll", null).then((res) => {
-                    if (res.data.code === 0) {
-                        this.topicList = res.data.data;
-                    }
-                })
-            },
-
-            // 是否是桌面端
-            isDesktop() {
-                return window.innerWidth > 993;
-            },
-
-            // 打开通知
-            openSnackbar(msg) {
-                this.snackbar.message = msg;
-                this.snackbar.open = true;
-                setTimeout(() => {
-                    if (this.snackbar.open) {
-                        this.snackbar.open = false;
-                    }
-                }, 3000)
-            },
-
-            toTop() {
-                document.documentElement.scrollTop = 0;
-                document.body.scrollTop = 0;
-            },
-
-            // 滚到顶部
-            scrollToTop() {
-                let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-                let browserHeight = window.outerHeight;
-                this.scrollBtnStatus = scrollTop > browserHeight;
-            },
-
-            // 更改验证码
-            changeCode() {
-                this.$requests.get("/captcha?r=" + Math.random(), null).then(res => {
-                    if (res.data.code === 0) {
-                        this.imgSrc = "data:image/png;base64," + res.data.data.image;
-                        this.registerData.uuid = res.data.data.uuid;
-                    }
-                })
-
-            },
-
-            // 打开登录框
-            openLogin() {
-                this.loginDialog = true;
-                this.loginVisibility = false;
-                let username = localStorage.getItem("username");
-                let password = localStorage.getItem("password");
-                if (username != null && password != null) {
-                    this.loginData.username = username;
-                    this.loginData.password = password;
-                }
-            },
-
-            // 登录
-            login() {
-                this.$refs.loginForm.validate().then((validate) => {
-                    if (validate) {
-                        if (this.loginData.remember) {
-                            localStorage.setItem("username", this.loginData.username);
-                            localStorage.setItem("password", this.loginData.password);
-                        }
-                        let form = new FormData;
-                        form.append("username", this.loginData.username);
-                        form.append("password", this.loginData.password);
-                        this.$requests.post("/user/login", form).then(res => {
-                            if (res.data.code === 0) {
-                                this.openSnackbar("登录成功");
-                                let user = res.data.data;
-                                // 存储到localStorage
-                                localStorage.removeItem("user");
-                                localStorage.setItem("user", JSON.stringify(user));
-                                // 存储到vueX
-                                this.$store.commit("setUser", user);
-                                this.user = user;
-                                this.user.avatar = ajaxUrl + user.avatar;
-                                this.isLogin = true;
-                                this.loginDialog = false;
-                                this.$nextTick(() => {
-                                    //绑定菜单弹出元素
-                                    this.userMenuTrigger = this.$refs.avatarButton.$el;
-                                })
-
-                            } else {
-                                this.openSnackbar(res.data.msg);
-                            }
-                        })
-                    }
-                })
-            },
-
-            // 打开注册框
-            openRegister() {
-                this.registerDialog = true;
-                this.registerVisibility1 = false;
-                this.registerVisibility2 = false;
-                this.registerData = {
-                    username: "",
-                    password: "",
-                    password2: "",
-                    verCode: "",
-                    uuid: "",
-                };
-                this.changeCode();
-            },
-
-            // 检查用户名
-            checkUsername(username) {
-                let result = true;
-                this.$requests.asynGet("/user/check", {username: username}, (res) => {
-                    result = res.code === 0;
-                });
-                return result;
-            },
-
-            // 注册
-            register() {
-                this.$refs.registerForm.validate().then((validate) => {
-                    if (validate) {
-                        let form = new FormData;
-                        form.append("username", this.registerData.username);
-                        form.append("nickname", this.registerData.nickname);
-                        form.append("password", this.registerData.password);
-                        form.append("password2", this.registerData.password2);
-                        form.append("verCode", this.registerData.verCode);
-                        form.append("uuid", this.registerData.uuid);
-                        this.$requests.post("/user/register", form).then(res => {
-                            if (res.data.code === 0) {
-                                this.openSnackbar("注册成功");
-                                this.isLogin = true;
-                                this.registerDialog = false;
-                                this.loginDialog = true;
-                            } else {
-                                this.changeCode();
-                                this.openSnackbar(res.data.msg);
-                            }
-                        })
-                    }
-                })
-            },
-
-            // 注销
-            logout() {
-                this.userMenu = false;
-                this.isLogin = false;
-                this.user = {
-                    id: 0,
-                    username: "",
-                    nickname: "",
-                    avatar: "",
-                };
-                this.$store.commit("removeUser");
-                this.openSnackbar("注销成功");
-
-            },
+        // 用户菜单
+        userMenu: false,
+        // 菜单弹出绑定元素
+        userMenuTrigger: null,
+        // 登录dialog
+        loginDialog: false,
+        // 注册dialog
+        registerDialog: false,
+        // 登录密码状态
+        loginVisibility: false,
+        // 注册密码状态
+        registerVisibility1: false,
+        // 注册确认密码状态
+        registerVisibility2: false,
+        loginData: {
+          username: "",
+          password: "",
+          remember: false
         },
-        created() {
-            this.getOwner();
-            this.getAllTopic();
-            this.changeNav();
-            this.changeCode();
-
-            // 判断登录状态
-            const user = JSON.parse(localStorage.getItem("user"));
-            if (user) {
-                this.isLogin = true;
-                this.user = user;
-                if (user.avatar) {
-                    this.user.avatar = ajaxUrl + user.avatar;
-                }
-                this.$store.commit("setUser", user);
-            }
+        registerData: {
+          username: "",
+          nickname: "",
+          password: "",
+          password2: "",
+          verCode: "",
+          uuid: "",
         },
-        mounted() {
-            this.handleResize = () => {
-                this.changeNav();
-            };
-            // 拖动窗口事件
-            window.addEventListener('resize', this.handleResize);
-
-            // 滚动事件
-            window.addEventListener('scroll', this.scrollToTop, true);
-
-            if (this.isLogin) {
-                //绑定菜单弹出元素
-                this.userMenuTrigger = this.$refs.avatarButton.$el;
-            }
+        snackbar: {
+          message: "",
+          open: false,
         },
-        watch: {
-            '$route': function (to, from) {
-                // 移动端点击后自动关闭抽屉
-                if (!this.isDesktop()) {
-                    if (this.open) {
-                        this.open = false;
-                    }
-                }
-            }
+        // 回顶部按钮状态
+        scrollBtnStatus: false,
+        // 验证码src
+        imgSrc: "",
+        usernameRules: [
+          {validate: (val) => !!val, message: '必须填写用户名'},
+        ],
+        username2Rules: [
+          {validate: (val) => !!val, message: '必须填写用户名'},
+          {validate: (val) => this.checkUsername(val), message: '用户名已存在'},
+        ],
+        nicknameRules: [
+          {validate: (val) => !!val, message: '必须填写昵称'},
+        ],
+        passwordRules: [
+          {validate: (val) => !!val, message: '必须填写密码'},
+        ],
+        password1Rules: [
+          {validate: (val) => !!val, message: '必须填写密码'},
+          {validate: (val) => val.length >= 6 && val.length <= 12, message: '密码长度大于6小于12'}
+        ],
+        password2Rules: [
+          {validate: (val) => !!val, message: '必须填写密码'},
+          {validate: (val) => val === this.registerData.password, message: '两次密码不一致'}
+        ],
+        verCodeRules: [
+          {validate: (val) => !!val, message: '必须填写验证码'},
+          {validate: (val) => val.length === 4, message: '验证码必须是4位数'}
+        ],
+      }
+    },
+    computed: {
+      isOwner() {
+        return this.user.id === this.owner.id;
+      },
+      isActived() {
+        return (name) => {
+          if (name == this.appBarName) {
+            return ['actived'];
+          } else {
+            return [];
+          }
         }
+      }
+    },
+    methods: {
+
+      toggleNav() {
+        this.open = !this.open
+      },
+      changeNav() {
+        const desktop = this.isDesktop();
+        this.docked = desktop;
+        if (desktop === this.desktop) {
+          return;
+        }
+        if (!desktop && this.desktop && this.open) {
+          this.open = false;
+          this.isOpen = "";
+        }
+        if (desktop && !this.desktop && !this.open) {
+          this.open = true;
+          this.isOpen = "is-open";
+        }
+        this.desktop = desktop
+      },
+
+      // 改变菜单栏名称
+      changeNavName(name) {
+        this.appBarName = name;
+      },
+
+      getOwner() {
+        this.$requests.get("/user/getOwner", null).then(res => {
+          if (res.data.code === 0) {
+            this.owner = res.data.data;
+            this.owner.avatar = ajaxUrl + res.data.data.avatar;
+          }
+        })
+      },
+
+      // 获取主题
+      getAllTopic() {
+        this.$requests.get("/topic/getAll", null).then((res) => {
+          if (res.data.code === 0) {
+            this.topicList = res.data.data;
+          }
+        })
+      },
+
+      // 是否是桌面端
+      isDesktop() {
+        return window.innerWidth > 993;
+      },
+
+      // 打开通知
+      openSnackbar(msg) {
+        this.snackbar.message = msg;
+        this.snackbar.open = true;
+        setTimeout(() => {
+          if (this.snackbar.open) {
+            this.snackbar.open = false;
+          }
+        }, 3000)
+      },
+
+      toTop() {
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      },
+
+      // 滚到顶部
+      scrollToTop() {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+        let browserHeight = window.outerHeight;
+        this.scrollBtnStatus = scrollTop > browserHeight;
+      },
+
+      // 更改验证码
+      changeCode() {
+        this.$requests.get("/captcha?r=" + Math.random(), null).then(res => {
+          if (res.data.code === 0) {
+            this.imgSrc = "data:image/png;base64," + res.data.data.image;
+            this.registerData.uuid = res.data.data.uuid;
+          }
+        })
+
+      },
+
+      // 打开登录框
+      openLogin() {
+        this.loginDialog = true;
+        this.loginVisibility = false;
+        let username = localStorage.getItem("username");
+        let password = localStorage.getItem("password");
+        if (username != null && password != null) {
+          this.loginData.username = username;
+          this.loginData.password = password;
+        }
+      },
+
+      // 登录
+      login() {
+        this.$refs.loginForm.validate().then((validate) => {
+          if (validate) {
+            if (this.loginData.remember) {
+              localStorage.setItem("username", this.loginData.username);
+              localStorage.setItem("password", this.loginData.password);
+            }
+            let form = new FormData;
+            form.append("username", this.loginData.username);
+            form.append("password", this.loginData.password);
+            this.$requests.post("/user/login", form).then(res => {
+              if (res.data.code === 0) {
+                this.openSnackbar("登录成功");
+                let user = res.data.data;
+                // 存储到localStorage
+                localStorage.removeItem("user");
+                localStorage.setItem("user", JSON.stringify(user));
+                // 存储到vueX
+                this.$store.commit("setUser", user);
+                this.user = user;
+                this.user.avatar = ajaxUrl + user.avatar;
+                this.isLogin = true;
+                this.loginDialog = false;
+                this.$nextTick(() => {
+                  //绑定菜单弹出元素
+                  this.userMenuTrigger = this.$refs.avatarButton.$el;
+                })
+
+              } else {
+                this.openSnackbar(res.data.msg);
+              }
+            })
+          }
+        })
+      },
+
+      // 打开注册框
+      openRegister() {
+        this.registerDialog = true;
+        this.registerVisibility1 = false;
+        this.registerVisibility2 = false;
+        this.registerData = {
+          username: "",
+          password: "",
+          password2: "",
+          verCode: "",
+          uuid: "",
+        };
+        this.changeCode();
+      },
+
+      // 检查用户名
+      checkUsername(username) {
+        let result = true;
+        this.$requests.asynGet("/user/check", {username: username}, (res) => {
+          result = res.code === 0;
+        });
+        return result;
+      },
+
+      // 注册
+      register() {
+        this.$refs.registerForm.validate().then((validate) => {
+          if (validate) {
+            let form = new FormData;
+            form.append("username", this.registerData.username);
+            form.append("nickname", this.registerData.nickname);
+            form.append("password", this.registerData.password);
+            form.append("password2", this.registerData.password2);
+            form.append("verCode", this.registerData.verCode);
+            form.append("uuid", this.registerData.uuid);
+            this.$requests.post("/user/register", form).then(res => {
+              if (res.data.code === 0) {
+                this.openSnackbar("注册成功");
+                this.isLogin = true;
+                this.registerDialog = false;
+                this.loginDialog = true;
+              } else {
+                this.changeCode();
+                this.openSnackbar(res.data.msg);
+              }
+            })
+          }
+        })
+      },
+
+      // 注销
+      logout() {
+        this.userMenu = false;
+        this.isLogin = false;
+        this.user = {
+          id: 0,
+          username: "",
+          nickname: "",
+          avatar: "",
+        };
+        this.$store.commit("removeUser");
+        this.openSnackbar("注销成功");
+
+      },
+    },
+    created() {
+      this.getOwner();
+      this.getAllTopic();
+      this.changeNav();
+      this.changeCode();
+
+      // 判断登录状态
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (user) {
+        this.isLogin = true;
+        this.user = user;
+        if (user.avatar) {
+          this.user.avatar = ajaxUrl + user.avatar;
+        }
+        this.$store.commit("setUser", user);
+      }
+    },
+    mounted() {
+      this.handleResize = () => {
+        this.changeNav();
+      };
+      // 拖动窗口事件
+      window.addEventListener('resize', this.handleResize);
+
+      // 滚动事件
+      window.addEventListener('scroll', this.scrollToTop, true);
+
+      if (this.isLogin) {
+        //绑定菜单弹出元素
+        this.userMenuTrigger = this.$refs.avatarButton.$el;
+      }
+    },
+    watch: {
+      '$route': function (to, from) {
+        // 移动端点击后自动关闭抽屉
+        if (!this.isDesktop()) {
+          if (this.open) {
+            this.open = false;
+          }
+        }
+      }
     }
+  }
 </script>
 
 <style lang="less" scoped>
