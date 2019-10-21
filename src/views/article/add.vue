@@ -15,7 +15,7 @@
         </mu-form>
       </div>
       <mu-card-text class="mu-typo">
-        <div ref="editor" style="text-align:left" v-highlight></div>
+        <wangeditor :content="initContent" @highlight="highlight" @input="getContent"></wangeditor>
       </mu-card-text>
       <mu-card-actions style="overflow: hidden">
         <mu-button color="secondary" @click="" style="float: right">发表</mu-button>
@@ -25,11 +25,12 @@
 </template>
 
 <script>
-  import Editor from 'wangeditor';
   import hljs from 'highlight.js';
+  import wangeditor from "@/components/wangeditor";
 
   export default {
     name: "article-add",
+    components: {wangeditor},
     data() {
       return {
         editor: null,
@@ -39,6 +40,7 @@
           topicId: null,
           content: "",
         },
+        initContent: "",
         topicList: [],
 
       }
@@ -64,52 +66,36 @@
             if (res.data.data != null) {
               this.article.topicId = res.data.data.topicId;
               this.article.title = res.data.data.title;
-              this.wangEditor(res.data.data.content);
+              this.initContent = res.data.data.content;
             }
           }
         })
       },
-      wangEditor(content) {
-        let that = this;
-        let editor = new Editor(this.$refs.editor);
-        editor.customConfig.uploadFileName = 'file';
-        editor.customConfig.zIndex = '0';
-        editor.customConfig.uploadImgServer = ajaxUrl + '/article/upload';
-        editor.customConfig.onchange = (html) => {
-          that.article.content = html;
-          that.highlight();
-        };
-        editor.create();
-        editor.txt.html(content);
+      getContent(html) {
+        this.article.content = html;
       },
     },
     created() {
       this.getAllTopic();
-    },
-    mounted() {
       this.article.id = this.$route.query.id;
       if (this.article.id) {
         this.getArticle();
-      } else {
-        this.wangEditor();
+      }
+    },
+    mounted() {
+
+    },
+    watch: {
+      '$route': function (to, from) {
+        this.article.id = this.$route.query.id;
+        if (this.article.id) {
+          this.getArticle();
+        }
       }
     }
   }
 </script>
 
 <style lang="less">
-  .w-e-toolbar {
-    background-color: rgb(255, 255, 255) !important;
-    border: none !important;
-    display: block;
-    height: 31px;
-  }
 
-  .w-e-menu {
-    float: left;
-  }
-
-  .w-e-text-container {
-    border: none !important;
-  }
 </style>

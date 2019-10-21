@@ -3,11 +3,12 @@
 </template>
 
 <script>
+  import Editor from 'wangeditor';
   export default {
     name: "wangeditor",
     data() {
       return {
-
+        editor: null,
       }
     },
     props: {
@@ -16,23 +17,47 @@
         default: ""
       }
     },
-    methods: {},
+    watch: {
+      content: {
+        handler: function (newValue, oldValue) {
+          this.editor.txt.html(newValue);
+        }
+      }
+    },
+    methods: {
+      wangEditor(){
+        let _this = this;
+        let editor = new Editor(this.$refs.editor);
+        editor.customConfig.uploadFileName = 'file';
+        editor.customConfig.zIndex = '0';
+        editor.customConfig.uploadImgServer = ajaxUrl + '/article/upload';
+        editor.customConfig.onchange = (html) => {
+          _this.$emit('highlight');
+          _this.$emit('input', html);
+        };
+        editor.create();
+        this.editor = editor;
+      },
+    },
     mounted() {
-      let that = this;
-      let editor = new Editor(this.$refs.editor);
-      editor.customConfig.uploadFileName = 'file';
-      editor.customConfig.zIndex = '0';
-      editor.customConfig.uploadImgServer = ajaxUrl + '/article/upload';
-      editor.customConfig.onchange = (html) => {
-        that.article.content = html;
-        that.highlight();
-      };
-      editor.create();
-      editor.txt.html(that.content);
+      this.wangEditor();
     }
   }
 </script>
 
-<style scoped>
+<style lang="less">
+  .w-e-toolbar {
+    background-color: rgb(255, 255, 255) !important;
+    border: none !important;
+    display: block;
+    height: 31px;
+  }
 
+  .w-e-menu {
+    float: left;
+  }
+
+  .w-e-text-container {
+    border: none !important;
+  }
 </style>
