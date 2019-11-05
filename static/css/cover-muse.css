@@ -28,16 +28,19 @@ body {
   font-weight: bold;
 }
 
-.mu-container {
-  padding-top: 64px;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  padding-bottom: 16px;
+#mu-container {
+  width: 100%;
+  position: absolute;
+  top: 64px;
+  bottom: 0;
+  overflow: scroll;
+  right: 0;
 }
 
 
-.mu-container.is-open {
-  padding-left: 256px;
+#mu-container.is-open {
+  width: auto;
+  left: 256px;
 }
 
 .mu-typo a {

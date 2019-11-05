@@ -116,7 +116,7 @@
 
     </mu-appbar>
 
-    <div :class="['mu-container', isOpen]">
+    <div id="mu-container" :class="[isOpen]">
 
       <keep-alive :include="['index']">
         <router-view></router-view>
@@ -129,6 +129,8 @@
           <mu-icon value="arrow_upward"></mu-icon>
         </mu-button>
       </mu-scale-transition>
+
+      <footers></footers>
     </div>
 
     <mu-dialog width="448" transition="scale" :fullscreen="!desktop" :open.sync="loginDialog" :overlay-close="false"
@@ -214,7 +216,8 @@
 
     </mu-dialog>
 
-    <mu-snackbar position="top" :open.sync="snackbar.open">
+    <mu-snackbar position="top" :open.sync="snackbar.open"
+    >
       {{snackbar.message}}
       <mu-button flat slot="action" color="secondary" @click="snackbar.open = false">关闭</mu-button>
     </mu-snackbar>
@@ -224,7 +227,9 @@
 
 <script>
 
+  import Footers from "./footers";
   export default {
+    components: {Footers},
     data() {
       const desktop = this.isDesktop();
       return {
@@ -408,14 +413,13 @@
       },
 
       toTop() {
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
+        document.getElementById("mu-container").scrollTop = 0;
       },
 
       // 滚到顶部
       scrollToTop() {
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-        let browserHeight = window.outerHeight;
+        let scrollTop = document.getElementById("mu-container").scrollTop;
+        let browserHeight = window.outerHeight / 2;
         this.scrollBtnStatus = scrollTop > browserHeight;
       },
 
@@ -569,7 +573,7 @@
       window.addEventListener('resize', this.handleResize);
 
       // 滚动事件
-      window.addEventListener('scroll', this.scrollToTop, true);
+      document.getElementById("mu-container").addEventListener('scroll', this.scrollToTop, true);
 
       if (this.isLogin) {
         //绑定菜单弹出元素

@@ -64,6 +64,10 @@ new Vue({
     // 需要主题颜色的css加入主题控制
     theme.addCreateTheme((theme) => {
       return `
+        #footer {
+          background-color: ${theme.secondary};
+        }
+        
         .mu-typo a:before {
           background-color: ${theme.secondary};
         }
