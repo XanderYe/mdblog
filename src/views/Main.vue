@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%">
     <mu-drawer :open.sync="open" :docked="docked" :z-depth="1">
 
       <mu-card style="width: 100%; max-width: 375px; margin: 0 auto">
@@ -129,6 +129,8 @@
           <mu-icon value="arrow_upward"></mu-icon>
         </mu-button>
       </mu-scale-transition>
+
+      <footers></footers>
     </div>
 
     <mu-dialog width="448" transition="scale" :fullscreen="!desktop" :open.sync="loginDialog" :overlay-close="false"
@@ -223,8 +225,11 @@
 </template>
 
 <script>
-
+  import Footers from "./footers";
   export default {
+    components: {
+      Footers
+    },
     data() {
       const desktop = this.isDesktop();
       return {
@@ -408,14 +413,13 @@
       },
 
       toTop() {
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
+        document.getElementById("app").scrollTop = 0;
       },
 
       // 滚到顶部
       scrollToTop() {
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-        let browserHeight = window.outerHeight;
+        let scrollTop = document.getElementById("app").scrollTop;
+        let browserHeight = window.outerHeight / 2;
         this.scrollBtnStatus = scrollTop > browserHeight;
       },
 
@@ -569,12 +573,14 @@
       window.addEventListener('resize', this.handleResize);
 
       // 滚动事件
-      window.addEventListener('scroll', this.scrollToTop, true);
+      document.getElementById("app").addEventListener('scroll', this.scrollToTop, true);
 
       if (this.isLogin) {
         //绑定菜单弹出元素
         this.userMenuTrigger = this.$refs.avatarButton.$el;
       }
+
+      $("")
     },
     watch: {
       '$route': function (to, from) {

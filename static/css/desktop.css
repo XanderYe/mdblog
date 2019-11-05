@@ -24,8 +24,11 @@
   }
 
   .mu-container {
-    height: 92%;
-    margin-top: 10px;
+    height: 99.8%;
+  }
+
+  .container {
+    min-height: 92.7%;
   }
 
   .login-dialog .mu-dialog-body, .register-dialog .mu-dialog-body {

@@ -1,7 +1,5 @@
 <template>
-  <div id="footer">
-
-  </div>
+  <footer id="footer"></footer>
 </template>
 
 <script>
@@ -14,6 +12,5 @@
   #footer {
     height: 64px;
     background: white;
-    margin-top: 16px;
   }
 </style>
