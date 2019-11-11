@@ -561,7 +561,6 @@
       this.getOwner();
       this.getAllTopic();
       this.changeNav();
-      this.changeCode();
 
       // 判断登录状态
       const user = JSON.parse(localStorage.getItem("user"));
