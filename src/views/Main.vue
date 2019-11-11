@@ -226,6 +226,7 @@
 
 <script>
   import Footers from "./footers";
+
   export default {
     components: {
       Footers
@@ -392,6 +393,14 @@
         this.$requests.get("/topic/getAll", null).then((res) => {
           if (res.data.code === 0) {
             this.topicList = res.data.data;
+            if (this.$route.query.id) {
+              this.openItem = "主题";
+              this.topicList.forEach(topic => {
+                if (topic.id == this.$route.query.id) {
+                  this.appBarName = topic.name;
+                }
+              })
+            }
           }
         })
       },
@@ -580,7 +589,6 @@
         this.userMenuTrigger = this.$refs.avatarButton.$el;
       }
 
-      $("")
     },
     watch: {
       '$route': function (to, from) {

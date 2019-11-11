@@ -37,8 +37,7 @@
       changePage() {
         this.getArticleList();
         // 滚动到顶部
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
+        document.getElementById("app").scrollTop = 0;
       },
       getArticleList() {
         this.$requests.get("/article/getRecentArticles", {
@@ -51,21 +50,27 @@
             this.total = res.data.data.total;
           }
         })
+      },
+      reload() {
+        document.getElementById("app").scrollTop = 0;
+        this.topicId = this.$route.query.id;
+        this.page = 1;
+        this.getArticleList();
       }
     },
     created() {
-      this.topicId = this.$route.query.id;
-      this.page = 1;
-      this.getArticleList();
+      this.reload();
+    },
+    activated() {
+      if(this.topicId !== this.$route.query.id) {
+        this.reload();
+      }
     },
     watch: {
       '$route': function (to, from) {
-        document.getElementById("app").scrollTop = 0;
         // 切换左侧导航栏时刷新数据
         if (to.path === from.path) {
-          this.topicId = this.$route.query.id;
-          this.page = 1;
-          this.getArticleList();
+          this.reload();
         }
       }
     }
