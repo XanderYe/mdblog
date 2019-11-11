@@ -10,7 +10,11 @@
   }
 
   .container {
-    min-height: 92.7%;
+    min-height: 85%;
+  }
+
+  #footer {
+    height: 15%;
   }
 
   ::-webkit-scrollbar {

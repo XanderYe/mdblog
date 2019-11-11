@@ -17,11 +17,20 @@
 
 <style lang="less">
   #footer {
-    height: 64px;
     background: white;
     color:white;
     text-align: center;
-    padding-top: 15px;
+    position: relative;
+
+    .footer-copyright {
+      width: 100%;
+      height: 64px;
+      position: absolute;
+      top: 50%;
+      margin-top: -32px;
+      line-height: 14px;
+    }
+
     a {
       position: relative;
       display: inline-block;
