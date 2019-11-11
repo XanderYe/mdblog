@@ -30,29 +30,28 @@
       vertical-align: top;
       outline: 0;
       color:white;
+
+      &:before {
+        position: absolute;
+        top: auto;
+        bottom: 1px;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        content: ' ';
+        background-color: white;
+        -webkit-transition: all .2s;
+        transition: all .2s;
+        -webkit-transform: scaleX(0);
+        transform: scaleX(0);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden
+      }
+
+      &:focus:before, &:hover:before {
+        -webkit-transform: scaleX(1);
+        transform: scaleX(1);
+      }
     }
-
-  }
-
-  a:before {
-    position: absolute;
-    top: auto;
-    bottom: 1px;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    content: ' ';
-    background-color: white;
-    -webkit-transition: all .2s;
-    transition: all .2s;
-    -webkit-transform: scaleX(0);
-    transform: scaleX(0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden
-  }
-
-  a:focus:before, a:hover:before {
-    -webkit-transform: scaleX(1);
-    transform: scaleX(1);
   }
 </style>
