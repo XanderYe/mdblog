@@ -64,6 +64,9 @@
     activated() {
       if(this.topicId !== this.$route.query.id) {
         this.reload();
+      } else {
+        // 恢复滚动条位置
+        document.getElementById("app").scrollTop = parseInt(sessionStorage.getItem("scroll"));
       }
     },
     watch: {

@@ -27,6 +27,8 @@
       },
     },
     created() {
+      // 记录滚动条位置
+      sessionStorage.setItem("scroll", document.getElementById("app").scrollTop.toString());
       document.getElementById("app").scrollTop = 0;
       this.articleId = this.$route.query.id;
       this.getArticle();
