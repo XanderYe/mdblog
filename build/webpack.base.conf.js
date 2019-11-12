@@ -16,6 +16,12 @@ module.exports = {
   entry: {
     app: './src/main.js'
   },
+  externals: {
+    'vue': "Vue",
+    'vue-router': "VueRouter",
+    'jquery': "$",
+    'highlight.js': 'hljs',
+  },
   plugins: [
     new webpack.ProvidePlugin({
       $: "jquery",

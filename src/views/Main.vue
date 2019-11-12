@@ -13,12 +13,12 @@
         </mu-card-media>
         <mu-card-actions>
 
-          <mu-button flat :href="owner.github" style="width: 117px">
+          <mu-button flat :href="owner.github" style="width: 110px">
             GITHUB
             <mu-icon :size="24" right value=":mudocs-icon-custom-github"></mu-icon>
           </mu-button>
 
-          <mu-button flat :href="'mailto:' + owner.email" style="width: 117px">
+          <mu-button flat :href="'mailto:' + owner.email" style="width: 110px">
             EMAIL
             <mu-icon :size="24" right value="email"></mu-icon>
           </mu-button>

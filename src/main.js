@@ -3,7 +3,6 @@
 import Vue from 'vue'
 import App from './App'
 import MuseUI from 'muse-ui';
-import 'muse-ui/dist/muse-ui.css';
 import theme from 'muse-ui/lib/theme';
 import {router} from './router/index'
 import requests from './libs/ajax';
