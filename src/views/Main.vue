@@ -377,6 +377,8 @@
       // 改变菜单栏名称
       changeNavName(name) {
         this.appBarName = name;
+        sessionStorage.setItem("openItem", this.openItem);
+        sessionStorage.setItem("appBarName", this.appBarName);
       },
 
       getOwner() {
@@ -393,14 +395,6 @@
         this.$requests.get("/topic/getAll", null).then((res) => {
           if (res.data.code === 0) {
             this.topicList = res.data.data;
-            if (this.$route.query.id) {
-              this.openItem = "主题";
-              this.topicList.forEach(topic => {
-                if (topic.id == this.$route.query.id) {
-                  this.appBarName = topic.name;
-                }
-              })
-            }
           }
         })
       },
@@ -561,6 +555,10 @@
       this.getOwner();
       this.getAllTopic();
       this.changeNav();
+
+      // 设置当前页面名称
+      this.openItem = sessionStorage.getItem("openItem") ? sessionStorage.getItem("openItem") : "";
+      this.appBarName = sessionStorage.getItem("openItem") ? sessionStorage.getItem("appBarName") : "首页";
 
       // 判断登录状态
       const user = JSON.parse(localStorage.getItem("user"));

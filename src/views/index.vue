@@ -16,7 +16,7 @@
       </mu-card-actions>
     </mu-card>
 
-    <mu-flex justify-content="end" style="padding-bottom: 10px;" v-if="articleList.length > 0">
+    <mu-flex justify-content="end" style="padding-bottom: 16px;" v-if="articleList.length > 0">
       <mu-pagination raised circle :page-size="pageSize" :total="total" :current.sync="page"
                      @change="changePage"></mu-pagination>
     </mu-flex>
@@ -26,13 +26,15 @@
 <script>
   export default {
     name: "index",
-    data: () => ({
-      topicId: null,
-      articleList: [],
-      page: 1,
-      total: 1,
-      pageSize: 5,
-    }),
+    data() {
+      return {
+        topicId: null,
+        articleList: [],
+        page: 1,
+        total: 1,
+        pageSize: 5,
+      }
+    },
     methods: {
       changePage() {
         this.getArticleList();
