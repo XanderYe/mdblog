@@ -59,6 +59,8 @@ public class ArticleController {
         User user = RequestContextHolder.get();
         article.setAuthorId(user.getId());
         article.setCreator(user.getNickname());
+        article.setCreateTime(new Date());
+        article.setDelFlag(Constants.IS_NOT_DELETED);
         articleService.save(article);
         return new ResultBean();
     }
