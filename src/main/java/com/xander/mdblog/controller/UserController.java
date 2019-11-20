@@ -147,4 +147,23 @@ public class UserController {
         owner.setThemeLayout(user.getThemeLayout() == null ? "light" : user.getThemeLayout());
         return new ResultBean<>(owner);
     }
+
+    /**
+     * 获取登录信息
+     * @param
+     * @return com.xander.mdblog.base.ResultBean
+     * @author yezhendong
+     * @date 2019/11/20
+     */
+    @ApiOperation(value = "获取登录信息", notes = "")
+    @GetMapping("info")
+    public ResultBean info() {
+        User user = RequestContextHolder.get();
+        UserVO userVO = new UserVO();
+        userVO.setId(user.getId());
+        userVO.setUsername(user.getUsername());
+        userVO.setNickname(user.getNickname());
+        userVO.setAvatar(user.getAvatar());
+        return new ResultBean<>(userVO);
+    }
 }
