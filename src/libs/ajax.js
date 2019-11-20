@@ -22,15 +22,13 @@ const requests = {
 
   //get请求
   get(url, param) {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const mdToken = user ? user.token : "";
     return new Promise((resolve, reject) => {
       axios({
         method: 'get',
         url,
         params: param,
         headers: {
-          "md-token": mdToken
+          "md-token": localStorage.getItem("mdToken")
         }
       }).then(res => {
         resolve(res)
@@ -39,15 +37,33 @@ const requests = {
   },
   //post请求
   post(url, param) {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const mdToken = user ? user.token : "";
     return new Promise((resolve, reject) => {
       axios({
         method: 'post',
         url,
         data: param,
         headers: {
-          "md-token": mdToken
+          "md-token": localStorage.getItem("mdToken")
+        }
+      }).then(res => {
+        resolve(res);
+      }).catch((res) => {
+        // this.error(res.data.status);
+        //console.log(res)
+      })
+    })
+  },
+
+  //post请求
+  upload(url, param) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url,
+        data: param,
+        headers: {
+          "md-token": localStorage.getItem("mdToken"),
+          "content-type": "multipart/form-data"
         }
       }).then(res => {
         resolve(res);
@@ -78,13 +94,11 @@ const requests = {
     });
   },
   getFiles(url, params, fileName) {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const mdToken = user ? user.token : "";
     fileName = fileName || "";
     return new Promise((resolve, reject) => {
       axios.get(url, {
         headers: {
-          "md-token": mdToken
+          "md-token": localStorage.getItem("mdToken")
         },
         params: params,
         responseType: 'blob',

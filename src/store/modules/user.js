@@ -4,7 +4,6 @@ const user = {
     username: "",
     nickname: "",
     avatar: "",
-    token: "",
   },
   mutations: {
     setUser(state, obj){
@@ -12,15 +11,12 @@ const user = {
       state.username = obj.username;
       state.nickname = obj.nickname;
       state.avatar = obj.avatar;
-      state.token = obj.token;
     },
     removeUser(state){
       state.id = 0;
       state.username = "";
       state.nickname = "";
       state.avatar = "";
-      state.token = "";
-      localStorage.removeItem("user");
     }
   }
 }

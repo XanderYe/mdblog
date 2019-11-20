@@ -97,10 +97,10 @@
             <div class="info">
               <div class="avatar">
                 <div class="avatar-upload">
-                  <mu-button fab class="upload-button">
+                  <mu-button fab class="upload-button" @click="triggerUpload">
                     <mu-icon value="camera_alt"></mu-icon>
                   </mu-button>
-                  <input type="file" title=" " accept="image/*" id="upload-avatar">
+                  <input type="file" accept="image/*" id="upload-avatar" @change="uploadAvatar">
                 </div>
                 <img :src="user.avatar" width="96" height="96">
               </div>
@@ -463,14 +463,12 @@
             this.$requests.post("/user/login", form).then(res => {
               if (res.data.code === 0) {
                 this.openSnackbar("登录成功");
-                let user = res.data.data;
-                // 存储到localStorage
-                localStorage.removeItem("user");
-                localStorage.setItem("user", JSON.stringify(user));
+                this.user = res.data.data;
                 // 存储到vueX
-                this.$store.commit("setUser", user);
-                this.user = user;
-                this.user.avatar = ajaxUrl + user.avatar;
+                this.$store.commit("setUser", this.user);
+                // 存储token
+                localStorage.setItem("mdToken", this.user.token);
+                this.user.avatar = ajaxUrl + this.user.avatar;
                 this.isLogin = true;
                 this.loginDialog = false;
                 this.$nextTick(() => {
@@ -524,7 +522,6 @@
             this.$requests.post("/user/register", form).then(res => {
               if (res.data.code === 0) {
                 this.openSnackbar("注册成功");
-                this.isLogin = true;
                 this.registerDialog = false;
                 this.loginDialog = true;
               } else {
@@ -546,34 +543,65 @@
           nickname: "",
           avatar: "",
         };
+        // 从vueX移除
         this.$store.commit("removeUser");
+        // 移除token
+        localStorage.removeItem("mdToken");
         this.openSnackbar("注销成功");
 
       },
+      triggerUpload() {
+        $("#upload-avatar").trigger("click");
+      },
+      uploadAvatar() {
+        let form = new FormData;
+        form.append("avatar", $("#upload-avatar")[0].files);
+        this.$requests.upload("/user/uploadAvatar", form).then(res => {
+          if(res.data.code === 0) {
+            this.getUserInfo();
+          }
+        })
+      },
+      getUserInfo() {
+        this.$requests.get("/user/info").then(res => {
+          if (res.data.code === 0) {
+            // 判断登录状态
+            const user = res.data.data;
+            this.isLogin = true;
+            this.user = user;
+            if (user.avatar) {
+              this.user.avatar = ajaxUrl + user.avatar;
+            }
+            this.$store.commit("setUser", user);
+            // 重新绑定用户弹窗
+            this.$nextTick(() => {
+              //绑定菜单弹出元素
+              this.userMenuTrigger = this.$refs.avatarButton.$el;
+            })
+          }
+        })
+      }
     },
     created() {
       this.getOwner();
       this.getAllTopic();
       this.changeNav();
+      this.getUserInfo();
 
       // 设置当前页面名称
       this.openItem = sessionStorage.getItem("openItem") ? sessionStorage.getItem("openItem") : "";
       this.appBarName = sessionStorage.getItem("appBarName") ? sessionStorage.getItem("appBarName") : "首页";
 
-      // 判断登录状态
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (user) {
-        this.isLogin = true;
-        this.user = user;
-        if (user.avatar) {
-          this.user.avatar = ajaxUrl + user.avatar;
-        }
-        this.$store.commit("setUser", user);
-      }
+
     },
     mounted() {
       this.handleResize = () => {
         this.changeNav();
+        // 重新绑定用户弹窗
+        this.$nextTick(() => {
+          //绑定菜单弹出元素
+          this.userMenuTrigger = this.$refs.avatarButton.$el;
+        })
       };
       // 拖动窗口事件
       window.addEventListener('resize', this.handleResize);
