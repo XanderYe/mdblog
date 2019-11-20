@@ -555,9 +555,12 @@
       },
       uploadAvatar() {
         let form = new FormData;
-        form.append("avatar", $("#upload-avatar")[0].files);
+        form.append("avatar", $("#upload-avatar")[0].files[0]);
         this.$requests.upload("/user/uploadAvatar", form).then(res => {
           if(res.data.code === 0) {
+            // 清空file
+            $("#upload-avatar").val("");
+            // 重新获取头像
             this.getUserInfo();
           }
         })
