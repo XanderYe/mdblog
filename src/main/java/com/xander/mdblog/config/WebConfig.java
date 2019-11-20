@@ -46,6 +46,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/topic/getAll")
                 .excludePathPatterns("/topic/getById")
                 .excludePathPatterns("/article/getById")
+                .excludePathPatterns("/article/upload")
                 .excludePathPatterns("/comment/add");
     }
 

@@ -132,7 +132,7 @@ public class ArticleController {
      * @author yezhendong
      * @date 2019-07-11
      */
-    @ApiOperation(value = "上传图片", notes = "需要登录")
+    @ApiOperation(value = "上传图片", notes = "适配wangEditor,不需要登录")
     @PostMapping("upload")
     public String uploadImg(@RequestParam("file") MultipartFile[] files, HttpServletRequest request) {
         JSONObject result = new JSONObject();
