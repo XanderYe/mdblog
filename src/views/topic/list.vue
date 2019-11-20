@@ -2,17 +2,17 @@
   <mu-container>
     <mu-data-table stripe :columns="columns" @sort-change="" :data="topicList">
       <template slot-scope="scope">
-        <td>{{scope.row.name}}</td>
-        <td>{{scope.row.description}}</td>
-        <td>{{scope.row.creator}}</td>
-        <td>{{scope.row.createTime}}</td>
-        <td>{{scope.row.updator}}</td>
-        <td>{{scope.row.updatorTime}}</td>
+        <td>{{formatData(scope.row.name)}}</td>
+        <td>{{formatData(scope.row.description)}}</td>
+        <td>{{formatData(scope.row.creator)}}</td>
+        <td>{{formatData(scope.row.createTime)}}</td>
+        <td>{{formatData(scope.row.updator)}}</td>
+        <td>{{formatData(scope.row.updatorTime)}}</td>
         <td>
           <mu-button icon small color="primary">
             <mu-icon value="edit"></mu-icon>
           </mu-button>
-          <mu-button icon small color="primary">
+          <mu-button icon small color="red">
             <mu-icon value="delete"></mu-icon>
           </mu-button>
         </td>
@@ -50,7 +50,8 @@
           },
           {
             title: "创建时间",
-            name: "createTime"
+            name: "createTime",
+            width: 180,
           },
           {
             title: "更新者",
@@ -58,7 +59,8 @@
           },
           {
             title: "更新时间",
-            name: "updatorTime"
+            name: "updatorTime",
+            width: 180,
           },
           {
             title: "操作",
@@ -80,6 +82,9 @@
           }
         })
       },
+      formatData: function(data) {
+        return data ? data : "无";
+      }
     },
     created() {
       this.getTopicPageList();

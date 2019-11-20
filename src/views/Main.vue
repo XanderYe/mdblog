@@ -558,7 +558,7 @@
 
       // 设置当前页面名称
       this.openItem = sessionStorage.getItem("openItem") ? sessionStorage.getItem("openItem") : "";
-      this.appBarName = sessionStorage.getItem("openItem") ? sessionStorage.getItem("appBarName") : "首页";
+      this.appBarName = sessionStorage.getItem("appBarName") ? sessionStorage.getItem("appBarName") : "首页";
 
       // 判断登录状态
       const user = JSON.parse(localStorage.getItem("user"));

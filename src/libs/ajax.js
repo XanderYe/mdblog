@@ -18,14 +18,12 @@ axios.interceptors.response.use(response => {
   return Promise.reject(err.response);
 });
 
-const user = JSON.parse(localStorage.getItem("user"));
-const mdToken = user ? user.token : "";
-
 const requests = {
 
   //get请求
   get(url, param) {
-
+    const user = JSON.parse(localStorage.getItem("user"));
+    const mdToken = user ? user.token : "";
     return new Promise((resolve, reject) => {
       axios({
         method: 'get',
@@ -41,7 +39,8 @@ const requests = {
   },
   //post请求
   post(url, param) {
-
+    const user = JSON.parse(localStorage.getItem("user"));
+    const mdToken = user ? user.token : "";
     return new Promise((resolve, reject) => {
       axios({
         method: 'post',
@@ -79,6 +78,8 @@ const requests = {
     });
   },
   getFiles(url, params, fileName) {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const mdToken = user ? user.token : "";
     fileName = fileName || "";
     return new Promise((resolve, reject) => {
       axios.get(url, {

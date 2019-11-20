@@ -18,9 +18,14 @@
         <wangeditor :content="initContent" @highlight="highlight" @input="getContent"></wangeditor>
       </mu-card-text>
       <mu-card-actions style="overflow: hidden">
-        <mu-button color="secondary" @click="" style="float: right">发表</mu-button>
+        <mu-button color="secondary" @click="addArticle" style="float: right">发表</mu-button>
       </mu-card-actions>
     </mu-card>
+
+    <mu-snackbar position="top" :open.sync="snackbar.open">
+      {{snackbar.message}}
+      <mu-button flat slot="action" color="secondary" @click="snackbar.open = false">关闭</mu-button>
+    </mu-snackbar>
   </mu-container>
 </template>
 
@@ -42,7 +47,10 @@
         },
         initContent: "",
         topicList: [],
-
+        snackbar: {
+          message: "",
+          open: false,
+        },
       }
     },
     methods: {
@@ -71,8 +79,36 @@
           }
         })
       },
+      addArticle() {
+        let form = new FormData;
+        form.append("topicId", this.article.topicId);
+        form.append("title", this.article.title);
+        form.append("content", this.article.content);
+        if (this.article.id) {
+          // 更新
+          form.append("id", this.article.id);
+        } else {
+          // 添加
+          this.$requests.post("/article/add", form).then(res => {
+            if (res.data.code === 0) {
+              this.openSnackbar("保存成功");
+              this.$router.push({name: "index"});
+            }
+          })
+        }
+      },
       getContent(html) {
         this.article.content = html;
+      },
+      // 打开通知
+      openSnackbar(msg) {
+        this.snackbar.message = msg;
+        this.snackbar.open = true;
+        setTimeout(() => {
+          if (this.snackbar.open) {
+            this.snackbar.open = false;
+          }
+        }, 3000)
       },
     },
     created() {

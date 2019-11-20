@@ -73,9 +73,14 @@
     },
     watch: {
       '$route': function (to, from) {
-        // 切换左侧导航栏时刷新数据
         if (to.path === from.path) {
+          // 切换左侧导航栏时刷新数据
           this.reload();
+        } else {
+          // 非详情页面跳转也要刷新
+          if(from.path !== "/article/detail") {
+            this.reload();
+          }
         }
       }
     }
