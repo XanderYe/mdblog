@@ -2,6 +2,7 @@ package com.xander.mdblog.controller;
 
 import com.xander.mdblog.config.VerCodeCache;
 import com.xander.mdblog.enums.ErrorCodeEnum;
+import com.xander.mdblog.exception.BusinessException;
 import com.xander.mdblog.vo.OwnerVO;
 import com.xander.mdblog.vo.UserVO;
 import com.xander.mdblog.base.RequestContextHolder;
@@ -117,7 +118,7 @@ public class UserController {
         User updateUser = new User();
         updateUser.setId(user.getId());
         updateUser.setAvatar(avatar);
-        userService.update(updateUser);
+        userService.updateSelective(updateUser);
         user.setAvatar(avatar);
         return new ResultBean<>(avatar);
     }
@@ -134,6 +135,9 @@ public class UserController {
     @GetMapping("getOwner")
     public ResultBean getOwner() {
         User user = userService.findUserByPermission(Constants.BLOG_OWNER);
+        if(user == null) {
+            throw new BusinessException("账号丢失");
+        }
         OwnerVO owner = new OwnerVO();
         owner.setId(user.getId());
         owner.setOwner(user.getNickname());
