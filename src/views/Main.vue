@@ -13,7 +13,7 @@
         </mu-card-media>
         <mu-card-actions>
 
-          <mu-button flat :href="owner.github" style="width: 110px">
+          <mu-button flat :href="owner.github" style="width: 110px; float:left">
             GITHUB
             <mu-icon :size="24" right value=":mudocs-icon-custom-github"></mu-icon>
           </mu-button>
@@ -269,12 +269,12 @@
         ],
         owner: {
           id: 1,
-          owner: "XanderYe",
-          avatar: "/static/img/my.jpg",
-          email: "XanderYe@outlook.com",
-          github: "https://github.com/XanderYe",
-          description: "这里是一条咸鱼的博客",
-          occupation: "java开发工程师"
+          owner: "",
+          avatar: "",
+          email: "",
+          github: "",
+          description: "",
+          occupation: ""
         },
         // 用户菜单
         userMenu: false,
@@ -387,6 +387,16 @@
             this.owner = res.data.data;
             this.owner.avatar = ajaxUrl + res.data.data.avatar;
             this.getUserInfo();
+          } else {
+            this.owner = {
+              id: 1,
+              owner: "XanderYe",
+              avatar: "/static/img/my.jpg",
+              email: "XanderYe@outlook.com",
+              github: "https://github.com/XanderYe",
+              description: "这里是一条咸鱼的博客",
+              occupation: "java开发工程师"
+            },
           }
         })
       },
@@ -561,7 +571,7 @@
         let form = new FormData;
         form.append("avatar", $("#upload-avatar")[0].files[0]);
         this.$requests.upload("/user/uploadAvatar", form).then(res => {
-          if(res.data.code === 0) {
+          if (res.data.code === 0) {
             // 清空file
             $("#upload-avatar").val("");
             // 重新获取头像
