@@ -11,6 +11,11 @@
 
   .container {
     min-height: 85%;
+    padding-bottom: 64px;
+  }
+
+  .scroll-btn {
+    bottom: 90px;
   }
 
   #footer {

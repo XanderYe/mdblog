@@ -18,7 +18,9 @@ Vue.prototype.$requests = requests;
 Vue.directive('highlight',function (el) {
   let blocks = el.querySelectorAll('pre code');
   blocks.forEach((block)=>{
-    hljs.highlightBlock(block);
+    if(block.className.indexOf("hljs") === -1) {
+      hljs.highlightBlock(block);
+    }
   })
 });
 
