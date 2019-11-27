@@ -1,9 +1,11 @@
 package com.xander.mdblog.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.xander.mdblog.base.RequestContextHolder;
 import com.xander.mdblog.base.ResultBean;
 import com.xander.mdblog.constant.Constants;
 import com.xander.mdblog.entity.Topic;
+import com.xander.mdblog.entity.User;
 import com.xander.mdblog.enums.ErrorCodeEnum;
 import com.xander.mdblog.service.TopicService;
 import io.swagger.annotations.Api;
@@ -111,11 +113,15 @@ public class TopicController {
     @ApiOperation(value = "保存主题", notes = "添加和修改都是这个接口")
     @PostMapping("save")
     public ResultBean saveTopic(Topic topic) {
+        User user = RequestContextHolder.get();
+        topic.setDelFlag(Constants.IS_NOT_DELETED);
         if (topic.getId() == null) {
             topic.setCreateTime(new Date());
+            topic.setCreator(user.getNickname());
             topicService.save(topic);
         } else {
             topic.setUpdateTime(new Date());
+            topic.setUpdator(user.getNickname());
             topicService.updateSelective(topic);
         }
         return new ResultBean();
