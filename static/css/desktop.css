@@ -51,6 +51,11 @@
     padding: 0 40px 62px 24px;
   }
 
+  .mu-dialog .mu-form {
+    margin-top: 24px;
+    padding: 0 40px 62px 24px;
+  }
+
   /*卡片悬浮阴影*/
   .mu-hoverable {
     -webkit-transition: -webkit-box-shadow .25s cubic-bezier(.4, 0, .2, 1);

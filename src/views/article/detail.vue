@@ -4,6 +4,11 @@
       <mu-card-title class="mu-typo" :title="article.title" :sub-title="article.createTime"></mu-card-title>
       <mu-card-text class="mu-typo" v-html="article.content" v-highlight>
       </mu-card-text>
+      <mu-card-actions style="overflow: hidden">
+        <mu-button color="secondary" v-if="$store.state.app.isOwner"
+                   :to="{name: 'article-add', query: {id: article.id}}" style="float: right">编辑
+        </mu-button>
+      </mu-card-actions>
     </mu-card>
   </mu-container>
 </template>

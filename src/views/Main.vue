@@ -386,6 +386,7 @@
           if (res.data.code === 0) {
             this.owner = res.data.data;
             this.owner.avatar = ajaxUrl + res.data.data.avatar;
+            this.getUserInfo();
           }
         })
       },
@@ -401,7 +402,9 @@
 
       // 是否是桌面端
       isDesktop() {
-        return window.innerWidth > 993;
+        const isDesktop = window.innerWidth > 993;
+        this.$store.commit("setIsDesktop", isDesktop);
+        return isDesktop;
       },
 
       // 打开通知
@@ -474,8 +477,9 @@
                 this.$nextTick(() => {
                   //绑定菜单弹出元素
                   this.userMenuTrigger = this.$refs.avatarButton.$el;
-                })
-
+                });
+                // 判断是否是管理员
+                this.$store.commit("setIsOwner", this.user.id === this.owner.id);
               } else {
                 this.openSnackbar(res.data.msg);
               }
@@ -576,6 +580,8 @@
               this.user.avatar = ajaxUrl + user.avatar;
             }
             this.$store.commit("setUser", user);
+            // 判断是否是管理员
+            this.$store.commit("setIsOwner", this.user.id === this.owner.id);
             // 重新绑定用户弹窗
             this.$nextTick(() => {
               //绑定菜单弹出元素
@@ -589,7 +595,6 @@
       this.getOwner();
       this.getAllTopic();
       this.changeNav();
-      this.getUserInfo();
 
       // 设置当前页面名称
       this.openItem = sessionStorage.getItem("openItem") ? sessionStorage.getItem("openItem") : "";
