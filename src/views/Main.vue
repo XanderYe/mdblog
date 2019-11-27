@@ -396,7 +396,7 @@
               github: "https://github.com/XanderYe",
               description: "这里是一条咸鱼的博客",
               occupation: "java开发工程师"
-            },
+            }
           }
         })
       },
