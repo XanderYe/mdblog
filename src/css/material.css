@@ -2,12 +2,7 @@
   font-family: 'Material Icons';
   font-style: normal;
   font-weight: 400;
-  src: url(../fonts/materialicons.woff2) format('woff2');
-}
-
-@font-face {
-  font-family: 'material-ui-icons';
-  src: url('../fonts/material-ui-icons.eot');
+  src: url('/static/fonts/materialicons.woff2') format('woff2');
 }
 
 @font-face {

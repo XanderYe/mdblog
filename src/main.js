@@ -11,6 +11,13 @@ import $ from 'jquery';
 import NProgress from 'nprogress';
 import hljs from 'highlight.js';
 
+import '@/css/cover-muse.css';
+import '@/css/desktop.css';
+import '@/css/index.css';
+import '@/css/material.css';
+import '@/css/mobile.css';
+import '@/css/nprogress.css';
+
 Vue.config.productionTip = false;
 Vue.use(MuseUI);
 Vue.prototype.$requests = requests;
