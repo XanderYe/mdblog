@@ -92,7 +92,11 @@
           this.$requests.post("/article/update", form).then(res => {
             if (res.data.code === 0) {
               this.openSnackbar("编辑成功");
-              this.$router.push({name: "index"});
+              setTimeout(() => {
+                this.$router.push({name: "index"});
+              }, 1000)
+            } else {
+              this.openSnackbar(res.data.msg);
             }
           })
         } else {
@@ -100,7 +104,11 @@
           this.$requests.post("/article/add", form).then(res => {
             if (res.data.code === 0) {
               this.openSnackbar("添加成功");
-              this.$router.push({name: "index"});
+              setTimeout(() => {
+                this.$router.push({name: "index"});
+              }, 1000)
+            } else {
+              this.openSnackbar(res.data.msg);
             }
           })
         }
