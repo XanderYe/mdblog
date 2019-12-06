@@ -89,11 +89,17 @@
         if (this.article.id) {
           // 更新
           form.append("id", this.article.id);
+          this.$requests.post("/article/update", form).then(res => {
+            if (res.data.code === 0) {
+              this.openSnackbar("编辑成功");
+              this.$router.push({name: "index"});
+            }
+          })
         } else {
           // 添加
           this.$requests.post("/article/add", form).then(res => {
             if (res.data.code === 0) {
-              this.openSnackbar("保存成功");
+              this.openSnackbar("添加成功");
               this.$router.push({name: "index"});
             }
           })

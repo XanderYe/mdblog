@@ -1,6 +1,5 @@
 //引入axios
 import axios from 'axios'
-import Cookies from "js-cookie";
 import {router} from '../router/index.js'
 
 axios.defaults.baseURL = ajaxUrl;
@@ -123,14 +122,6 @@ const requests = {
       case 2:
         router.replace({
           path: '/error-403'
-        });
-        break;
-      //请求未登录状态码
-      case 3:
-
-        Cookies.remove('user');
-        router.replace({
-          path: '/login'
         });
         break;
       //请求未找到
