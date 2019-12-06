@@ -17,8 +17,6 @@ module.exports = {
     app: './src/main.js'
   },
   externals: {
-    'vue': "Vue",
-    'vue-router': "VueRouter",
     'jquery': "$",
     'highlight.js': 'hljs',
   },
