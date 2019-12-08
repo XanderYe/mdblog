@@ -616,10 +616,12 @@
       this.handleResize = () => {
         this.changeNav();
         // 重新绑定用户弹窗
-        this.$nextTick(() => {
-          //绑定菜单弹出元素
-          this.userMenuTrigger = this.$refs.avatarButton.$el;
-        })
+        if (this.isLogin) {
+          this.$nextTick(() => {
+            //绑定菜单弹出元素
+            this.userMenuTrigger = this.$refs.avatarButton.$el;
+          })
+        }
       };
       // 拖动窗口事件
       window.addEventListener('resize', this.handleResize);
