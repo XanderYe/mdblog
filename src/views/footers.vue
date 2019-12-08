@@ -1,10 +1,9 @@
 <template>
   <footer id="footer">
-    <div class="footer-copyright">
-      Copyright © 2018 - 2020 <a href="http://xanderye.cn/">xanderye.cn</a> All rights reserved.
-    </div>
-    <div class="footer-info">
-      <a href="http://www.beian.miit.gov.cn/" target="_blank">浙ICP备xxx号</a>
+    <div class="footer-typo">
+      <div class="footer-copyright">
+        <p>Copyright © 2018 - 2020 <a href="http://xanderye.cn/">xanderye.cn</a> All rights reserved.</p>
+        <p><a href="http://www.beian.miit.gov.cn/" target="_blank">浙ICP备xxx号</a></p></div>
     </div>
   </footer>
 </template>
@@ -18,7 +17,7 @@
 <style lang="less">
   #footer {
     background: white;
-    color:white;
+    color: white;
     text-align: center;
     position: relative;
 
@@ -38,7 +37,7 @@
       text-decoration: none;
       vertical-align: top;
       outline: 0;
-      color:white;
+      color: white;
 
       &:before {
         position: absolute;
