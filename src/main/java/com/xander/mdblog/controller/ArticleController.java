@@ -58,7 +58,7 @@ public class ArticleController {
     public ResultBean addArticle(Article article) {
         User user = RequestContextHolder.get();
         article.setAuthorId(user.getId());
-        article.setCreator(user.getNickname());
+        article.setCreator(user.getId());
         article.setCreateTime(new Date());
         article.setDelFlag(Constants.IS_NOT_DELETED);
         articleService.save(article);
@@ -78,7 +78,7 @@ public class ArticleController {
     public ResultBean updateArticle(Article article) {
         User user = RequestContextHolder.get();
         article.setAuthorId(user.getId());
-        article.setUpdator(user.getNickname());
+        article.setUpdator(user.getId());
         article.setUpdateTime(new Date());
         articleService.updateSelective(article);
         return new ResultBean();

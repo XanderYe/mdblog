@@ -34,7 +34,6 @@ public class CommentServiceImpl extends BaseServiceImpl<Comment> implements Comm
 
     @Override
     public void deleteComment(Comment comment) {
-        comment.setUpdateTime(new Date());
         comment.setDelFlag(Constants.IS_DELETED);
         commentMapper.updateByPrimaryKeySelective(comment);
     }

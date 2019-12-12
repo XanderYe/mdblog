@@ -23,12 +23,12 @@ public class Article {
 
     private String content;
 
-    private String creator;
+    private Long creator;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
-    private String updator;
+    private Long updator;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;

@@ -39,10 +39,7 @@ public class CommentController {
         if (user != null) {
             comment.setNickname(user.getNickname());
             comment.setEmail(user.getEmail());
-            comment.setAuthorId(user.getId());
-            comment.setCreator(user.getNickname());
-        } else {
-            comment.setCreator("游客：" + comment.getNickname());
+            comment.setCreator(user.getId());
         }
         commentService.insertComment(comment);
         return new ResultBean<>();

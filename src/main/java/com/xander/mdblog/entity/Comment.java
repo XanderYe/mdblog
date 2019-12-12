@@ -23,25 +23,16 @@ public class Comment {
 
     private String content;
 
-    private String image;
-
     private Integer floor;
-
-    private Long authorId;
 
     private Long toId;
 
     private Long articleId;
 
-    private String creator;
+    private Long creator;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
-
-    private String updator;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date updateTime;
 
     private Integer delFlag;
 
