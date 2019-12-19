@@ -459,6 +459,7 @@
         if (username != null && password != null) {
           this.loginData.username = username;
           this.loginData.password = password;
+          this.loginData.remember = true;
         }
       },
 
@@ -469,6 +470,9 @@
             if (this.loginData.remember) {
               localStorage.setItem("username", this.loginData.username);
               localStorage.setItem("password", this.loginData.password);
+            } else {
+              localStorage.removeItem("username");
+              localStorage.removeItem("password");
             }
             let form = new FormData;
             form.append("username", this.loginData.username);
