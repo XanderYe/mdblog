@@ -1,5 +1,6 @@
 package com.xander.mdblog.service.impl;
 
+import com.xander.mdblog.config.RedisService;
 import com.xander.mdblog.vo.UserVO;
 import com.xander.mdblog.base.BaseServiceImpl;
 import com.xander.mdblog.constant.Constants;
@@ -30,6 +31,9 @@ import static com.xander.mdblog.util.CheckUtil.check;
 @Service
 public class UserServiceImpl extends BaseServiceImpl<User> implements UserService {
     @Autowired
+    private RedisService redisService;
+
+    @Autowired
     private UserMapper userMapper;
 
     @Value("${upload.root}")
@@ -53,6 +57,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         userVO.setNickname(findUser.getNickname());
         userVO.setToken(findUser.getToken());
         userVO.setAvatar(findUser.getAvatar());
+        // 存储到redis
+        redisService.set(findUser.getToken(), findUser, Constants.REDIS_DEFAULT_EXPIRE);
         return userVO;
     }
 

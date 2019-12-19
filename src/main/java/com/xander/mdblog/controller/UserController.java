@@ -1,16 +1,16 @@
 package com.xander.mdblog.controller;
 
-import com.xander.mdblog.config.VerCodeCache;
-import com.xander.mdblog.enums.ErrorCodeEnum;
-import com.xander.mdblog.exception.BusinessException;
-import com.xander.mdblog.vo.OwnerVO;
-import com.xander.mdblog.vo.UserVO;
 import com.xander.mdblog.base.RequestContextHolder;
 import com.xander.mdblog.base.ResultBean;
+import com.xander.mdblog.config.RedisService;
 import com.xander.mdblog.constant.Constants;
 import com.xander.mdblog.entity.User;
+import com.xander.mdblog.enums.ErrorCodeEnum;
+import com.xander.mdblog.exception.BusinessException;
 import com.xander.mdblog.service.UserService;
 import com.xander.mdblog.util.ShortUUIDUtil;
+import com.xander.mdblog.vo.OwnerVO;
+import com.xander.mdblog.vo.UserVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -34,7 +34,7 @@ import static com.xander.mdblog.util.CheckUtil.check;
 @RequestMapping("user")
 public class UserController {
     @Autowired
-    private VerCodeCache verCodeCache;
+    private RedisService redisService;
     @Autowired
     private UserService userService;
 
@@ -54,7 +54,7 @@ public class UserController {
     @ApiOperation(value = "注册", notes = "")
     @PostMapping("register")
     public ResultBean register(User user, String uuid, String verCode) {
-        String code = verCodeCache.get(uuid);
+        String code = (String) redisService.get(uuid);
         this.userService.register(user, code, verCode);
         return new ResultBean<>();
     }

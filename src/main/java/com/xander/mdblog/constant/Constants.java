@@ -55,4 +55,9 @@ public final class Constants {
      * session存储博客拥有者标识
      */
     public static final String OWNER_STRING = "owner";
+
+    /**
+     * 默认redis缓存过期时间
+     */
+    public static final long REDIS_DEFAULT_EXPIRE = 3600;
 }

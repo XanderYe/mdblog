@@ -1,6 +1,7 @@
 package com.xander.mdblog.interceptor;
 
 import com.xander.mdblog.base.RequestContextHolder;
+import com.xander.mdblog.config.RedisService;
 import com.xander.mdblog.entity.User;
 import com.xander.mdblog.enums.ErrorCodeEnum;
 import com.xander.mdblog.service.UserService;
@@ -23,7 +24,7 @@ import static com.xander.mdblog.util.CheckUtil.check;
 @Component
 public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Autowired
-    private UserService userService;
+    private RedisService redisService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -45,8 +46,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                 "remoteAddr={}, method={}, uri={}, userToken={}", remoteAddr, method, uri, userToken);
 
         // 查询用户
-        User user = userService.findByToken(userToken);
-        check(user != null, ErrorCodeEnum.ACCOUNT_NOTEXIST,
+        User user = (User) redisService.get(userToken);
+        check(user != null, ErrorCodeEnum.ACCOUNT_EXPIRED,
                 "remoteAddr={}, method={}, uri={}, userToken={}", remoteAddr, method, uri, userToken);
 
 
