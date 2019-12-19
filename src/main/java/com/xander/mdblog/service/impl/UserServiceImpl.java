@@ -58,7 +58,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         userVO.setToken(findUser.getToken());
         userVO.setAvatar(findUser.getAvatar());
         // 存储到redis
-        redisService.set(findUser.getToken(), findUser, Constants.REDIS_DEFAULT_EXPIRE);
+        redisService.set(findUser.getToken(), findUser, Constants.REDIS_USER_EXPIRE);
         return userVO;
     }
 

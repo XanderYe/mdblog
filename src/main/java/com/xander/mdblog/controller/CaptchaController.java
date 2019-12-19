@@ -37,7 +37,7 @@ public class CaptchaController {
         String code = VerifyCodeUtils.generateVerifyCode(4);
         String image = VerifyCodeUtils.imageBase64(Constants.IMAGE_WIDTH, Constants.IMAGE_HEIGHT, code);
         // 存入redis
-        redisService.set(uuid, code);
+        redisService.set(uuid, code, Constants.REDIS_CAPTCHA_EXPIRE);
 
         captcha.put("uuid", uuid);
         captcha.put("image", image);

@@ -27,11 +27,6 @@ public final class Constants {
     public static final String DATE_FORMAT = "yyyyMMddhhmmss";
 
     /**
-     * 数据缓存名
-     */
-    public static final String EHCACHE_NAME = "verCode";
-
-    /**
      * 验证码长度
      */
     public static int IMAGE_WIDTH = 100;
@@ -57,7 +52,12 @@ public final class Constants {
     public static final String OWNER_STRING = "owner";
 
     /**
-     * 默认redis缓存过期时间
+     * 默认redis用户过期时间
      */
-    public static final long REDIS_DEFAULT_EXPIRE = 3600;
+    public static final long REDIS_USER_EXPIRE = 3600;
+
+    /**
+     * 默认redis验证码过期时间
+     */
+    public static final long REDIS_CAPTCHA_EXPIRE = 600;
 }
