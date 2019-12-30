@@ -26,7 +26,7 @@ import java.util.Map;
 @Configuration
 public class TransactionConfig {
 
-    private static final String pointcutExpression = "execution (* com.xander.mdblog.service.*.*(..))";
+    private static final String POINTCUT_EXPRESSION = "execution (* com.xander.mdblog.service.*.*(..))";
 
     @Autowired
     private PlatformTransactionManager transactionManager;
@@ -37,8 +37,6 @@ public class TransactionConfig {
         //只读事务，不做更新操作
         RuleBasedTransactionAttribute readOnlyTx = new RuleBasedTransactionAttribute();
         readOnlyTx.setReadOnly(true);
-        //TODO 暂时设置开发环境只读方法存在事务
-        //readOnlyTx.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         readOnlyTx.setPropagationBehavior(TransactionDefinition.PROPAGATION_SUPPORTS);
 
         //当前存在事务就使用当前事务，当前不存在事务就创建一个新的事务
@@ -55,16 +53,13 @@ public class TransactionConfig {
         txMap.put("*", requiredTx);
 
         source.setNameMap(txMap);
-        TransactionInterceptor txAdvice = new TransactionInterceptor(transactionManager, source);
-        return txAdvice;
+        return new TransactionInterceptor(transactionManager, source);
     }
 
     @Bean
     public Advisor txAdviceAdvisor() {
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-        pointcut.setExpression(pointcutExpression);
+        pointcut.setExpression(POINTCUT_EXPRESSION);
         return new DefaultPointcutAdvisor(pointcut, txAdvice());
     }
-
-
 }
