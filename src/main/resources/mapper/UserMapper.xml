@@ -27,6 +27,6 @@
         *
         FROM user
         WHERE username = #{usename}
-        AND status = 0
+        AND status = 1
     </select>
 </mapper>

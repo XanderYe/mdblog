@@ -135,7 +135,7 @@ public class UserController {
     @GetMapping("getOwner")
     public ResultBean getOwner() {
         User user = userService.findUserByPermission(Constants.BLOG_OWNER);
-        if(user == null) {
+        if (user == null) {
             throw new BusinessException("账号丢失");
         }
         OwnerVO owner = new OwnerVO();

@@ -80,7 +80,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         // 性别
         user.setGender(user.getGender() == null ? 0 : user.getGender());
         // 账号状态
-        user.setStatus(0);
+        user.setStatus(1);
         // 权限
         user.setPermission(0);
         // 生成头像
