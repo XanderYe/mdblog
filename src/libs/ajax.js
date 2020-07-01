@@ -73,25 +73,6 @@ const requests = {
     })
   },
 
-  // 同步请求，promise不能返回值
- asynGet(url, param, success, error){
-    $.ajax({
-      url: ajaxUrl + url,
-      type: "get",
-      async: false,
-      data: param,
-      success: function (res) {
-        if(success){
-          success(res);
-        }
-      },
-      error: function () {
-        if(error){
-          error();
-        }
-      }
-    });
-  },
   getFiles(url, params, fileName) {
     fileName = fileName || "";
     return new Promise((resolve, reject) => {

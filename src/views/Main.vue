@@ -518,12 +518,9 @@
       },
 
       // 检查用户名
-      checkUsername(username) {
-        let result = true;
-        this.$requests.asynGet("/user/check", {username: username}, (res) => {
-          result = res.code === 0;
-        });
-        return result;
+      async checkUsername(username) {
+        let result = await this.$requests.get("/user/check", {username: username});
+        return result.data.code === 0;
       },
 
       // 注册
