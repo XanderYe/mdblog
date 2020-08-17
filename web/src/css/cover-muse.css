@@ -1,0 +1,116 @@
+body {
+  font-family: Roboto, Noto, Helvetica, Arial, sans-serif !important;
+}
+
+body, html, #app {
+  height: 100%;
+}
+
+#app {
+  overflow-y: scroll;
+}
+
+/*界面排版*/
+.mu-appbar-header {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  overflow: hidden;
+}
+
+.mu-appbar-header.is-open {
+  left: 256px;
+}
+
+.mu-card-actions {
+  padding: 16px;
+}
+
+.mu-list .actived {
+  background-color: rgba(0,0,0,.1);
+}
+
+.mu-list .actived .mu-item-title {
+  font-weight: bold;
+}
+
+.mu-container {
+  padding-top: 64px;
+}
+
+
+.mu-container.is-open {
+  padding-left: 256px;
+}
+
+.mu-typo a {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  text-decoration: none;
+  vertical-align: top;
+  outline: 0;
+}
+
+.mu-typo a:before {
+  position: absolute;
+  top: auto;
+  bottom: 1px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  content: ' ';
+  /*background-color: #ff4081;*/
+  -webkit-transition: all .2s;
+  transition: all .2s;
+  -webkit-transform: scaleX(0);
+  transform: scaleX(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden
+}
+
+.mu-typo a:focus:before, .mu-typo a:hover:before {
+  -webkit-transform: scaleX(1);
+  transform: scaleX(1);
+}
+
+/*文章排版*/
+.mu-typo p, .mu-typo pre {
+  margin: 0 0 1.2em 0;
+}
+
+/*X轴滚动条*/
+.mu-card-text {
+  overflow-x: scroll;
+}
+
+.mu-typo pre {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  white-space: pre;
+  word-break: normal;
+}
+
+.mu-typo code, kbd, pre, samp {
+  font-family: Consolas, Courier, 'Courier New', monospace !important;
+}
+
+
+/*列表打开关闭旋转180度*/
+.mu-item__open .toggle-icon {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+/*列表打开关闭动画效果*/
+.toggle-icon {
+  color: rgba(0, 0, 0, .54);
+  -webkit-transition: -webkit-transform .3s cubic-bezier(.23, 1, .32, 1);
+  transition: transform .3s cubic-bezier(.23, 1, .32, 1);
+  transition: -webkit-transform .3s cubic-bezier(.23, 1, .32, 1);
+  transition-property: transform, -webkit-transform;
+  transition-duration: 0.3s, 0.3s;
+  transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1), cubic-bezier(0.23, 1, 0.32, 1);
+  transition-delay: 0s, 0s;
+}

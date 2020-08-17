@@ -1,0 +1,41 @@
+/* 移动端 */
+@media screen and (max-width: 993px) {
+  .popover-div {
+    width: 300px;
+  }
+
+  .mu-container {
+    height: 100%;
+
+  }
+
+  .container {
+    min-height: 85%;
+    padding-bottom: 64px;
+  }
+
+  .scroll-btn {
+    bottom: 90px;
+  }
+
+  #footer {
+    height: 15%;
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  /*滚动条颜色*/
+  ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: #BDBDBD;
+  }
+
+  .mu-dialog .mu-form {
+    margin-top: 24px;
+    padding: 0 24px 24px 12px;
+  }
+
+}
